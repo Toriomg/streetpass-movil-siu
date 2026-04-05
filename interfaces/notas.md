@@ -15,4 +15,12 @@ LINK AL FIGMA: https://www.figma.com/design/P72Ehcl53FNvkqoILs1V7y/Untitled?node
 - ponemos el número de telefono comométodo de comunicación pero si se os ocurre algo mejor, mejor 
 - hay que añadir en todos los casos un botoncillo de reporte pero el puto figma no he sido capaz de conseguirlo :/
 
+- en caso de estar en modo silencio o bloqueo o como querais llamar lo de que sigue activado pero se almacenan las personas que ves y las puedes ver luego, se tiene que quedar perpetuo el mensaje de que estás en ese modo !!!!
+
 # Pantallas del sensor - movil 
+- cuando todo está funcionando en el reloj, dejamos la pantalla vacia, con el botón de soporte y con un mensaje de que todo está pasando en el reloj, y se queda asi hasta que se entre en modo bloqueo, en cuyo caso la pantalla es la misma pero con el mensaje de que estás en modo bloqueo
+- accedes a la pantalla de post-bloqueo con face id 
+- AÑADIR UN BOTÓN DE SOPORTE QUE DESCRIBA LOS GESTOS PARA QUE LA APP FUNCIONE !!!!! (no he creado la interfaz pero vamos que describa el funcionamiento de la app)
+- movil inicio es como se entra a la app 
+-  en la pantalla movil_navegación hay un ejemplo de como podía ser el boton de soporte 
+- en caso de que la conexión sea mutua se replica la de conexión del reloj en el movil pero tal cual 
