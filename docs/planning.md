@@ -44,3 +44,44 @@ Sistema de streetpass entre personas con el movil para la Asignatura Sistemas In
     - en esto también opciones de pasar con la mano 
 
 - poner opciones de no querer conectar con la gente y luego ver como se gestionan todo eso
+
+## Gestion de sesiones
+
+Para gestionar múltiples parejas de dispositivos (Reloj $j$ vinculado a Móvil $i$) en un mismo servidor, la técnica estándar es el **Pairing por ID de Sesión** mediante **Salas de Socket.io (Rooms)**.
+
+### Concepto de Gestión $n$ a $m$
+1.  **ID de Pareja (PairID):** Cada usuario (persona) genera un código único (ej: `user_123`).
+2.  **Identificación Dual:** 
+    *   El Móvil $i$ se conecta con: `?user=123&v=sensor`.
+    *   El Reloj $j$ se conecta con: `?user=123&v=watch`.
+3.  **Aislamiento en Servidor:** El servidor crea una "habitación" privada para el `user_123`. Todo gesto enviado por el móvil en esa sala solo será escuchado por el reloj en esa misma sala.
+
+## Gestion de usuarios
+
+### 1. El "Perfil Propio" (Tus datos)
+Es la información que tu móvil envía a los demás.
+*   **Dónde los cambias:** Lo ideal es crear una **Pantalla de Ajustes/Perfil** en la interfaz del PC (`v=home`). Al ser una pantalla grande, es más cómodo escribir tu nombre y elegir tus gustos ahí.
+*   **Dónde los guardas:** En el server?
+
+### 2. Los "Usuarios Cercanos" (Mock Data)
+* Guardamos las cosas en un users.json o una sqLite? de los datos los usuarios.
+```bash
+TABLE user:
+	id uint;
+	name/username: str,
+	foto: url al server? la guardamos ahi?
+	telefono: number 9 digitos
+	gustos/intereses: str[3] # Guardamos strng y ya y hardcodeamos los tipos en el frontend
+```
+*   **Cómo funcionan ???:** El servidor de Node.js elige uno al azar de esa lista cada X tiempo y se lo envía al Reloj para simular que "te has cruzado con alguien".
+
+### 3. La "Lista de Encuentros" (Historial)
+Son las personas con las que ya te has cruzado y que has aceptado o guardado para ver luego en casa.
+*   **Dónde los guardas:** En el **Servidor (Node.js)**. Es mejor guardarlos aquí porque si cierras el navegador del móvil, no quieres perder la lista de gente con la que te has cruzado durante el día.
+*   **Persistencia:** Si quieres que sea un trabajo de 10, puedes hacer que el servidor guarde esa lista en un archivo de texto o JSON cada vez que hay un nuevo encuentro. Así, aunque apagues el PC, la "pila" de personas pendientes sigue ahí cuando lo vuelvas a encender.
+
+### Resumen de flujo de datos:
+1.  **Configuración:** Entras al PC -> Rellenas tu perfil -> Se guarda en el server?.
+2.  **Uso:** Vas por la calle -> El servidor te manda un usuario del archivo `users.json` -> El Reloj lo muestra.
+3.  **Acción:** Haces el gesto de "Aceptar" -> El Reloj avisa al Servidor -> El Servidor guarda a esa persona en tu "Lista de amigos".
+4.  **Consulta:** Llegas a casa -> Abres el PC -> El PC le pide al Servidor tu lista de amigos guardada -> Se muestran todos en la pantalla grande.
