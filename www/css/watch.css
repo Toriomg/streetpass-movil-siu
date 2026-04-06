@@ -1,5 +1,4 @@
 /* www/css/watch.css */
 @import 'watch/base.css';
 @import 'watch/header.css';
-@import 'watch/profile.css';
-@import 'watch/screens.css';
+@import 'watch/screens/profile.css';

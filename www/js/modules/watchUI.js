@@ -50,7 +50,7 @@ const renderMessage = (data) => `
 `;
 
 export const watchUI = {
-  render: (data, viewType = "match") => {
+  render: (data, viewType = "profile") => {
     let content = "";
 
     switch (viewType) {
