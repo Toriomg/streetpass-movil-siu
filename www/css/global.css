@@ -1,0 +1,10 @@
+/* global.css */
+:root {
+    --color-reloj: #00ff00;
+    --color-fondo: #000000;
+    --color-alerta: #ff3300;
+    --font-main: 'Segoe UI', sans-serif;
+}
+
+body { background: var(--color-fondo); font-family: var(--font-main); color: white; }
+.hidden { display: none !important; }

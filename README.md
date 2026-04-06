@@ -17,11 +17,26 @@ teneis que correr npm para que los node modules salgan
 ## Estructura (temporal):
 
 ```text
-/streetpass-project
-├── index.js              (Servidor Node)
+/streetpass-siu
+├── server/                 (Lógica del Backend)
+│   ├── index.js            (Entrada Express)
+│   └── socketEvents.js     (Lógica de Socket.io separada)
+├── www/                    (Frontend - lo que sirve Node)
+│   ├── assets/             (Imágenes, sonidos, iconos)
+│   ├── css/
+│   │   ├── global.css      (Variables, tipografías, reset)
+│   │   ├── watch.css       (Interfaz del Reloj/Móvil)
+│   │   └── home.css        (Interfaz de Casa/PC)
+│   ├── js/
+│   │   ├── core/
+│   │   │   ├── socketManager.js (Manejo de conexión)
+│   │   │   └── uiRouter.js      (Lógica para cambiar de pantallas)
+│   │   ├── modules/
+│   │   │   ├── gestures.js      (Captura de acelerómetro/giroscopio)
+│   │   │   ├── watchUI.js       (Interacciones del Reloj)
+│   │   │   └── homeUI.js        (Interacciones del PC/Reconocimiento Facial)
+│   │   └── main.js              (Punto de entrada del JS)
+│   └── index.html          (Un solo HTML base "SPA")
 ├── package.json
-└── www/                  (Carpeta pública)
-    ├── index.html        (HTML único con lógica dual)
-    ├── style.css         (Diseño redondo para el reloj)
-    └── script.js         (Lógica de gestos y Sockets)
+└── .gitignore
 ```
