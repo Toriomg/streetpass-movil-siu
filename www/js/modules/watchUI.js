@@ -33,12 +33,12 @@ const renderMatch = (data) => `
 const renderConnection = (data) => `
     <div class="connection-overlay">
         <div class="connection-photos">
-            <img src="assets/yo.png" class="conn-img">
+            <img src="assets/${data.photo}" class="conn-img">
             <img src="assets/${data.photo}" class="conn-img">
         </div>
         <h2 class="conn-title">¡Feliz conexión!</h2>
-        <p class="conn-text">Aquí tienes el teléfono de ${data.name} para seguir conectando.</p>
-        <div class="phone-button">${data.phone}</div>
+        <p class="description">Aquí tienes el teléfono de ${data.name} para seguir conectando.</p>
+        <div class="phone-button">${data.phone || "+34 600 000 000"}</div>
     </div>
 `;
 
@@ -50,7 +50,7 @@ const renderMessage = (data) => `
 `;
 
 export const watchUI = {
-  render: (data, viewType = "match") => {
+  render: (data, viewType = "connection") => {
     let content = "";
     let showHeader = false;
 

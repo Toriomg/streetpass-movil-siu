@@ -11,6 +11,7 @@ if (isWatch) {
   // Inyectamos la interfaz del reloj
   container.innerHTML = watchUI.render({
     photo: "../assets/icons/supernova.png",
+    name: "Mamapolaca"
   });
 
   socket.emit("device:identify", "watch");
