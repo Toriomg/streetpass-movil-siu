@@ -45,12 +45,12 @@ const renderConnection = (data) => `
 const renderMessage = (data) => `
     <div class="message-overlay">
         <div class="warning-icon">⚠️</div>
-        <p class="message-text">${data.message}</p>
+        <p class="message-text">${data.message || "Has ampliado el rango de búsqueda de personas "}</p>
     </div>
 `;
 
 export const watchUI = {
-  render: (data, viewType = "profile") => {
+  render: (data, viewType = "match") => {
     let content = "";
 
     switch (viewType) {

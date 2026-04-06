@@ -2,3 +2,5 @@
 @import 'watch/base.css';
 @import 'watch/header.css';
 @import 'watch/screens/profile.css';
+@import 'watch/screens/message.css';
+@import 'watch/screens/match.css';

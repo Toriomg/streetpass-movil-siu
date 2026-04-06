@@ -19,3 +19,12 @@
     filter: blur(32px);
     transform: scale(1.1); 
 }
+
+.watch-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: 90%;
+}
