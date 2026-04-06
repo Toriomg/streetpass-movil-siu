@@ -3,61 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Streetpass SIU - UC3M</title>
-
-    <!-- 1. CSS MODULAR -->
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/watch.css">
-    <link rel="stylesheet" href="css/home.css">
-
-    <!-- 2. LIBRERÍAS EXTERNAS (Socket.io la sirve Node automáticamente) -->
-    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-
-    <div id="app">
-        <!-- VISTA RELOJ (Se activa si la URL tiene ?v=watch) -->
-        <section id="view-watch" class="hidden">
-            <div class="watch-container">
-                <div class="watch-screen">
-                    <div id="watch-status">Buscando...</div>
-                    <div id="watch-clock">00:00</div>
-                    <div id="watch-notification" class="notification-pop"></div>
-                </div>
-            </div>
-            <div class="debug-info">Modo Reloj Activo</div>
-        </section>
-
-        <!-- VISTA HOME / PC (Se activa si la URL tiene ?v=home) -->
-        <section id="view-home" class="hidden">
-            <header>
-                <h1>Streetpass Dashboard</h1>
-                <div id="connection-status">Conectado</div>
-            </header>
-            
-            <main class="dashboard-grid">
-                <article class="panel list-panel">
-                    <h2>Encuentros Recientes</h2>
-                    <ul id="people-list">
-                        <!-- Se llenará dinámicamente -->
-                        <li class="empty">No hay nadie cerca...</li>
-                    </ul>
-                </article>
-
-                <article class="panel stats-panel">
-                    <h2>Estado del Sistema</h2>
-                    <div id="last-gesture">Último gesto: Ninguno</div>
-                </article>
-            </main>
-        </section>
-
-        <!-- Pantalla de Error/Carga -->
-        <section id="view-error">
-            <p>Cargando sistema ubícuo...</p>
-        </section>
+    <div id="app-container">
+        <!-- Aquí se inyectarán los componentes -->
     </div>
-
-    <!-- 3. JS PRINCIPAL (Tipo módulo para usar import/export) -->
+    <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
