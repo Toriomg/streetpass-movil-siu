@@ -1,0 +1,40 @@
+.watch-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: 90%;
+}
+
+.profile-card {
+    width: 126px;
+    height: 126px;
+    border-radius: 12.5px;
+    overflow: hidden;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.match-text {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.interests-icons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.interest-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 3px;
+    object-fit: cover;
+}
