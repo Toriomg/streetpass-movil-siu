@@ -1,10 +1,35 @@
 /* global.css */
 @font-face {
     font-family: 'SF Compact';
-    src: url('../assets/fonts/SF-Compact.ttf') format('truetype');
-    font-weight: bold;
+    src: url('../assets/fonts/SF-Compact-Display-Black.ttf') format('truetype');
+    font-weight: 900; /*black*/
     font-style: normal;
 }
+@font-face {
+    font-family: 'SF Compact';
+    src: url('../assets/fonts/SF-Compact-Text-Regular.ttf') format('truetype');
+    font-weight: 400; /*regular*/
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SF Compact';
+    src: url('../assets/fonts/SF-Compact-Text-Medium.ttf') format('truetype');
+    font-weight: 500; /*medum*/
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SF Compact';
+    src: url('../assets/fonts/SF-Compact-Display-Bold.ttf') format('truetype');
+    font-weight: 700; /*bold*/
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SF Compact';
+    src: url('../assets/fonts/SF-Compact-Text-Semibold.ttf') format('truetype');
+    font-weight: 600; /*smibold*/
+    font-style: normal;
+}
+
 
 :root {
     --color-fondo: #000000;

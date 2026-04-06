@@ -22,7 +22,7 @@ const renderProfile = (data) => `
 
 const renderMatch = (data) => `
     <div class="match-overlay">
-        <div class="profile-card">
+        <div class="match-card">
             <img src="assets/${data.photo}" alt="Perfil" class="profile-img">
         </div>
         <h2 class="match-title">Conoce a ${data.name}</h2>
@@ -50,7 +50,7 @@ const renderMessage = (data) => `
 `;
 
 export const watchUI = {
-  render: (data, viewType = "match") => {
+  render: (data, viewType = "profile") => {
     let content = "";
     let showHeader = false;
 
