@@ -1,4 +1,11 @@
 /* global.css */
+@font-face {
+    font-family: 'SF Compact';
+    src: url('../assets/fonts/SF-Compact.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
 :root {
     --color-fondo: #000000;
     --font-main: 'SF Compact','SF Compact Rounded', 'Inter','Segoe UI', sans-serif;

@@ -1,11 +1,12 @@
 
 .watch-header {
-    margin-top: 10px;
+    margin-top: 5px;
+    margin-bottom: -10px;
     display: block;
 }
 
 .watch-time {
-    font-size: 25px;
+    font-size: 35px;
     font-weight: bold;
     display: block;
 }
