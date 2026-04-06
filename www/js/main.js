@@ -8,11 +8,13 @@ const container = document.getElementById("app-container");
 
 // 1. Identificar dispositivo y renderizar
 if (isWatch) {
-  // Inyectamos la interfaz del reloj
-  container.innerHTML = watchUI.render({
-    photo: "../assets/icons/supernova.png",
-    name: "Mamapolaca"
-  });
+  const userData = {
+    name: "Laura",
+    photo:
+      "https://www.loremfaces.net/128/id/1.jpg",
+    phone: "600111222",
+  };
+  watchUI.render(container, userData);
 
   socket.emit("device:identify", "watch");
   console.log("Modo Reloj: Renderizado correctamente");

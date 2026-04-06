@@ -1,14 +1,18 @@
 // js/modules/watchUI.js
+import { startClock } from "../utils/clock.js";
+import { formatearTelefono } from "../utils/format.js";
 
-const renderHeader = (time = "11:37") => `
+const renderHeader = () => {
+  return `
     <header class="watch-header">
-        <span class="watch-time">${time}</span>
+        <span class="watch-time" id="watch-time">00:00</span>
     </header>
-`;
+    `;
+};
 
 const renderProfile = (data) => `
     <div class="profile-card">
-        <img src="assets/${data.photo}" alt="Perfil" class="profile-img">
+        <img src="${data.photo}" alt="Perfil" class="profile-img">
     </div>
     <div class="info-section">
         <p class="match-text">A ambos os gusta:</p>
@@ -23,7 +27,7 @@ const renderProfile = (data) => `
 const renderMatch = (data) => `
     <div class="match-overlay">
         <div class="match-card">
-            <img src="assets/${data.photo}" alt="Perfil" class="profile-img">
+            <img src="${data.photo}" alt="Perfil" class="profile-img">
         </div>
         <h2 class="match-title">Conoce a ${data.name}</h2>
         <p class="match-description">${data.name} está cerca y se ha fijado en ti. Es un buen momento para empezar una conversación</p>
@@ -33,12 +37,12 @@ const renderMatch = (data) => `
 const renderConnection = (data) => `
     <div class="connection-overlay">
         <div class="connection-photos">
-            <img src="assets/${data.photo}" class="conn-img">
-            <img src="assets/${data.photo}" class="conn-img">
+            <img src="${data.photo}" class="conn-img">
+            <img src="https://www.loremfaces.net/128/id/4.jpg" class="conn-img">
         </div>
         <h2 class="conn-title">¡Feliz conexión!</h2>
         <p class="description">Aquí tienes el teléfono de ${data.name} para seguir conectando.</p>
-        <div class="phone-button">${data.phone || "+34 600 000 000"}</div>
+        <div class="phone-button">${formatearTelefono(data.phone)}</div>
     </div>
 `;
 
@@ -50,7 +54,7 @@ const renderMessage = (data) => `
 `;
 
 export const watchUI = {
-  render: (data, viewType = "message") => {
+  render: (container, data, viewType = "connection") => {
     let content = "";
     let showHeader = false;
 
@@ -70,15 +74,20 @@ export const watchUI = {
         showHeader = true;
         break;
     }
-
-    return `
+    const html = `
         <div class="watch-wrapper">
             <div class="watch-background"></div>
-            ${showHeader ? renderHeader(data.time) : ""}
+            ${showHeader ? renderHeader() : ""}
             <main class="watch-content">
                 ${content}
             </main>
         </div>
     `;
+
+    container.innerHTML = html;
+
+    if (showHeader) {
+      startClock();
+    }
   },
 };
