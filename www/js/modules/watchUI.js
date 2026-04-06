@@ -50,7 +50,7 @@ const renderMessage = (data) => `
 `;
 
 export const watchUI = {
-  render: (data, viewType = "connection") => {
+  render: (data, viewType = "message") => {
     let content = "";
     let showHeader = false;
 

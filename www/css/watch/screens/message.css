@@ -32,10 +32,7 @@
 }
 
 .message-text {
-    font-size: 1.15rem;
-    line-height: 1.4;
-    color: #ffffff;
-    font-weight: 500;
+    font-size: 17;
+    font-weight: 400;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
