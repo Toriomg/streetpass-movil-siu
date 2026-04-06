@@ -22,7 +22,7 @@ const renderProfile = (data) => `
 
 const renderMatch = (data) => `
     <div class="match-overlay">
-        <div class="profile-card-small">
+        <div class="profile-card">
             <img src="assets/${data.photo}" alt="Perfil" class="profile-img">
         </div>
         <h2 class="match-title">Conoce a ${data.name}</h2>
@@ -52,10 +52,12 @@ const renderMessage = (data) => `
 export const watchUI = {
   render: (data, viewType = "match") => {
     let content = "";
+    let showHeader = false;
 
     switch (viewType) {
       case "profile":
         content = renderProfile(data);
+        showHeader = true;
         break;
       case "match":
         content = renderMatch(data);
@@ -65,13 +67,14 @@ export const watchUI = {
         break;
       case "message":
         content = renderMessage(data);
+        showHeader = true;
         break;
     }
 
     return `
         <div class="watch-wrapper">
             <div class="watch-background"></div>
-            ${renderHeader(data.time)}
+            ${showHeader ? renderHeader(data.time) : ""}
             <main class="watch-content">
                 ${content}
             </main>
