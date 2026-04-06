@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clase USB</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Importamos socket.io (la librería la sirve Node automáticamente) -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    
+    <!-- Contenedor para lo que verá el PC -->
+    <div id="vista-pc" class="oculto">
+        <h1>SOY EL MONITOR DEL PC</h1>
+        <div id="pantalla-datos">Esperando interacción...</div>
+    </div>
+
+    <!-- Contenedor para lo que verá el MÓVIL -->
+    <div id="vista-movil" class="oculto">
+        <h1>SOY EL MÓVIL (MANDO)</h1>
+        <button id="boton-accion">DISPARAR ACCIÓN</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
