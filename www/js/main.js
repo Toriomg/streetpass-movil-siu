@@ -1,21 +1,24 @@
-import { GestureManager } from "./modules/gestures.js";
-import { WatchUI } from "./modules/watchUI.js";
-import { HomeUI } from "./modules/homeUI.js";
-
+// www/js/main.js
+const socket = io();
 const params = new URLSearchParams(window.location.search);
 const isWatch = params.get("v") === "watch";
 
-if (isWatch) {
-  const ui = new WatchUI();
-  ui.render();
+// Ocultar pantalla de carga y mostrar la vista correcta
+document.getElementById("view-error").classList.add("hidden");
 
-  // Solo el reloj captura gestos
-  new GestureManager((gesture) => {
-    console.log("Gesto capturado:", gesture);
-    socket.emit("new-gesture", gesture);
-    ui.update(gesture);
-  });
+if (isWatch) {
+  document.getElementById("view-watch").classList.remove("hidden");
+  socket.emit("device:identify", "watch");
+  console.log("Iniciado como Reloj");
 } else {
-  const ui = new HomeUI();
-  ui.render();
+  document.getElementById("view-home").classList.remove("hidden");
+  socket.emit("device:identify", "home");
+  console.log("Iniciado como Home/PC");
 }
+
+// Ejemplo de recepción de mensaje
+socket.on("gesture:received", (data) => {
+  if (!isWatch) {
+    document.getElementById("last-gesture").innerText = `Gesto: ${data.type}`;
+  }
+});

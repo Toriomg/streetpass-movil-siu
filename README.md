@@ -4,7 +4,7 @@ teneis que correr npm para que los node modules salgan
 
 ## Ejecutar el server
 
-1.  **En el PC (Terminal):** Ejecuta desde `streetpass-movil-siu/`: `node index.js`
+1.  **En el PC (Terminal):** Ejecuta desde `streetpass-movil-siu/`: `node server/index.js`
 2.  **En el PC (Navegador):** Abre `http://localhost:3000?v=pc`. Esto será tu "Modo Casa".
 3.  **En el Móvil (USB):**
     *   Conecta por cable.
