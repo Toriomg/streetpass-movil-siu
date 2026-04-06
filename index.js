@@ -1,26 +1,21 @@
 const express = require("express");
 const app = express();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 const path = require("path");
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
 
-// LA CLAVE: Aquí le decimos a Node que la carpeta 'www' es pública
-app.use(express.static(path.join(__dirname, "www")));
-
-// Si alguien entra a la raíz, le mandamos el index.html de www
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "www", "index.html"));
-});
+app.use(express.static("www"));
 
 io.on("connection", (socket) => {
-  console.log("Dispositivo conectado");
+  console.log("Dispositivo conectado:", socket.id);
 
-  // Escuchar mensajes de un dispositivo y mandarlos al otro
-  socket.on("mensaje-al-servidor", (datos) => {
-    io.emit("mensaje-desde-servidor", datos);
+  // Reenviar gestos del móvil al "reloj" (o viceversa)
+  socket.on("gesto-accion", (data) => {
+    console.log("Gesto recibido:", data.tipo);
+    socket.broadcast.emit("ejecutar-accion", data);
   });
 });
 
-server.listen(3000, () => {
-  console.log("Servidor listo en http://localhost:3000");
+http.listen(3000, () => {
+  console.log("Servidor UC3M en http://localhost:3000");
 });

@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Clase USB</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Streetpass SIU</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Importamos socket.io (la librería la sirve Node automáticamente) -->
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    
-    <!-- Contenedor para lo que verá el PC -->
-    <div id="vista-pc" class="oculto">
-        <h1>SOY EL MONITOR DEL PC</h1>
-        <div id="pantalla-datos">Esperando interacción...</div>
+
+    <!-- INTERFAZ RELOJ (Circular) -->
+    <div id="reloj-ui" class="hidden">
+        <div class="watch-face">
+            <div id="notificacion">Buscando personas...</div>
+            <div id="reloj-hora">12:00</div>
+        </div>
     </div>
 
-    <!-- Contenedor para lo que verá el MÓVIL -->
-    <div id="vista-movil" class="oculto">
-        <h1>SOY EL MÓVIL (MANDO)</h1>
-        <button id="boton-accion">DISPARAR ACCIÓN</button>
+    <!-- INTERFAZ PC / MODO CASA -->
+    <div id="pc-ui" class="hidden">
+        <h1>Panel Streetpass - Modo Casa</h1>
+        <div id="lista-pendientes">
+            <p>Personas cruzadas hoy: 3</p>
+        </div>
     </div>
 
     <script src="script.js"></script>
