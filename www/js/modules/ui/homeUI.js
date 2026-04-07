@@ -1,74 +1,92 @@
-// js/modules/homeUI.js
+import { BaseUI } from "./baseUI.js";
 
-export class HomeUI {
-  constructor(containerId) {
-    this.container = document.getElementById(containerId);
-    this.pendingStack = []; // Aquí guardaremos los usuarios
+export class HomeUI extends BaseUI {
+  constructor(container) {
+    super(container);
+    this.pendingStack = []; // Aquí almacenaremos los usuarios pendientes
   }
 
+  // Método que llama main.js al arrancar el modo casa
   renderBase() {
-    this.container.innerHTML = `
-            <div class="home-layout">
-                <header class="home-header">
-                    <h1>Modo Casa</h1>
-                    <p>Encuentros mientras estabas desconectado/silenciado.</p>
-                </header>
-                <main class="stack-container" id="stack-container">
-                    <!-- Las tarjetas irán aquí -->
-                </main>
-                <div class="controls-hint">
-                    Usa tu móvil como mando (Inclinación Izq/Der) para clasificar.
-                </div>
-            </div>
-        `;
+    this.renderView();
   }
 
-  // Cargar la lista que nos manda el servidor al conectar
+  // Método que recibe el array de usuarios desde el servidor
   loadStack(users) {
-    this.pendingStack = users;
-    this.updateStackView();
+    this.pendingStack = users || [];
+    this.renderView();
   }
 
-  updateStackView() {
-    const stackContainer = document.getElementById("stack-container");
-    if (!stackContainer) return;
-
-    if (this.pendingStack.length === 0) {
-      stackContainer.innerHTML = `<div class="empty-state">No hay encuentros nuevos.</div>`;
-      return;
-    }
-
-    // Renderizar el usuario que está "encima" de la pila (el primero del array)
-    const topUser = this.pendingStack[0];
-
-    stackContainer.innerHTML = `
-            <div class="profile-card slide-in">
-                <img src="${topUser.foto || "assets/default.png"}" alt="Foto de ${topUser.name}">
-                <h2>${topUser.name}</h2>
-                <div class="interests">
-                    ${topUser.gustos.map((g) => `<span class="badge">${g}</span>`).join("")}
-                </div>
-            </div>
-        `;
-  }
-
-  // Se llama cuando recibimos un evento de socket desde el móvil (El mando)
-  processGesture(action) {
+  // Método que procesa el gesto enviado desde el móvil
+  processGesture(gestureType) {
     if (this.pendingStack.length === 0) return;
 
-    const processedUser = this.pendingStack.shift(); // Sacamos al usuario de la pila
+    // Sacamos al usuario actual de la pila
+    const currentUser = this.pendingStack.shift();
 
-    if (action === "accept") {
-      console.log(`Has aceptado a ${processedUser.name}`);
-      // Aquí puedes lanzar animación hacia la izquierda/derecha
-    } else if (action === "reject") {
-      console.log(`Has rechazado a ${processedUser.name}`);
-    } else if (action === "close") {
-      console.log("Señal de cerrar sesión. Modo Casa apagado.");
-      this.pendingStack = [];
+    if (gestureType === "accept") {
+      console.log(`Has aceptado a ${currentUser.name}`);
+      // Lógica futura: enviar al servidor que hay un Match
+    } else if (gestureType === "reject") {
+      console.log(`Has rechazado a ${currentUser.name}`);
+    } else if (gestureType === "block") {
+      console.log(`Has bloqueado a ${currentUser.name}`);
     }
 
-    // Actualizamos la UI con el siguiente
-    this.updateStackView();
+    // Volvemos a pintar la interfaz con el siguiente usuario de la pila
+    this.renderView();
+  }
+
+  // Genera el HTML completo dependiendo de si hay usuarios o no
+  renderView() {
+    let contentHtml = "";
+
+    if (this.pendingStack.length === 0) {
+      // ESTADO VACÍO: No hay más personas en la pila
+      contentHtml = `
+        <div class="empty-state">
+            <h2>No hay encuentros pendientes</h2>
+            <p>Sal a la calle en modo silencio para acumular perfiles aquí.</p>
+        </div>
+      `;
+    } else {
+      // ESTADO CON DATOS: Mostramos el primer usuario del array (el top de la pila)
+      const topUser = this.pendingStack[0];
+
+      // Si el usuario tiene gustos, los mapeamos
+      const gustosHtml = topUser.gustos
+        ? topUser.gustos.map((g) => `<span class="badge">${g}</span>`).join("")
+        : "";
+
+      contentHtml = `
+        <div class="home-card">
+            <img src="${topUser.photo || "https://www.loremfaces.net/128/id/1.jpg"}" alt="Foto de ${topUser.name}" class="home-profile-img">
+            <h2 class="home-profile-name">${topUser.name}</h2>
+            <div class="home-interests">
+                ${gustosHtml}
+            </div>
+        </div>
+        <div class="controls-hint">
+            <p>Móvil a la Izquierda: <strong>Rechazar</strong> | Móvil a la Derecha: <strong>Aceptar</strong></p>
+            <p>Móvil hacia Arriba: <strong>Bloquear</strong></p>
+        </div>
+      `;
+    }
+
+    // Estructura general de la pantalla Home
+    const fullHtml = `
+      <div class="home-wrapper">
+          <header class="home-header">
+              <h1>Modo Casa</h1>
+              <p>Revisa la gente con la que te cruzaste hoy</p>
+          </header>
+          <main class="home-content">
+              ${contentHtml}
+          </main>
+      </div>
+    `;
+
+    // Usamos el método genérico del padre (BaseUI) para inyectarlo en el DOM
+    this.renderTemplate(fullHtml);
   }
 }
