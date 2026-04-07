@@ -10,6 +10,14 @@ const renderHeader = () => {
     `;
 };
 
+const renderWatch = (data) => {
+  return `
+    <div class="watch-header">
+        <span class="watch-time watch-time-large" id="watch-time">00:00</span>
+    </div>
+    `;
+};
+
 const renderProfile = (data) => `
     <div class="profile-card">
         <img src="${data.photo}" alt="Perfil" class="profile-img">
@@ -54,11 +62,14 @@ const renderMessage = (data) => `
 `;
 
 export const watchUI = {
-  render: (container, data, viewType = "connection") => {
+  render: (container, data, viewType = "watch") => {
     let content = "";
     let showHeader = false;
 
     switch (viewType) {
+      case "watch":
+        content = renderWatch(data);
+        break;
       case "profile":
         content = renderProfile(data);
         showHeader = true;
@@ -86,7 +97,7 @@ export const watchUI = {
 
     container.innerHTML = html;
 
-    if (showHeader) {
+    if (showHeader || viewType == "watch") {
       startClock();
     }
   },

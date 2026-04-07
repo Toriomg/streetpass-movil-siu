@@ -10,3 +10,6 @@
     font-weight: 900;
     display: block;
 }
+.watch-time.watch-time-large {
+    font-size: 75px; 
+}
