@@ -18,6 +18,7 @@ if (!userID) {
     "<h1>Error: Debes indicar un ?user=ID en la URL</h1>";
   throw new Error("No userID provided");
 }
+socketManager.connect(userID);
 const container = document.getElementById("app-container");
 let currentUser = null;
 
@@ -73,8 +74,8 @@ socketManager.on("missed_encounters_data", (users) => {
 });
 
 socketManager.on("gesture:received", (data) => {
-  // Si estamos en casa, el Router le pasa el gesto a HomeUI
-  // (HomeUI debe tener lógica para procesar gestos dentro de su render o similar)
+// Si estamos en casa, el Router le pasa el gesto a HomeUI
+// (HomeUI debe tener lógica para procesar gestos dentro de su render o similar)
   if (!isWatch) {
     // Aquí podrías llamar a un método de homeInterface directamente
     // o hacer que el router gestione el cambio de carta

@@ -9,8 +9,21 @@ const paths = {
 
 // Función auxiliar para leer JSON
 const readJSON = (file) => {
+  // 1. Si el archivo no existe, devolvemos objeto vacío
   if (!fs.existsSync(file)) return {};
-  return JSON.parse(fs.readFileSync(file, "utf-8"));
+
+  try {
+    const content = fs.readFileSync(file, "utf-8").trim();
+
+    // 2. Si el archivo existe pero está vacío (0 caracteres), devolvemos objeto vacío
+    if (content.length === 0) return {};
+
+    // 3. Intentamos parsear
+    return JSON.parse(content);
+  } catch (error) {
+    console.error(`Error leyendo el archivo ${file}:`, error);
+    return {}; // Devolvemos algo seguro para que el servidor no muera
+  }
 };
 
 // Función auxiliar para escribir JSON

@@ -7,25 +7,34 @@ class SocketManager {
   }
 
   connect(userID) {
-    // Conectamos pasando el userID en el objeto de autenticación
-    this.socket = io({
-      auth: {
-        token: userID,
-      },
-    });
+    // Solo conectamos si no estamos conectados ya
+    if (!this.socket) {
+      this.socket = io({
+        auth: { token: userID },
+      });
+      console.log(`[Socket] Conectando como usuario: ${userID}`);
+    } else {
+      console.log(`[Socket] usuario: ${userID} estaba ya conectado.`);
+    }
   }
 
   // Método para enviar datos al servidor
   emit(event, data) {
+    if (!this.socket) {
+      console.warn(
+        `[Socket] Intento de emitir "${event}" sin conexión activa.`,
+      );
+      return;
+    }
     this.socket.emit(event, data);
   }
 
   // Método para escuchar eventos del servidor
   on(event, callback) {
+    if (!this.socket) return;
     this.socket.on(event, callback);
   }
 
-  // Método específico para tu lógica de identificación
   identifyDevice(deviceType) {
     this.emit("device:identify", deviceType);
   }
