@@ -89,6 +89,9 @@ export class WatchUI extends BaseUI {
         content = renderMessage(data);
         showHeader = true;
         break;
+      default: // Default el reloj
+        content = renderWatch(data);
+        break;
     }
 
     const html = `

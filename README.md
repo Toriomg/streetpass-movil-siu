@@ -18,25 +18,33 @@ teneis que correr npm para que los node modules salgan
 
 ```text
 /streetpass-siu
-├── server/                 (Lógica del Backend)
-│   ├── index.js            (Entrada Express)
-│   └── socketEvents.js     (Lógica de Socket.io separada)
-├── www/                    (Frontend - lo que sirve Node)
-│   ├── assets/             (Imágenes, sonidos, iconos)
+├── server/                         (Lógica del Backend)
+│   ├── index.js                    (Entrada Express)
+│   └── socketEvents.js             (Lógica de Socket.io separada)
+├── www/                            (Frontend - lo que sirve Node)
+│   ├── assets/                     (Imágenes, sonidos, iconos)
+│   │   ├── fonts/
+│   │   ├── icons/
+│   │   └── mobile/
+│   │   └── watch/
 │   ├── css/
-│   │   ├── global.css      (Variables, tipografías, reset)
-│   │   ├── watch.css       (Interfaz del Reloj/Móvil)
-│   │   └── home.css        (Interfaz de Casa/PC)
+│   │   ├── global.css              (Variables, tipografías, reset)
+│   │   ├── watch.css               (Interfaz del Reloj/Móvil)
+│   │   │   ├── screens       
+│   │   │   └── mas cosas       
+│   │   └── home.css                (Interfaz de Casa/PC)
 │   ├── js/
 │   │   ├── core/
-│   │   │   ├── socketManager.js (Manejo de conexión)
-│   │   │   └── uiRouter.js      (Lógica para cambiar de pantallas)
+│   │   │   ├── socketManager.js    (Manejo de conexión)
+│   │   │   └── uiRouter.js         (Lógica para cambiar de pantallas)
 │   │   ├── modules/
-│   │   │   ├── gestures.js      (Captura de acelerómetro/giroscopio)
-│   │   │   ├── watchUI.js       (Interacciones del Reloj)
-│   │   │   └── homeUI.js        (Interacciones del PC/Reconocimiento Facial)
-│   │   └── main.js              (Punto de entrada del JS)
-│   └── index.html          (Un solo HTML base "SPA")
+│   │   │   ├── ui/
+│   │   │   │   ├── baseUI.js       (Interfaces padres)
+│   │   │   │   ├── watchUI.js      (interfaz del Reloj)
+│   │   │   │   └── homeUI.js       (interfaz del PC/Reconocimiento Facial)
+│   │   │   └── gestures.js         (Captura de acelerómetro/giroscopio)
+│   │   └── main.js                 (Punto de entrada del JS)
+│   └── index.html                  (Un solo HTML base "SPA")
 ├── package.json
 └── .gitignore
 ```
