@@ -40,7 +40,7 @@ if (isWatch) {
   // Esto es la logica de movimientos no creo que deba estar aqui
   socketManager.on("user:nearby", (userData) => {
     currentUser = userData;
-    uiRouter.navigate("match", currentUser);
+    uiRouter.navigate("profile", currentUser);
   });
 
   // 2. Cuando llega un gesto desde el móvil
@@ -48,7 +48,7 @@ if (isWatch) {
     if (!currentUser) return;
 
     if (data.type === "accept") {
-      uiRouter.navigate("profile", currentUser);
+      uiRouter.navigate("match", currentUser);
 
       setTimeout(() => {
         uiRouter.navigate("connection", currentUser);
