@@ -1,7 +1,7 @@
 /* --- TARJETA DE USUARIO --- */
 .user-card-mobile {
   flex: 1;
-  margin: 10px 20px;
+  margin: 0px 20px;
   background: #fff;
   border-radius: 35px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);

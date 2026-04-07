@@ -1,18 +1,6 @@
 {
   "101": [
     {
-      "id": 101,
-      "name": "Noa",
-      "telefono": "611222333",
-      "gustos": [
-        "Música",
-        "Cine",
-        "Arte"
-      ],
-      "photo": "https://i.pravatar.cc/600?u=101",
-      "date": "4/7/2026, 6:43:18 PM"
-    },
-    {
       "id": 110,
       "name": "Alba",
       "telefono": "611777888",
