@@ -9,7 +9,15 @@ import { uiRouter } from "./core/uiRouter.js";
 window.sm = socketManager;
 
 const params = new URLSearchParams(window.location.search);
+const userID = params.get("user");
 const isWatch = params.get("v") === "watch";
+
+if (!userID) {
+  // Si no hay user, mostramos error y paramos la ejecución
+  document.body.innerHTML =
+    "<h1>Error: Debes indicar un ?user=ID en la URL</h1>";
+  throw new Error("No userID provided");
+}
 const container = document.getElementById("app-container");
 let currentUser = null;
 
@@ -17,7 +25,7 @@ let currentUser = null;
 if (isWatch) {
   const userData = {
     name: "Laura",
-    photo: "https://www.loremfaces.net/128/id/1.jpg",
+    photo: "https://i.pravatar.cc/150",
     phone: "600111222",
   };
 
@@ -28,8 +36,9 @@ if (isWatch) {
   socketManager.identifyDevice("watch");
   console.log("Modo Reloj: Renderizado correctamente");
 
+  // Esto es la logica de movimientos no creo que deba estar aqui
   socketManager.on("user:nearby", (userData) => {
-    currentUser = userData; // Guardamos los datos (nombre, foto, etc.)
+    currentUser = userData;
     uiRouter.navigate("match", currentUser);
   });
 
@@ -38,15 +47,12 @@ if (isWatch) {
     if (!currentUser) return;
 
     if (data.type === "accept") {
-      // Si aceptamos, vamos a ver su perfil o conexión directamente
       uiRouter.navigate("profile", currentUser);
 
-      // Opcional: A los 3 segundos pasar a la pantalla de conexión (teléfono)
       setTimeout(() => {
         uiRouter.navigate("connection", currentUser);
       }, 5000);
     } else if (data.type === "reject") {
-      // Si rechazamos, volvemos a la pantalla del reloj principal
       uiRouter.navigate("watch");
       currentUser = null;
     }

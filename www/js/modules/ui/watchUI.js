@@ -46,7 +46,7 @@ const renderConnection = (data) => `
     <div class="connection-overlay">
         <div class="connection-photos">
             <img src="${data.photo}" class="conn-img">
-            <img src="https://www.loremfaces.net/128/id/4.jpg" class="conn-img">
+            <img src="https://i.pravatar.cc/300" class="conn-img">
         </div>
         <h2 class="conn-title">¡Feliz conexión!</h2>
         <p class="description">Aquí tienes el teléfono de ${data.name} para seguir conectando.</p>

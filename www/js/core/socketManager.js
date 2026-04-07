@@ -3,7 +3,16 @@
 class SocketManager {
   constructor() {
     // Inicializamos la conexión solo una vez
-    this.socket = io();
+    this.socket = null;
+  }
+
+  connect(userID) {
+    // Conectamos pasando el userID en el objeto de autenticación
+    this.socket = io({
+      auth: {
+        token: userID,
+      },
+    });
   }
 
   // Método para enviar datos al servidor

@@ -5,12 +5,12 @@ Para cambiar los checks hay que hacerlo sin el preview. Desconozco una mejor man
 ## 🟢 FASE 1: Cimientos y Arquitectura
 
 - [x] **Estructura de Carpetas:** Verificar que el sistema modular está operativo.
-  - [ ] Server
+  - [x] Server
   - [x] WWW
   - [x] CSS
   - [x] JS
 - [x] **Socket.io Rooms:** Implementar la lógica para que el servidor diferencie entre el "Reloj" y el "PC/Home" mediante salas específicas.
-- [ ] **Router de Interfaz:** Tener el `uiRouter` funcionando para cambiar de pantalla sin recargar.
+- [x] **Router de Interfaz:** Tener el `uiRouter` funcionando para cambiar de pantalla sin recargar.
 - [ ] **Sistema de Handshake por URL:** Implementar la captura del parámetro `userID` en la *url* del frontend para enviarlo al conectar.
 - [ ] **Rooms Dinámicas:** Configurar `socket.join(userID)` para aislar el tráfico de datos entre diferentes alumnos/usuarios en tiempo real.
 - [x] **Iconos e intereses:** Conseguir los iconos de los intereses disponibles

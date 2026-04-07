@@ -17,34 +17,73 @@ teneis que correr npm para que los node modules salgan
 ## Estructura (temporal):
 
 ```text
-/streetpass-siu
-├── server/                         (Lógica del Backend)
-│   ├── index.js                    (Entrada Express)
-│   └── socketEvents.js             (Lógica de Socket.io separada)
-├── www/                            (Frontend - lo que sirve Node)
-│   ├── assets/                     (Imágenes, sonidos, iconos)
-│   │   ├── fonts/
-│   │   ├── icons/
-│   │   └── mobile/
-│   │   └── watch/
-│   ├── css/
-│   │   ├── global.css              (Variables, tipografías, reset)
-│   │   ├── watch.css               (Interfaz del Reloj/Móvil)
-│   │   │   ├── screens       
-│   │   │   └── mas cosas       
-│   │   └── home.css                (Interfaz de Casa/PC)
-│   ├── js/
-│   │   ├── core/
-│   │   │   ├── socketManager.js    (Manejo de conexión)
-│   │   │   └── uiRouter.js         (Lógica para cambiar de pantallas)
-│   │   ├── modules/
-│   │   │   ├── ui/
-│   │   │   │   ├── baseUI.js       (Interfaces padres)
-│   │   │   │   ├── watchUI.js      (interfaz del Reloj)
-│   │   │   │   └── homeUI.js       (interfaz del PC/Reconocimiento Facial)
-│   │   │   └── gestures.js         (Captura de acelerómetro/giroscopio)
-│   │   └── main.js                 (Punto de entrada del JS)
-│   └── index.html                  (Un solo HTML base "SPA")
-├── package.json
-└── .gitignore
+├──  server
+│   ├──  index.js
+│   └──  socketEvents.js
+├──  www
+│   ├──  assets
+│   │   ├──  fonts
+│   │   │   ├──  SF-Compact-Display-Black.ttf
+│   │   │   ├──  SF-Compact-Display-Bold.ttf
+│   │   │   ├──  SF-Compact-Text-Medium.ttf
+│   │   │   ├──  SF-Compact-Text-Regular.ttf
+│   │   │   ├──  SF-Compact-Text-Semibold.ttf
+│   │   │   └──  SF-Compact.ttf
+│   │   ├──  icons
+│   │   │   ├──  iconos
+│   │   │   │   ├── 󰕙 armstrong.svg
+│   │   │   │   ├── 󰕙 balance.svg
+│   │   │   │   ├── 󰕙 bookback.svg
+│   │   │   │   ├── 󰕙 christianity.svg
+│   │   │   │   ├── 󰕙 dividedapplered.svg
+│   │   │   │   ├── 󰕙 dog.svg
+│   │   │   │   ├── 󰕙 horse.svg
+│   │   │   │   ├── 󰕙 house.svg
+│   │   │   │   ├── 󰕙 microprocessor.svg
+│   │   │   │   ├── 󰕙 mountains3.svg
+│   │   │   │   ├── 󰕙 moviefilm.svg
+│   │   │   │   ├── 󰕙 musicnote.svg
+│   │   │   │   ├── 󰕙 muslim.svg
+│   │   │   │   ├── 󰕙 rocket.svg
+│   │   │   │   └── 󰕙 xboxset2.svg
+│   │   │   ├──  aguila.png
+│   │   │   ├──  how.png
+│   │   │   └──  supernova.png
+│   │   ├──  mobile
+│   │   │   └──  logo.png
+│   │   └──  watch
+│   │       └──  background.png
+│   ├──  css
+│   │   ├──  mobile
+│   │   │   └──  base.css
+│   │   ├──  watch
+│   │   │   ├──  screens
+│   │   │   │   ├──  connection.css
+│   │   │   │   ├──  match.css
+│   │   │   │   ├──  message.css
+│   │   │   │   └──  profile.css
+│   │   │   ├──  base.css
+│   │   │   └──  header.css
+│   │   ├──  global.css
+│   │   ├──  mobile.css
+│   │   └──  watch.css
+│   ├──  js
+│   │   ├──  core
+│   │   │   ├──  socketManager.js
+│   │   │   └──  uiRouter.js
+│   │   ├──  modules
+│   │   │   ├──  ui
+│   │   │   │   ├──  baseUI.js
+│   │   │   │   ├──  homeUI.js
+│   │   │   │   └──  watchUI.js
+│   │   │   └──  gestures.js
+│   │   ├──  utils
+│   │   │   ├──  clock.js
+│   │   │   └──  format.js
+│   │   └──  main.js
+│   └──  index.html
+├──  index.js
+├──  package-lock.json
+├──  package.json
+└── 󰂺 README.md
 ```

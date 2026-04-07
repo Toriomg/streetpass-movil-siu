@@ -1,38 +1,45 @@
+// server/socketEvents.js
+
 module.exports = function (io) {
   io.on("connection", (socket) => {
-    console.log(`[Socket] Nuevo dispositivo conectado: ${socket.id}`);
+    // 1. Extraer el ID del usuario del handshake
+    const userID = socket.handshake.auth.token;
 
+    if (!userID) {
+      console.log("[Socket] Conexión rechazada: No hay userID");
+      return socket.disconnect();
+    }
+
+    // 2. El dispositivo se une a su sala privada de usuario
+    socket.join(userID);
+    console.log(
+      `[Socket] Dispositivo ${socket.id} autenticado como: ${userID}`,
+    );
+
+    // 3. También se une a su sala de tipo (watch o home) para segmentar
     socket.on("device:identify", (deviceType) => {
-      socket.join(deviceType);
-      console.log(`[Socket] Dispositivo ${socket.id} se unió a: ${deviceType}`);
+      socket.join(`${userID}:${deviceType}`); // Ej: 'laura:watch'
+      console.log(`[Socket] ${userID} conectado en modo: ${deviceType}`);
     });
 
-    // --- NUEVO: Simular que alguien aparece (Para tus pruebas de consola) ---
-    socket.on("user:nearby", (data) => {
-      console.log(`[Simulación] Usuario cerca: ${data.name}`);
-      // Lo enviamos a la sala 'watch' para que el reloj reaccione
-      io.to("watch").emit("user:nearby", data);
-    });
-
-    // --- CORREGIDO: Escuchar gestos y enviarlos a AMBOS (Home y Watch) ---
+    // 4. Al enviar un gesto, solo lo mandamos a LA SALA de ese usuario
     socket.on("gesture:sent", (data) => {
-      console.log(`[Gesto] Recibido: ${data.gestureType}`);
+      console.log(`[Gesto] De ${userID}: ${data.gestureType}`);
 
-      const payload = {
+      // Enviamos SOLO a los dispositivos que estén en la sala de ese userID
+      io.to(userID).emit("gesture:received", {
         type: data.gestureType,
-        action: data.action,
-        timestamp: new Date().getTime(),
-      };
+        timestamp: Date.now(),
+      });
+    });
 
-      // Enviamos al PC para que gestione la pila
-      io.to("home").emit("gesture:received", payload);
-
-      // TAMBIÉN enviamos al RELOJ para que cambie de pantalla (de Match a Profile)
-      io.to("watch").emit("gesture:received", payload);
+    socket.on("user:nearby", (data) => {
+      // Enviamos la notificación de usuario cerca solo al dueño de este socket
+      io.to(userID).emit("user:nearby", data);
     });
 
     socket.on("disconnect", () => {
-      console.log(`[Socket] Dispositivo desconectado: ${socket.id}`);
+      console.log(`[Socket] ${userID} desconectado`);
     });
   });
 };
