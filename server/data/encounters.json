@@ -1,16 +1,40 @@
 {
   "101": [
     {
-      "id": 102,
-      "name": "Alejandra",
-      "telefono": "633444555",
+      "id": 101,
+      "name": "Noa",
+      "telefono": "611222333",
       "gustos": [
-        "Deporte",
-        "Viajes",
-        "Cocina"
+        "Música",
+        "Cine",
+        "Arte"
       ],
-      "photo": "https://i.pravatar.cc/150?u=102",
-      "date": "4/7/2026, 3:41:10 PM"
+      "photo": "https://i.pravatar.cc/600?u=101",
+      "date": "4/7/2026, 6:43:18 PM"
+    },
+    {
+      "id": 110,
+      "name": "Alba",
+      "telefono": "611777888",
+      "gustos": [
+        "Surf",
+        "Viajes",
+        "Fotografía"
+      ],
+      "photo": "https://i.pravatar.cc/600?u=110",
+      "date": "4/7/2026, 6:43:14 PM"
+    },
+    {
+      "id": 103,
+      "name": "Sara",
+      "telefono": "655666777",
+      "gustos": [
+        "Gaming",
+        "Anime",
+        "Lectura"
+      ],
+      "photo": "https://i.pravatar.cc/600?u=103",
+      "date": "4/7/2026, 6:42:41 PM"
     },
     {
       "id": 101,
@@ -21,8 +45,8 @@
         "Cine",
         "Arte"
       ],
-      "photo": "https://i.pravatar.cc/150?u=101",
-      "date": "4/7/2026, 3:39:43 PM"
+      "photo": "https://i.pravatar.cc/600?u=101",
+      "date": "4/7/2026, 6:37:21 PM"
     }
   ]
 }

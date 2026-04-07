@@ -1,0 +1,30 @@
+/* --- CONTENEDOR PRINCIPAL MÓVIL --- */
+.mobile-wrapper {
+    width: 100%;
+    height: 100vh;
+    background-color: #f2f2f7; /* Gris claro de fondo iOS */
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- HEADER DE LA PILA --- */
+.stack-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    padding-top: 50px; /* Espacio para el notch del iPhone */
+    background: rgba(242, 242, 247, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.stack-header p {
+    font-weight: 600;
+    font-size: 14px;
+    color: #8e8e93;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}

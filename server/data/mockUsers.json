@@ -16,5 +16,65 @@
     "name": "Sara",
     "telefono": "655666777",
     "gustos": ["Gaming", "Anime", "Lectura"]
+  },
+  {
+    "id": 104,
+    "name": "Martina",
+    "telefono": "677888999",
+    "gustos": ["Yoga", "Fotografía", "Naturaleza"]
+  },
+  {
+    "id": 105,
+    "name": "Valeria",
+    "telefono": "622333444",
+    "gustos": ["Tecnología", "Series", "Ajedrez"]
+  },
+  {
+    "id": 106,
+    "name": "Carla",
+    "telefono": "644555666",
+    "gustos": ["Moda", "Baile", "Pintura"]
+  },
+  {
+    "id": 107,
+    "name": "Julia",
+    "telefono": "688999000",
+    "gustos": ["Escritura", "Teatro", "Historia"]
+  },
+  {
+    "id": 108,
+    "name": "Elena",
+    "telefono": "600111222",
+    "gustos": ["Senderismo", "Ciclismo", "Animales"]
+  },
+  {
+    "id": 109,
+    "name": "Olivia",
+    "telefono": "699000111",
+    "gustos": ["Astronomía", "Música Indie", "Jardinería"]
+  },
+  {
+    "id": 110,
+    "name": "Alba",
+    "telefono": "611777888",
+    "gustos": ["Surf", "Viajes", "Fotografía"]
+  },
+  {
+    "id": 111,
+    "name": "Carmen",
+    "telefono": "633999222",
+    "gustos": ["Gastronomía", "Vino", "Ópera"]
+  },
+  {
+    "id": 112,
+    "name": "Paula",
+    "telefono": "655222888",
+    "gustos": ["Crossfit", "Podcast", "Mascotas"]
+  },
+  {
+    "id": 113,
+    "name": "Daniela",
+    "telefono": "677444111",
+    "gustos": ["Diseño", "Arquitectura", "Cine Clásico"]
   }
 ]
