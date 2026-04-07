@@ -1,6 +1,6 @@
 // www/js/main.js
 import { WatchUI } from "./modules/ui/watchUI.js";
-import { HomeUI } from "./modules/ui/homeUI.js";
+import { MobileUI } from "./modules/ui/mobileUI.js";
 import { socketManager } from "./core/socketManager.js";
 import { uiRouter } from "./core/uiRouter.js";
 
@@ -23,12 +23,12 @@ const container = document.getElementById("app-container");
 let currentUser = null;
 
 // 1. Identificar dispositivo y renderizar
+const userData = {
+  name: "Laura",
+  photo: "https://i.pravatar.cc/150",
+  phone: "600111222",
+};
 if (isWatch) {
-  const userData = {
-    name: "Laura",
-    photo: "https://i.pravatar.cc/150",
-    phone: "600111222",
-  };
 
   const watchUI = new WatchUI(container);
   uiRouter.setInterface(watchUI);
@@ -59,9 +59,9 @@ if (isWatch) {
     }
   });
 } else {
-  const homeUI = new HomeUI(container.id);
-  uiRouter.setInterface(homeUI);
-  uiRouter.navigate("pila");
+  const mobileUI = new MobileUI(container.id);
+  uiRouter.setInterface(mobileUI);
+  uiRouter.navigate("pila", userData);
 
   socketManager.emit("request_missed_encounters");
   socketManager.identifyDevice("home");
