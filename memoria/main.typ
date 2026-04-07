@@ -7,7 +7,6 @@
 
 #import "uc3mreport.typ": conf
 #import "config.typ": project_data
-#import "lib.typ": *
 
 #let azuluc3m = rgb("#000e78")
 #show: codly-init.with()
