@@ -11,8 +11,8 @@ Para cambiar los checks hay que hacerlo sin el preview. Desconozco una mejor man
   - [x] JS
 - [x] **Socket.io Rooms:** Implementar la lógica para que el servidor diferencie entre el "Reloj" y el "PC/Home" mediante salas específicas.
 - [x] **Router de Interfaz:** Tener el `uiRouter` funcionando para cambiar de pantalla sin recargar.
-- [ ] **Sistema de Handshake por URL:** Implementar la captura del parámetro `userID` en la *url* del frontend para enviarlo al conectar.
-- [ ] **Rooms Dinámicas:** Configurar `socket.join(userID)` para aislar el tráfico de datos entre diferentes alumnos/usuarios en tiempo real.
+- [x] **Sistema de Handshake por URL:** Implementar la captura del parámetro `userID` en la *url* del frontend para enviarlo al conectar.
+- [?] **Rooms Dinámicas:** Configurar `socket.join(userID)` para aislar el tráfico de datos entre diferentes alumnos/usuarios en tiempo real.
 - [x] **Iconos e intereses:** Conseguir los iconos de los intereses disponibles
 
 ## 🔵 FASE 2: Interfaz Visual (UI/UX) - "El Look & Feel"
@@ -43,7 +43,7 @@ Para cambiar los checks hay que hacerlo sin el preview. Desconozco una mejor man
 
 ## 🟠 FASE 4: Funcionalidades Avanzadas
 
-- [ ] **Lógica de Almacenamiento:** Crear una lista de "Encuentros perdidos" que se llene cuando el modo silencio esté activo.
+- [?] **Lógica de Almacenamiento:** Crear una lista de "Encuentros perdidos" que se llene cuando el modo silencio esté activo.
 - [ ] **Sistema de Bloqueo:** Implementar el "Bloqueo de perfiles" (añadir el ID de la persona a una lista negra para que no vuelva a aparecer).
 - [ ] **Recomendación Ubicua:** Implementar notificaciones de "Restaurantes/Planes" cuando no hay personas cerca, basados en los gustos del usuario.
 - [ ] **Ajuste de Rango:** Que el gesto de agitar fuerte en mano modifique una variable de "distancia de búsqueda" y lo notifique en pantalla.

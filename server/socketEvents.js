@@ -1,45 +1,41 @@
-// server/socketEvents.js
+const dataManager = require("./dataManager");
 
 module.exports = function (io) {
   io.on("connection", (socket) => {
-    // 1. Extraer el ID del usuario del handshake
     const userID = socket.handshake.auth.token;
+    if (!userID) return socket.disconnect();
 
-    if (!userID) {
-      console.log("[Socket] Conexión rechazada: No hay userID");
-      return socket.disconnect();
-    }
-
-    // 2. El dispositivo se une a su sala privada de usuario
     socket.join(userID);
-    console.log(
-      `[Socket] Dispositivo ${socket.id} autenticado como: ${userID}`,
-    );
 
-    // 3. También se une a su sala de tipo (watch o home) para segmentar
-    socket.on("device:identify", (deviceType) => {
-      socket.join(`${userID}:${deviceType}`); // Ej: 'laura:watch'
-      console.log(`[Socket] ${userID} conectado en modo: ${deviceType}`);
+    // 1. Simular encuentro (se puede llamar desde consola o por tiempo)
+    socket.on("user:nearby:trigger", () => {
+      const randomUser = dataManager.getRandomMockUser();
+      // Guardamos temporalmente en el socket quién es la persona actual
+      socket.currentEncounter = randomUser;
+      io.to(userID).emit("user:nearby", randomUser);
     });
 
-    // 4. Al enviar un gesto, solo lo mandamos a LA SALA de ese usuario
+    // 2. Al recibir un gesto de 'aceptar'
     socket.on("gesture:sent", (data) => {
-      console.log(`[Gesto] De ${userID}: ${data.gestureType}`);
+      if (data.gestureType === "accept" && socket.currentEncounter) {
+        // Guardamos en el archivo encuentros.json
+        dataManager.saveEncounter(userID, socket.currentEncounter);
+        socket.currentEncounter = null;
+      }
 
-      // Enviamos SOLO a los dispositivos que estén en la sala de ese userID
-      io.to(userID).emit("gesture:received", {
-        type: data.gestureType,
-        timestamp: Date.now(),
-      });
+      io.to(userID).emit("gesture:received", { type: data.gestureType });
     });
 
-    socket.on("user:nearby", (data) => {
-      // Enviamos la notificación de usuario cerca solo al dueño de este socket
-      io.to(userID).emit("user:nearby", data);
+    // 3. El PC pide la lista de encuentros
+    socket.on("request_missed_encounters", () => {
+      const history = dataManager.getEncounters(userID);
+      socket.emit("missed_encounters_data", history);
     });
 
-    socket.on("disconnect", () => {
-      console.log(`[Socket] ${userID} desconectado`);
+    // 4. Guardar perfil desde el PC
+    socket.on("profile:update", (profileData) => {
+      dataManager.saveProfile(userID, profileData);
+      console.log(`Perfil actualizado para usuario ${userID}`);
     });
   });
 };
