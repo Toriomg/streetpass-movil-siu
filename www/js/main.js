@@ -1,6 +1,6 @@
 // www/js/main.js
-import { watchUI } from "./modules/watchUI.js";
-import { HomeUI } from "./modules/homeUI.js";
+import { watchUI } from "./modules/ui/watchUI.js";
+import { HomeUI } from "./modules/ui/homeUI.js";
 
 const socket = io();
 const params = new URLSearchParams(window.location.search);

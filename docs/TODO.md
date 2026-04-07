@@ -20,6 +20,7 @@ Para cambiar los checks hay que hacerlo sin el preview. Desconozco una mejor man
 - [x] **Fuente SF Compact:** Configurar todos los pesos (Regular, Bold, Black) para que parezca un Apple Watch real.
 - [x] **Componentes del Reloj:**
   - [x] Pantalla `Profile` (Navegación).
+  - [x] Pantalla `Watch`.
   - [x] Pantalla `Match` (Conoce a Noa).
   - [x] Pantalla `Connection` (Número de teléfono).
   - [x] Pantalla `Message` (Rango ampliado, modo silencio).

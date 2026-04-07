@@ -1,6 +1,6 @@
-// js/modules/watchUI.js
-import { startClock } from "../utils/clock.js";
-import { formatearTelefono } from "../utils/format.js";
+import { BaseUI } from "./baseUI.js";
+import { startClock } from "../../utils/clock.js";
+import { formatearTelefono } from "../../utils/format.js";
 
 const renderHeader = () => {
   return `
@@ -61,8 +61,13 @@ const renderMessage = (data) => `
     </div>
 `;
 
-export const watchUI = {
-  render: (container, data, viewType = "watch") => {
+export class WatchUI extends BaseUI {
+  constructor(container) {
+    super(container); // Le pasamos el contenedor a la clase padre (BaseUI)
+  }
+
+  // Ya no necesitamos pasar el 'container' por parámetro porque lo tiene el padre
+  render(data, viewType = "watch") {
     let content = "";
     let showHeader = false;
 
@@ -85,6 +90,7 @@ export const watchUI = {
         showHeader = true;
         break;
     }
+
     const html = `
         <div class="watch-wrapper">
             <div class="watch-background"></div>
@@ -95,10 +101,11 @@ export const watchUI = {
         </div>
     `;
 
-    container.innerHTML = html;
+    // Usamos el método de la clase padre para inyectar el HTML
+    this.renderTemplate(html);
 
     if (showHeader || viewType == "watch") {
       startClock();
     }
-  },
-};
+  }
+}
