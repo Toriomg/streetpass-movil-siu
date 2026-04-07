@@ -38,7 +38,10 @@ export class HomeUI extends BaseUI {
   }
 
   // Genera el HTML completo dependiendo de si hay usuarios o no
-  renderView() {
+  render(data, viewType = "pila") {
+    if (viewType === "pila" && Array.isArray(data)) {
+      this.pendingStack = data;
+    }
     let contentHtml = "";
 
     if (this.pendingStack.length === 0) {
