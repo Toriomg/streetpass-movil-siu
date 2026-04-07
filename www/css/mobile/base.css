@@ -9,22 +9,17 @@
     overflow: hidden;
 }
 
-/* --- HEADER DE LA PILA --- */
 .stack-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    padding-top: 50px; /* Espacio para el notch del iPhone */
-    background: rgba(242, 242, 247, 0.8);
-    backdrop-filter: blur(10px);
+    justify-content: center;
+    padding: 10px;
 }
 
 .stack-header p {
-    font-weight: 600;
-    font-size: 14px;
-    color: #8e8e93;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    text-align: center;
+    text-justify: auto;
+    font-weight: 500;
+    font-size: 30px;
+    color: black;
 }

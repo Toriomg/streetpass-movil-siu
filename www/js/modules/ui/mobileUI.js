@@ -25,9 +25,7 @@ const renderUserStack = (user) => {
   return `
         <div class="mobile-stack-container">
             <header class="stack-header">
-                <span class="status-dot"></span>
                 <p>Mientras estabas bloquead@</p>
-                <button class="help-btn">?</button>
             </header>
             
             <div class="user-card-mobile">
