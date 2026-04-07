@@ -3,78 +3,78 @@
     "id": 101,
     "name": "Noa",
     "telefono": "611222333",
-    "gustos": ["Música", "Cine", "Arte"]
+    "gustos": ["Música", "Películas", "Derecho"]
   },
   {
     "id": 102,
     "name": "Alejandra",
     "telefono": "633444555",
-    "gustos": ["Deporte", "Viajes", "Cocina"]
+    "gustos": ["Gimnasio", "Senderismo", "Dieta"]
   },
   {
     "id": 103,
     "name": "Sara",
     "telefono": "655666777",
-    "gustos": ["Gaming", "Anime", "Lectura"]
+    "gustos": ["Videojuegos", "Películas", "Lectura"]
   },
   {
     "id": 104,
     "name": "Martina",
     "telefono": "677888999",
-    "gustos": ["Yoga", "Fotografía", "Naturaleza"]
+    "gustos": ["Gimnasio", "Películas", "Ecologismo"]
   },
   {
     "id": 105,
     "name": "Valeria",
     "telefono": "622333444",
-    "gustos": ["Tecnología", "Series", "Ajedrez"]
+    "gustos": ["Electrónica", "Películas", "Ajedrez"]
   },
   {
     "id": 106,
     "name": "Carla",
     "telefono": "644555666",
-    "gustos": ["Moda", "Baile", "Pintura"]
+    "gustos": ["Películas", "Música", "Derecho"]
   },
   {
     "id": 107,
     "name": "Julia",
     "telefono": "688999000",
-    "gustos": ["Escritura", "Teatro", "Historia"]
+    "gustos": ["Lectura", "Películas", "Religión"]
   },
   {
     "id": 108,
     "name": "Elena",
     "telefono": "600111222",
-    "gustos": ["Senderismo", "Ciclismo", "Animales"]
+    "gustos": ["Senderismo", "Electrónica", "Animales"]
   },
   {
     "id": 109,
     "name": "Olivia",
     "telefono": "699000111",
-    "gustos": ["Astronomía", "Música Indie", "Jardinería"]
+    "gustos": ["Espacio", "Música", "Ecologismo"]
   },
   {
     "id": 110,
     "name": "Alba",
     "telefono": "611777888",
-    "gustos": ["Surf", "Viajes", "Fotografía"]
+    "gustos": ["Senderismo", "Películas", "Gimnasio"]
   },
   {
     "id": 111,
     "name": "Carmen",
     "telefono": "633999222",
-    "gustos": ["Gastronomía", "Vino", "Ópera"]
+    "gustos": ["Dieta", "Música", "Derecho"]
   },
   {
     "id": 112,
     "name": "Paula",
     "telefono": "655222888",
-    "gustos": ["Crossfit", "Podcast", "Mascotas"]
+    "gustos": ["Gimnasio", "Electrónica", "Animales"]
   },
   {
     "id": 113,
     "name": "Daniela",
     "telefono": "677444111",
-    "gustos": ["Diseño", "Arquitectura", "Cine Clásico"]
+    "gustos": ["Derecho", "Espacio", "Películas"]
   }
 ]
