@@ -4,7 +4,7 @@ import { BaseUI } from "./baseUI.js";
 
 const renderStart = () => `
     <div class="mobile-start-screen">
-        <img src="assets/mobile/logo.png" class="interest-icon">
+        <img src="assets/mobile/logo.png" class="logo-image">
     </div>
 `;
 
@@ -19,7 +19,7 @@ const renderUserStack = (user) => {
     `;
 
   const interests = user.gustos
-    ? user.gustos.map((g) => `<span class="interest-tag">${g}</span>`).join("")
+    ? user.gustos.map((g) => `<span class="interest-tag">${g}</span>`).join(" ")
     : "";
 
   return `
