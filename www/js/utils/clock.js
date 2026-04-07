@@ -6,7 +6,7 @@ export const startClock = () => {
     const horas = ahora.getHours().toString().padStart(2, "0");
     const minutos = ahora.getMinutes().toString().padStart(2, "0");
     if (timeElement) {
-      timeElement.textContent = `${horas}:${minutos}`;
+      timeElement.innerHTML = `${horas}<span class="blink">:</span>${minutos}`;
     }
   };
 
