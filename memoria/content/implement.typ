@@ -1,8 +1,8 @@
 #import "@preview/finite:0.5.0": automaton
 
-= Implementación de los prototipos:
+= Implementación de los Prototipos
 El código desarrollado se encuentra en el siguiente repositorio de Github.@repo
-== Descripción y justificación de las interacciones implementadas
+== Descripción y Justificación de las Interacciones Implementadas
 El diseño de la interfaz de usuario se realizó siguiendo principios de usabilidad modernos, como se puede observar en el prototipo@diseno_interfaz.
 Las pantallas del reloj se componen de lo siguiente:
 #automaton((
@@ -12,4 +12,4 @@ Las pantallas del reloj se componen de lo siguiente:
   "Conexión": (),
   "Info": ("Reloj": none),
 ))
-== Videos que muestran el prototipo en funcionamiento
+== Videos que Muestran el Prototipo en Funcionamiento

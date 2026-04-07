@@ -32,38 +32,4 @@
 #include "content/implement.typ"
 #include "content/experimental.typ"
 #include "content/iteraciones.typ"
-
-== Autómatas
-
-#automaton((
-  "Reloj": ("Info": none),
-  "Perfil": ("Match": none),
-  "Match": ("Conexión": none),
-  "Conexión": (),
-  "Info": ("Reloj": none),
-))
-
-/*
-ejemplo
-#automaton(
-  (
-    q0: (q1: 0, q0: "0,1"),
-    q1: (q0: (0, 1), q2: "0"),
-    q2: (),
-  ),
-  initial: "q1",
-  final: ("q0", "q2"),
-  labels: (
-    q2: "FIN",
-  ),
-  style: (
-    state: (fill: luma(248), stroke: luma(120)),
-    transition: (stroke: (dash: "dashed")),
-    q0-q0: (anchor: top + left),
-    q1: (initial: top),
-    q1-q2: (stroke: 2pt + red),
-  ),
-)
-*/
-
-
+#include "content/ia.typ"

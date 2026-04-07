@@ -1,5 +1,5 @@
-= Especificaciones técnicas
+= Especificaciones Técnicas
 
-== Arquitectura del sistema
+== Arquitectura del Sistema
 
-== Tecnologías utilizadas
+== Tecnologías Utilizadas
