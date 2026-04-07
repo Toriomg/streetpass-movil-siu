@@ -1,0 +1,20 @@
+[
+  {
+    "id": 101,
+    "name": "Noa",
+    "telefono": "611222333",
+    "gustos": ["Música", "Cine", "Arte"]
+  },
+  {
+    "id": 102,
+    "name": "Hugo",
+    "telefono": "633444555",
+    "gustos": ["Deporte", "Viajes", "Cocina"]
+  },
+  {
+    "id": 103,
+    "name": "Sara",
+    "telefono": "655666777",
+    "gustos": ["Gaming", "Anime", "Lectura"]
+  }
+]

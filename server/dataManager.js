@@ -1,0 +1,56 @@
+const fs = require("fs");
+const path = require("path");
+
+const paths = {
+  profiles: path.join(__dirname, "data/profiles.json"),
+  mockUsers: path.join(__dirname, "data/mockUsers.json"),
+  encounters: path.join(__dirname, "data/encounters.json"),
+};
+
+// Función auxiliar para leer JSON
+const readJSON = (file) => {
+  if (!fs.existsSync(file)) return {};
+  return JSON.parse(fs.readFileSync(file, "utf-8"));
+};
+
+// Función auxiliar para escribir JSON
+const writeJSON = (file, data) => {
+  fs.writeFileSync(file, JSON.stringify(data, null, 2));
+};
+
+const dataManager = {
+  // Obtener un usuario aleatorio para el "Streetpass"
+  getRandomMockUser: () => {
+    const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
+    const user = users[Math.floor(Math.random() * users.length)];
+    return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
+  },
+
+  // Guardar el perfil propio (desde el PC)
+  saveProfile: (userID, data) => {
+    const profiles = readJSON(paths.profiles);
+    profiles[userID] = { ...data, id: Number(userID) };
+    writeJSON(paths.profiles, profiles);
+  },
+
+  // Guardar un encuentro en el historial del usuario
+  saveEncounter: (userID, personData) => {
+    const history = readJSON(paths.encounters);
+    if (!history[userID]) history[userID] = [];
+
+    // Añadimos al principio (pila cronológica inversa)
+    history[userID].unshift({
+      ...personData,
+      date: new Date().toLocaleString(),
+    });
+    writeJSON(paths.encounters, history);
+  },
+
+  // Obtener historial de encuentros
+  getEncounters: (userID) => {
+    const history = readJSON(paths.encounters);
+    return history[userID] || [];
+  },
+};
+
+module.exports = dataManager;
