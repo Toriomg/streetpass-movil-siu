@@ -1,8 +1,8 @@
 // www/js/main.js
-import { watchUI } from "./modules/ui/watchUI.js";
+import { WatchUI } from "./modules/ui/watchUI.js";
 import { HomeUI } from "./modules/ui/homeUI.js";
+import { socketManager } from "./core/socketManager.js";
 
-const socket = io();
 const params = new URLSearchParams(window.location.search);
 const isWatch = params.get("v") === "watch";
 const container = document.getElementById("app-container");
@@ -14,37 +14,26 @@ if (isWatch) {
     photo: "https://www.loremfaces.net/128/id/1.jpg",
     phone: "600111222",
   };
-  watchUI.render(container, userData);
 
-  socket.emit("device:identify", "watch");
+  const watchUI = new WatchUI(container);
+  watchUI.render(userData);
+
+  socketManager.identifyDevice("watch");
   console.log("Modo Reloj: Renderizado correctamente");
 } else {
-  // Inicializamos la interfaz del PC (Modo Casa)
   const homeUI = new HomeUI(container.id);
   homeUI.renderBase();
 
-  // Solicitamos la lista de encuentros al conectar
-  socket.emit("request_missed_encounters");
-
-  socket.emit("device:identify", "home");
+  socketManager.emit("request_missed_encounters");
+  socketManager.identifyDevice("home");
   console.log("Modo Home: Renderizado correctamente");
 
   // 2. Gestión de Sockets exclusivos para el Modo Home
-  socket.on("missed_encounters_data", (users) => {
+  socketManager.on("missed_encounters_data", (users) => {
     homeUI.loadStack(users);
   });
 
-  socket.on("gesture:received", (data) => {
-    // Procesamos el gesto directamente en la interfaz de Home
-    // Usamos data.type respetando la estructura de evento que tenías
+  socketManager.on("gesture:received", (data) => {
     homeUI.processGesture(data.type);
   });
 }
-
-// 2. Gestión de Sockets
-socket.on("gesture:received", (data) => {
-  if (!isWatch) {
-    const status = document.getElementById("last-gesture");
-    if (status) status.innerText = `Gesto recibido: ${data.type}`;
-  }
-});
