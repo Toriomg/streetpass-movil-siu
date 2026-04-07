@@ -1,5 +1,5 @@
 export function formatearTelefono(telefono) {
-  if (!telefono) return "+34 600 11 22 33";
+  if (!telefono) return "+0 000 00 00 00";
   // Eliminar cualquier carácter que no sea un número
   const numLimpios = telefono.replace(/\D/g, "");
 
