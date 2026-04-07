@@ -30,7 +30,7 @@
     #v(1em)
   ] else [
     #image("img/old_uc3m_logo.svg", width: 45%)
-    #v(1em)
+    //#v(1em)
   ]
 
   #emph(degree)
@@ -63,7 +63,7 @@
     #team
   ]
 
-  #v(3em)
+  #v(1em)
 
   #if professor != none [
     #if language == "es" [
