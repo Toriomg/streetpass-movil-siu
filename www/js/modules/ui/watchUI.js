@@ -18,19 +18,29 @@ const renderWatch = (data) => {
     `;
 };
 
-const renderProfile = (data) => `
+const renderProfile = (data) => {
+  const interestsHtml = data.interests
+    .map(
+      (interest) => `
+        <img src="assets/icons/${interest}.svg" 
+             class="interest-icon" 
+             alt="${interest}">
+      `,
+    )
+    .join("");
+
+  return `
     <div class="profile-card">
         <img src="${data.photo}" alt="Perfil" class="profile-img">
     </div>
     <div class="info-section">
-        <p class="match-text">A ambos os gusta:</p>
+        <p class="match-text">A ${data.name} le gusta:</p>
         <div class="interests-icons">
-            <img src="assets/icons/aguila.png" class="interest-icon">
-            <img src="assets/icons/how.png" class="interest-icon">
-            <img src="assets/icons/supernova.png" class="interest-icon">
+            ${interestsHtml}
         </div>
     </div>
-`;
+  `;
+};
 
 const renderMatch = (data) => `
     <div class="match-overlay">
