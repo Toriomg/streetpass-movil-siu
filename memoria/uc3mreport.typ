@@ -157,6 +157,7 @@
   logo: "new",
   bibliography_file: none,
   chapter_on_new_page: true,
+  bibliography-content: none,
   doc
 ) = {
 
@@ -284,6 +285,19 @@
     size: 11pt
   )
 
+  // color bibliography
+  // https://forum.typst.app/t/how-do-i-customize-the-numbering-of-the-bibliography/1490/3
+  show selector(bibliography).or(cite): it => {
+    show link: set text(azuluc3m)
+
+    // bibliography references (IEEE)
+    show regex("\[\d+\]"): num => {
+      set text(azuluc3m)
+      num
+    }
+    it
+  }
+
   /* COVER */
 
   cover(
@@ -321,7 +335,10 @@
     bibliography(bibliography_file, style: "ieee")
   }
 
-  
+  if bibliography-content != none {
+    pagebreak()
+    bibliography-content
+  }
   back_cover(
     logo: logo,
     year: year,

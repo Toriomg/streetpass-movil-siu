@@ -5,6 +5,7 @@
   project: "Ecologías de interacción ubicua e invisible",
   title: "Prototipado:\n Sistema 'Streetpass' para\n la comunicación interpersonal",
   group: 81,
+  bibliography-content: bibliography("bib.bib"),
   team: 14,
   authors: (
     (name: "Héctor", surname: "Molina Garde", nia: 100522253),
