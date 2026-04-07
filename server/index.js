@@ -26,9 +26,9 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`==========================================`);
   console.log(`🚀 Servidor corriendo en:`);
-  console.log(`👉 PC: http://localhost:${PORT}/?user=1&v=home`);
+  console.log(`👉 PC: http://localhost:${PORT}/?user=101&v=home`);
   console.log(
-    `👉 Móvil/Reloj: http://localhost:${PORT}/?user=1&v=watch\n\t-> en chrome://inspect con Port Forwarding`,
+    `👉 Móvil/Reloj: http://localhost:${PORT}/?user=101&v=watch\n\t-> en chrome://inspect con Port Forwarding`,
   );
   console.log(`==========================================`);
 });

@@ -1,6 +1,6 @@
 // www/js/main.js
 import { WatchUI } from "./modules/ui/watchUI.js";
-import { HomeUI } from "./modules/ui/homeUI.js";
+import { MobileUI } from "./modules/ui/mobileUI.js";
 import { socketManager } from "./core/socketManager.js";
 import { uiRouter } from "./core/uiRouter.js";
 
@@ -23,13 +23,12 @@ const container = document.getElementById("app-container");
 let currentUser = null;
 
 // 1. Identificar dispositivo y renderizar
+const userData = {
+  name: "Laura",
+  photo: "https://i.pravatar.cc/150",
+  phone: "600111222",
+};
 if (isWatch) {
-  const userData = {
-    name: "Laura",
-    photo: "https://i.pravatar.cc/150",
-    phone: "600111222",
-  };
-
   const watchUI = new WatchUI(container);
   uiRouter.setInterface(watchUI);
 
@@ -59,26 +58,27 @@ if (isWatch) {
     }
   });
 } else {
-  const homeUI = new HomeUI(container.id);
-  uiRouter.setInterface(homeUI);
-  uiRouter.navigate("pila");
+  const mobileUI = new MobileUI(container); // Pasamos el elemento, no solo el ID
+  uiRouter.setInterface(mobileUI);
 
-  socketManager.emit("request_missed_encounters");
+  // 1. Mostramos pantalla de Inicio (Face ID)
+  uiRouter.navigate("start");
+
+  // 2. Pedimos los datos al servidor
   socketManager.identifyDevice("home");
-  console.log("Modo Home: Renderizado correctamente");
+  socketManager.emit("request_missed_encounters");
+
+  // 3. Cuando lleguen los datos, saltamos de "Face ID" a la "Pila"
+  socketManager.on("missed_encounters_data", (users) => {
+    console.log("Datos recibidos para la pila:", users);
+    uiRouter.navigate("stack", users);
+  });
+
+  // 4. Escuchar gestos para mover la pila en el móvil
+  socketManager.on("gesture:received", (data) => {
+    // Si el router tiene cargada la MobileUI, procesamos el gesto
+    if (uiRouter.activeInterface && uiRouter.activeInterface.processGesture) {
+      uiRouter.activeInterface.processGesture(data.type);
+    }
+  });
 }
-
-socketManager.on("missed_encounters_data", (users) => {
-  // El Router se encarga de actualizar la vista de la pila
-  uiRouter.navigate("pila", users);
-});
-
-socketManager.on("gesture:received", (data) => {
-// Si estamos en casa, el Router le pasa el gesto a HomeUI
-// (HomeUI debe tener lógica para procesar gestos dentro de su render o similar)
-  if (!isWatch) {
-    // Aquí podrías llamar a un método de homeInterface directamente
-    // o hacer que el router gestione el cambio de carta
-    uiRouter.activeInterface.processGesture(data.type);
-  }
-});
