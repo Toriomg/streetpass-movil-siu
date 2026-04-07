@@ -4,18 +4,7 @@ import { BaseUI } from "./baseUI.js";
 
 const renderStart = () => `
     <div class="mobile-start-screen">
-        <div class="face-id-container">
-            <div class="face-id-icon">
-                <img src="assets/icons/face-id.png" alt="Face ID" class="blink-animation">
-            </div>
-            <p class="face-id-text">Identificando...</p>
-        </div>
-        <div class="brand-section">
-            <h1 class="logo-text">
-                <span class="s">S</span><span class="t1">T</span><span class="r">R</span><span class="e1">E</span><span class="e2">E</span><span class="t2">T</span><span class="p">P</span><span class="a">A</span><span class="s2">S</span><span class="s3">S</span>
-            </h1>
-            <p class="slogan">ANDA, CONOCE, CONECTA</p>
-        </div>
+        <img src="assets/mobile/logo.png" class="interest-icon">
     </div>
 `;
 
@@ -109,10 +98,6 @@ export class MobileUI extends BaseUI {
 
     const html = `
             <div class="mobile-wrapper theme-ios">
-                <div class="status-bar">
-                    <span class="time">9:41</span>
-                    <div class="icons">📶 🔋</div>
-                </div>
                 <main class="mobile-content">
                     ${content}
                 </main>
