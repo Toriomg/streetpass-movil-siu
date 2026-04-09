@@ -1,5 +1,7 @@
 = Especificaciones Técnicas
-//#h(2.2em)
+
+#h(2.2em)El código desarrollado se encuentra en el siguiente repositorio de Github@repo. Donde se pueden consultar las contribuciones de cada miembro, en la programación (`www/`, `server/`), planificación (`docs/diagramas`, `docs/interfaces`, `docs/planning.md`, ...) y redaccion de la memoria (`memoria/`).
+
 == Arquitectura del Sistema
 #h(2.2em)La arquitectura del sistema consiste en un _backend_ que conecta a dos tipos de _frontend_: el correspondiente al reloj y el correspondiente al móvil. Tal como se ve en el la @arquitectura.
 
