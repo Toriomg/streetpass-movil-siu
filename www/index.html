@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,11 +8,18 @@
     <link rel="stylesheet" href="css/watch.css">
     <link rel="stylesheet" href="css/mobile.css">
 </head>
+
 <body>
     <div id="app-container">
         <!-- Aquí se inyectarán los componentes -->
     </div>
+    <div id="debug-panel"
+        style="position: fixed; top: 0; background: rgba(0,0,0,0.7); color: white; padding: 10px; font-family: monospace; z-index: 9999;">
+        <button id="start-sensors">Activar Sensores</button>
+        <div id="data-display">Esperando interacción...</div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="js/main.js"></script>
 </body>
+
 </html>

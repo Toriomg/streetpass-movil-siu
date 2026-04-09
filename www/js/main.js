@@ -77,12 +77,23 @@ const initializeUI = () => {
       uiRouter.navigate("stack", users);
     });
 
-    // 4. Escuchar gestos para mover la pila en el móvil
-    socketManager.on("gesture:received", (data) => {
-      // Si el router tiene cargada la MobileUI, procesamos el gesto
-      if (uiRouter.activeInterface && uiRouter.activeInterface.processGesture) {
-        uiRouter.activeInterface.processGesture(data.type);
-      }
-    });
+socketManager.on("gesture:received", (data) => {
+  // Si estamos en casa, el Router le pasa el gesto a HomeUI
+  // (HomeUI debe tener lógica para procesar gestos dentro de su render o similar)
+  if (!isWatch) {
+    // Aquí podrías llamar a un método de homeInterface directamente
+    // o hacer que el router gestione el cambio de carta
+    uiRouter.activeInterface.processGesture(data.type);
   }
-};
+});
+
+import { initGestures } from './modules/gestures.js';
+const socket = io();
+initGestures(socket);
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("App lista y conectada al socket");
+
+  setupSensors(socket);
+});
+
