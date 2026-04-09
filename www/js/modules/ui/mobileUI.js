@@ -18,8 +18,10 @@ const renderUserStack = (user) => {
         </div>
     `;
 
-  const interests = user.gustos
-    ? user.gustos.map((g) => `<span class="interest-tag">${g}</span>`).join(" ")
+  const interests = user.interests
+    ? user.interests
+        .map((g) => `<span class="interest-tag">${g}</span>`)
+        .join(" ")
     : "";
 
   return `
