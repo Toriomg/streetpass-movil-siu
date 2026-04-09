@@ -14,7 +14,7 @@
 
 #figure(
   image("../diagramas/arquitectura.png", width: 30%),
-  caption: [Diagrama de componentes de la arquitectura.]
+  caption: [Diagrama de componentes del código.]
 ) <conceptual>
 
 #h(2.2em)A nadie le gusta trabajar, les da alergia. 
