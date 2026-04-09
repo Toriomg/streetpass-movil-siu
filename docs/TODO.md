@@ -44,7 +44,7 @@ Para cambiar los checks hay que hacerlo sin el preview. Desconozco una mejor man
 ## 🟠 FASE 4: Funcionalidades Avanzadas
 
 - [?] **Lógica de Almacenamiento:** Crear una lista de "Encuentros perdidos" que se llene cuando el modo silencio esté activo.
-- [ ] **Sistema de Bloqueo:** Implementar el "Bloqueo de perfiles" (añadir el ID de la persona a una lista negra para que no vuelva a aparecer).
+- [V] **Sistema de Bloqueo:** Implementar el "Bloqueo de perfiles" (añadir el ID de la persona a una lista negra para que no vuelva a aparecer).
 - [ ] **Recomendación Ubicua:** Implementar notificaciones de "Restaurantes/Planes" cuando no hay personas cerca, basados en los gustos del usuario.
 - [ ] **Ajuste de Rango:** Que el gesto de agitar fuerte en mano modifique una variable de "distancia de búsqueda" y lo notifique en pantalla.
 
