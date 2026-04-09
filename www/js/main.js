@@ -21,19 +21,20 @@ if (!userID) {
 socketManager.connect(userID);
 const container = document.getElementById("app-container");
 let currentUser = null;
+let userProfile = null;
 
 // 1. Identificar dispositivo y renderizar
-const userData = {
-  name: "Laura",
-  photo: "https://i.pravatar.cc/150",
-  phone: "600111222",
-  interests: ["Películas", "Música", "Senderismo"],
-};
+socketManager.on("profile:data", (profile) => {
+  userProfile = profile;
+  initializeUI();
+});
+const initializeUI = () => {
+  if (!userProfile) return;
 if (isWatch) {
   const watchUI = new WatchUI(container);
   uiRouter.setInterface(watchUI);
 
-  uiRouter.navigate("watch", userData);
+  uiRouter.navigate("watch", userProfile);
   socketManager.identifyDevice("watch");
   console.log("Modo Reloj: Renderizado correctamente");
 
@@ -60,7 +61,7 @@ if (isWatch) {
   });
 } else {
   const mobileUI = new MobileUI(container); // Pasamos el elemento, no solo el ID
-  mobileUI.setUserProfile(userData);
+  mobileUI.setUserProfile(userProfile);
   uiRouter.setInterface(mobileUI);
 
   // 1. Mostramos pantalla de Inicio (Face ID)
@@ -84,3 +85,4 @@ if (isWatch) {
     }
   });
 }
+};
