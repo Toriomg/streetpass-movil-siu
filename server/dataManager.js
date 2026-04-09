@@ -5,6 +5,7 @@ const paths = {
   profiles: path.join(__dirname, "data/profiles.json"),
   mockUsers: path.join(__dirname, "data/mockUsers.json"),
   encounters: path.join(__dirname, "data/encounters.json"),
+  blocked: path.join(__dirname, "data/blocked.json"),
 };
 
 // Función auxiliar para leer JSON
@@ -33,10 +34,40 @@ const writeJSON = (file, data) => {
 
 const dataManager = {
   // Obtener un usuario aleatorio para el "Streetpass"
-  getRandomMockUser: () => {
+  getRandomMockUser: (userID) => {
     const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
-    const user = users[Math.floor(Math.random() * users.length)];
+    const excludedIds = new Set([
+      Number(userID),
+      ...dataManager.getBlockedUsers(userID).map((item) => item.id),
+    ]);
+
+    const availableUsers = users.filter((user) => !excludedIds.has(user.id));
+    const pool =
+      availableUsers.length > 0
+        ? availableUsers
+        : users.filter((user) => user.id !== Number(userID));
+
+    if (pool.length === 0) return null;
+
+    const user = pool[Math.floor(Math.random() * pool.length)];
     return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
+  },
+
+  // Obtener el perfil propio del usuario (desde mockUsers)
+  getProfile: (userID) => {
+    const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
+    const user = users.find((u) => u.id === Number(userID));
+    if (user) {
+      return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
+    }
+    // Perfil por defecto si no existe
+    return {
+      id: Number(userID),
+      name: `Usuario ${userID}`,
+      photo: `https://i.pravatar.cc/150?u=${userID}`,
+      phone: "600000000",
+      interests: [],
+    };
   },
 
   // Guardar el perfil propio (desde el PC)
@@ -44,6 +75,27 @@ const dataManager = {
     const profiles = readJSON(paths.profiles);
     profiles[userID] = { ...data, id: Number(userID) };
     writeJSON(paths.profiles, profiles);
+  },
+
+  // Guardar la lista de bloqueos del usuario
+  saveBlockedUser: (userID, personData) => {
+    const blocked = readJSON(paths.blocked);
+    if (!blocked[userID]) blocked[userID] = [];
+
+    if (blocked[userID].some((item) => item.id === personData.id)) return;
+
+    blocked[userID].push({
+      ...personData,
+      blockedAt: new Date().toLocaleString(),
+    });
+
+    writeJSON(paths.blocked, blocked);
+  },
+
+  // Obtener usuarios bloqueados
+  getBlockedUsers: (userID) => {
+    const blocked = readJSON(paths.blocked);
+    return blocked[userID] || [];
   },
 
   // Guardar un encuentro en el historial del usuario

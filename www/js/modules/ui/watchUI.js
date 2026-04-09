@@ -1,6 +1,7 @@
 import { BaseUI } from "./baseUI.js";
 import { startClock } from "../../utils/clock.js";
 import { formatearTelefono } from "../../utils/format.js";
+import { socketManager } from "../../core/socketManager.js";
 
 const renderHeader = () => {
   return `
@@ -18,19 +19,32 @@ const renderWatch = (data) => {
     `;
 };
 
-const renderProfile = (data) => `
+const renderProfile = (data) => {
+  const interestsHtml = data.interests
+    .map(
+      (interest) => `
+        <img src="assets/icons/${interest}.svg" 
+             class="interest-icon" 
+             alt="${interest}">
+      `,
+    )
+    .join("");
+
+  return `
     <div class="profile-card">
         <img src="${data.photo}" alt="Perfil" class="profile-img">
     </div>
     <div class="info-section">
-        <p class="match-text">A ambos os gusta:</p>
+        <p class="match-text">A ${data.name} le gusta:</p>
         <div class="interests-icons">
-            <img src="assets/icons/aguila.png" class="interest-icon">
-            <img src="assets/icons/how.png" class="interest-icon">
-            <img src="assets/icons/supernova.png" class="interest-icon">
+            ${interestsHtml}
         </div>
     </div>
-`;
+    <div class="profile-actions">
+        <button class="block-btn">Bloquear usuario</button>
+    </div>
+  `;
+};
 
 const renderMatch = (data) => `
     <div class="match-overlay">
@@ -106,6 +120,19 @@ export class WatchUI extends BaseUI {
 
     // Usamos el método de la clase padre para inyectar el HTML
     this.renderTemplate(html);
+
+    if (viewType === "profile") {
+      this.addEvent(".block-btn", "click", () => {
+        if (!data || !data.id) return;
+        socketManager.emit("user:block", {
+          id: data.id,
+          name: data.name,
+          phone: data.phone,
+          interests: data.interests,
+        });
+        this.render(null, "watch");
+      });
+    }
 
     if (showHeader || viewType == "watch") {
       startClock();
