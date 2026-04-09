@@ -1,6 +1,7 @@
 import { BaseUI } from "./baseUI.js";
 import { startClock } from "../../utils/clock.js";
 import { formatearTelefono } from "../../utils/format.js";
+import { socketManager } from "../../core/socketManager.js";
 
 const renderHeader = () => {
   return `
@@ -38,6 +39,9 @@ const renderProfile = (data) => {
         <div class="interests-icons">
             ${interestsHtml}
         </div>
+    </div>
+    <div class="profile-actions">
+        <button class="block-btn">Bloquear usuario</button>
     </div>
   `;
 };
@@ -116,6 +120,19 @@ export class WatchUI extends BaseUI {
 
     // Usamos el método de la clase padre para inyectar el HTML
     this.renderTemplate(html);
+
+    if (viewType === "profile") {
+      this.addEvent(".block-btn", "click", () => {
+        if (!data || !data.id) return;
+        socketManager.emit("user:block", {
+          id: data.id,
+          name: data.name,
+          phone: data.phone,
+          interests: data.interests,
+        });
+        this.render(null, "watch");
+      });
+    }
 
     if (showHeader || viewType == "watch") {
       startClock();

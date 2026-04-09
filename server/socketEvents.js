@@ -9,10 +9,17 @@ module.exports = function (io) {
 
     // 1. Simular encuentro (se puede llamar desde consola o por tiempo)
     socket.on("user:nearby:trigger", () => {
-      const randomUser = dataManager.getRandomMockUser();
-      // Guardamos temporalmente en el socket quién es la persona actual
+      const randomUser = dataManager.getRandomMockUser(userID);
       socket.currentEncounter = randomUser;
       io.to(userID).emit("user:nearby", randomUser);
+    });
+
+    // 1.b Bloquear a una persona para que no vuelva a aparecer
+    socket.on("user:block", (personData) => {
+      if (!personData || !personData.id) return;
+      dataManager.saveBlockedUser(userID, personData);
+      socket.currentEncounter = null;
+      io.to(userID).emit("user:blocked", { blockedId: personData.id });
     });
 
     // 2. Al recibir un gesto de 'aceptar'
