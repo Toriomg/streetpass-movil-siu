@@ -26,8 +26,8 @@ Para cambiar los checks hay que hacerlo sin el preview. Desconozco una mejor man
   - [x] Pantalla `Message` (Rango ampliado, modo silencio).
   - Más pantallas?
 - [ ] **Interfaz de Usuario PC (Modo Casa):**
-  - [ ] Sistema de "Pila" (Stack): Visualizar los encuentros del día en orden cronológico inverso.
-  - Mas pantallas?
+  - [x] Sistema de "Pila" (Stack): Visualizar los encuentros del día en orden cronológico inverso.
+  - [ ] Mas pantallas?
 - [ ] **Botón de Soporte/Ayuda:** Implementar en ambas pantallas un botón `?` que despliegue un modal explicando los gestos (Muy importante para el profe).
 
 ## 🟡 FASE 3: Captura y Lógica de Gestos
