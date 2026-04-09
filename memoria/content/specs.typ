@@ -24,4 +24,6 @@
 
 1. *Servidor*: Para el servidor se ha utilizado *Express* y *NodeJS*.
 2. *Conectividad*: Para conectar el _frontend_ con el _backend_ se ha utilizado *SocketIO*
-3. *Gestos*: 
+3. *Gestos*: Para el reconocimiento de gestos se ha utilizado
+4. *Reconocimiento facial*: Para el reconocimiento facial al entrar en la versión web se ha utilizado la tecnología
+5. *Localización*: 
