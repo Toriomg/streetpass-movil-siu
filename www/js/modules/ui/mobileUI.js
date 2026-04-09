@@ -57,7 +57,7 @@ const renderRecommendations = (
 ) => `
     <div class="recommendation-screen">
         <header class="stack-header">
-            <p>No hay nadie cerca</p>
+            <h3>No hay nadie cerca</h3>
             <p class="recommendation-subtitle">Te proponemos planes y restaurantes según tus gustos.</p>
         </header>
 
@@ -175,6 +175,13 @@ export class MobileUI extends BaseUI {
 
   setUserProfile(profile) {
     this.profile = profile;
+  }
+
+  processGesture(type) {
+    console.log(`Gesto recibido en Móvil: ${type}`);
+    if (type === "accept" || type === "reject") {
+      this.nextUser(); // Ambos gestos avanzan la pila en esta versión
+    }
   }
 
   async requestLocation() {
