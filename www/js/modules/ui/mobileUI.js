@@ -171,16 +171,95 @@ export class MobileUI extends BaseUI {
     this.profile = null;
     this.location = null;
     this.locationError = null;
+    this.isAnimating = false;
   }
 
   setUserProfile(profile) {
     this.profile = profile;
   }
 
+  // Método para procesar gestos con animación
+  processGestureWithAnimation(gestureType) {
+    if (this.isAnimating || !this.pendingStack[0]) return;
+
+    this.isAnimating = true;
+    const card = this.container.querySelector(".user-card-mobile");
+    if (!card) {
+      this.isAnimating = false;
+      return;
+    }
+
+    // Añadir clase de animación
+    if (gestureType === "accept") {
+      card.classList.add("swipe-right");
+    } else if (gestureType === "reject") {
+      card.classList.add("swipe-left");
+    }
+
+    // Después de la animación, quitar la clase y procesar
+    setTimeout(() => {
+      card.classList.remove("swipe-right", "swipe-left");
+      this.nextUser();
+      this.isAnimating = false;
+      // Enviar gesto al servidor
+      this.emitGesture(gestureType);
+    }, 500); // Duración de la animación
+  }
+
+  emitGesture(gestureType) {
+    if (window.sm) {
+      window.sm.emit("gesture:sent", { gestureType });
+    }
+  }
+
+  // Método para manejar swipe manual
+  initSwipeGestures() {
+    const card = this.container.querySelector(".user-card-mobile");
+    if (!card) return;
+
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    const handleStart = (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      card.style.transition = "none";
+    };
+
+    const handleMove = (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+      const diff = currentX - startX;
+      card.style.transform = `translateX(${diff}px) rotate(${diff * 0.1}deg)`;
+    };
+
+    const handleEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      card.style.transition = "transform 0.3s ease";
+
+      const diff = currentX - startX;
+      if (Math.abs(diff) > 100) {
+        if (diff > 0) {
+          this.processGestureWithAnimation("accept");
+        } else {
+          this.processGestureWithAnimation("reject");
+        }
+      } else {
+        card.style.transform = "";
+      }
+    };
+
+    card.addEventListener("touchstart", handleStart);
+    card.addEventListener("touchmove", handleMove);
+    card.addEventListener("touchend", handleEnd);
+  }
+
   processGesture(type) {
     console.log(`Gesto recibido en Móvil: ${type}`);
     if (type === "accept" || type === "reject") {
-      this.nextUser(); // Ambos gestos avanzan la pila en esta versión
+      this.processGestureWithAnimation(type);
     }
   }
 
@@ -268,6 +347,11 @@ export class MobileUI extends BaseUI {
     if (viewType === "stack" && !this.pendingStack[0]) {
       this.addEvent(".location-btn", "click", () => this.requestLocation());
       this.addEvent(".refresh-btn", "click", () => this.render(null, "stack"));
+    }
+
+    // Inicializar gestos de swipe si hay usuario
+    if (viewType === "stack" && this.pendingStack[0]) {
+      this.initSwipeGestures();
     }
   }
 

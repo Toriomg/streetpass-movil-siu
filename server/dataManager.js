@@ -53,6 +53,23 @@ const dataManager = {
     return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
   },
 
+  // Obtener el perfil propio del usuario (desde mockUsers)
+  getProfile: (userID) => {
+    const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
+    const user = users.find((u) => u.id === Number(userID));
+    if (user) {
+      return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
+    }
+    // Perfil por defecto si no existe
+    return {
+      id: Number(userID),
+      name: `Usuario ${userID}`,
+      photo: `https://i.pravatar.cc/150?u=${userID}`,
+      phone: "600000000",
+      interests: [],
+    };
+  },
+
   // Guardar el perfil propio (desde el PC)
   saveProfile: (userID, data) => {
     const profiles = readJSON(paths.profiles);

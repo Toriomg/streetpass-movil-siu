@@ -6,6 +6,9 @@ module.exports = function (io) {
     if (!userID) return socket.disconnect();
 
     socket.join(userID);
+    // Enviar el perfil propio al cliente
+    const profile = dataManager.getProfile(userID);
+    io.to(userID).emit("profile:data", profile);
 
     // 1. Simular encuentro (se puede llamar desde consola o por tiempo)
     socket.on("user:nearby:trigger", () => {
