@@ -8,15 +8,14 @@ const renderStart = () => `
     </div>
 `;
 
-const renderUserStack = (user) => {
+const renderUserStack = (
+  user,
+  recommendations,
+  locationLabel,
+  locationError,
+) => {
   if (!user)
-    return `
-        <div class="empty-stack">
-            <div class="info-icon">📍</div>
-            <h2>No hay nadie cerca</h2>
-            <p>Sigue caminando para encontrar nuevas conexiones.</p>
-        </div>
-    `;
+    return renderRecommendations(recommendations, locationLabel, locationError);
 
   const interests = user.interests
     ? user.interests
@@ -51,6 +50,106 @@ const renderUserStack = (user) => {
     `;
 };
 
+const renderRecommendations = (
+  recommendations,
+  locationLabel,
+  locationError,
+) => `
+    <div class="recommendation-screen">
+        <header class="stack-header">
+            <p>No hay nadie cerca</p>
+            <p class="recommendation-subtitle">Te proponemos planes y restaurantes según tus gustos.</p>
+        </header>
+
+        <div class="recommendation-list">
+            ${recommendations
+              .map(
+                (item) => `
+                    <div class="reco-card">
+                        <strong>${item.title}</strong>
+                        <p>${item.description}</p>
+                    </div>
+                `,
+              )
+              .join("")}
+        </div>
+
+        <div class="location-panel">
+            <div class="location-title">Ubicación actual del móvil</div>
+            <div class="location-value">${locationLabel}</div>
+            ${locationError ? `<div class="location-error">${locationError}</div>` : ""}
+        </div>
+
+        <div class="recommend-actions">
+            <button class="location-btn">Ver mi ubicación</button>
+            <button class="refresh-btn">Actualizar planes</button>
+        </div>
+    </div>
+`;
+
+const buildRecommendations = (interests) => {
+  const map = {
+    Películas: [
+      {
+        title: "Cine Central",
+        description: "Películas actuales y snacks cerca de tu zona.",
+      },
+      {
+        title: "Cafetería & Cine",
+        description: "Combo de cine y café para una tarde perfecta.",
+      },
+    ],
+    Música: [
+      {
+        title: "Sala de conciertos",
+        description: "Conciertos y sesiones en directo esta semana.",
+      },
+      {
+        title: "Bar de jazz",
+        description: "Ambiente chill para escuchar buena música.",
+      },
+    ],
+    Senderismo: [
+      {
+        title: "Ruta natural",
+        description: "Una caminata corta ideal para desconectar.",
+      },
+      {
+        title: "Mercado al aire libre",
+        description: "Plan de fin de semana con productos locales.",
+      },
+    ],
+    Gimnasio: [
+      {
+        title: "Clase de spinning",
+        description: "Sesión activa pensada para quemar energía.",
+      },
+      {
+        title: "Entrenamiento funcional",
+        description: "Prueba una clase moderna cerca de ti.",
+      },
+    ],
+  };
+
+  const matched = interests
+    .flatMap((interest) => map[interest] || [])
+    .slice(0, 3);
+
+  if (matched.length > 0) return matched;
+
+  return [
+    {
+      title: "Plan local",
+      description:
+        "Descubre un plan interesante cerca de ti, basado en tus actividades.",
+    },
+    {
+      title: "Restaurante recomendado",
+      description: "Una zona gastronómica con opciones para tus gustos.",
+    },
+  ];
+};
+
 const renderStatus = () => `
     <div class="mobile-sensor-active">
         <div class="radar-animation"></div>
@@ -69,6 +168,54 @@ export class MobileUI extends BaseUI {
   constructor(container) {
     super(container);
     this.pendingStack = [];
+    this.profile = null;
+    this.location = null;
+    this.locationError = null;
+  }
+
+  setUserProfile(profile) {
+    this.profile = profile;
+  }
+
+  async requestLocation() {
+    if (!navigator.geolocation) {
+      this.locationError = "Tu navegador no soporta geolocalización.";
+      this.render(null, "stack");
+      return;
+    }
+
+    this.locationError = null;
+    const onSuccess = (position) => {
+      this.location = position;
+      this.render(null, "stack");
+    };
+
+    const onError = (error) => {
+      this.locationError = error.message;
+      this.location = null;
+      this.render(null, "stack");
+    };
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 60000,
+    });
+  }
+
+  getLocationLabel() {
+    if (this.location) {
+      const { latitude, longitude } = this.location.coords;
+      return `Lat: ${latitude.toFixed(5)} · Lon: ${longitude.toFixed(5)}`;
+    }
+    return "Pulsa para obtener tu ubicación";
+  }
+
+  getRecommendations() {
+    if (!this.profile || !Array.isArray(this.profile.interests)) {
+      return buildRecommendations([]);
+    }
+    return buildRecommendations(this.profile.interests);
   }
 
   /**
@@ -86,7 +233,12 @@ export class MobileUI extends BaseUI {
       case "stack":
         // Si data es un array, lo guardamos como la pila actual
         if (Array.isArray(data)) this.pendingStack = data;
-        content = renderUserStack(this.pendingStack[0]);
+        content = renderUserStack(
+          this.pendingStack[0],
+          this.getRecommendations(),
+          this.getLocationLabel(),
+          this.locationError,
+        );
         break;
       case "sensor":
         content = renderStatus();
@@ -105,6 +257,11 @@ export class MobileUI extends BaseUI {
         `;
 
     this.renderTemplate(html);
+
+    if (viewType === "stack" && !this.pendingStack[0]) {
+      this.addEvent(".location-btn", "click", () => this.requestLocation());
+      this.addEvent(".refresh-btn", "click", () => this.render(null, "stack"));
+    }
   }
 
   // Método para avanzar en la pila cuando se hace un gesto en el móvil

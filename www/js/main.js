@@ -27,6 +27,7 @@ const userData = {
   name: "Laura",
   photo: "https://i.pravatar.cc/150",
   phone: "600111222",
+  interests: ["Películas", "Música", "Senderismo"],
 };
 if (isWatch) {
   const watchUI = new WatchUI(container);
@@ -59,6 +60,7 @@ if (isWatch) {
   });
 } else {
   const mobileUI = new MobileUI(container); // Pasamos el elemento, no solo el ID
+  mobileUI.setUserProfile(userData);
   uiRouter.setInterface(mobileUI);
 
   // 1. Mostramos pantalla de Inicio (Face ID)
