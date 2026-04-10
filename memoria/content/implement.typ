@@ -64,14 +64,42 @@ La selección de dichos gestos, a parte de por la facilidad, naturalidad y discr
 
 === Control de funciones principales 
 
+
+
 === Salida o confirmación. - REPASAR !!!!!!!
-Para salir completamente de la aplicación porque el usuario no quiere estar conectado, ni aparecer a otros usuarios cuando está en un determinado sitio hemos decidido que la salida se produzca al agitar. 
+Para salir completamente de la aplicación porque el usuario no quiere estar conectado, ni aparecer a otros usuarios hemos decidido que el gesto empleado sea *gesto*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
+
 // ahora definimos mejor esto y cuando veamos bien los gestos hago imagenes y explico mejor los movimientos 
 
+El flujo de uso de las funcionalidades principales es el que se muestra en el siguiente automata:
+
+// aqui tengo que añadir un automata 
 
 === Funcionalidaded adicionales
 Además de lo indicado en el apartado anterior, hemos desarrollado tres funcionalidades adicionales que están planteadas para mejorar el uso o porque son cuestiones que, aunque no se plantearan en el proceso de ideación, nos parecía interesante añadir como posibles usuarios de una aplicación como la que estamos desarrollando. 
+
 ==== Modo bloqueo 
+Entendemos que como usuarios no siempre vamos a querer estar pegados mirando el reloj pero eso no hace que no queramos seguir almacenando a gente con la que nos hemo cruzado o que ha estado en ambientes similares a los nuestros. Por ello, como nuestra principal funcionalidad adicional hemos desarrollado el _modo bloqueo_. 
+
+El modo bloqueo permite que mientras el usuario no tiene el reloj se almacenen aquellas personas con las que se ha cruzado o que han estado cerca suyo y que tienen gustos similares a los suyos. Estas personas se almacenan y cuando el usuario coge su dispositivo móvil estas le aparecen en él y puede seguir realizando conexiones con ellas. 
+
+Esta funcionalidad se decidió con la ayuda de nuestro profesor Roberto. El caso de uso más claro que nos imaginamos es el de un usuario que justo vuelve a casa y al subir al ascensor coge su teléfono movil y, de esta manera, puede ver a personas similares del sitio del que viene. Además, en nuestro caso, es algo muy cotidiano y natural volver de un sitio social o un plan y utilizar el móvil nada más llegar a casa o en el camino a casa. 
+
+===== Gestos del modo bloqueo 
+Los gestos, se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa cuando se identifica que el reloj ha dejado de ser usado y mirado por el usuario. Es decir, cuando el usuario baja la mano, se activa el modo bloqueo a no ser que explicitamente el usuario decida salir completamente de la aplicación. 
+
+Una vez activado el modo bloqueo, este se desactivará si el usuario vuelve a levantar el reloj. 
+
+Las personas que se han almacenado se mostrarán usando reconocimiento facial si se identifica que el usuario ha levantado el telefono. 
+
+En cuanto a mostrar las personas, los movimientos que se realizan son practicamente idénticos a los que se realizan con el reloj. Para cerrar la aplicación completamente y dejar de mostrar a las personas se *gesto*, para pasar personas y conectar con ellos se realizan exactamente los mismos gestos que hemos definido en el modo normal. 
+
+Utilizamos los mismos gestos ya que estos facilitan enormemente el tiempo de aprendizaje de uso de la aplicación y hacen que el usuario tenga que realizar un esfuerzo menor por memorizarlos, pues sabemos que el número de cosas a memorizar para usar una aplicación es limitado. 
+
+En el siguiente automata podemos ver el funcionamiento exacto del modo bloqueo. 
+
+// automata para funcionamiento 
+
 
 ==== Bloqueo de usuarios 
 Como en cualquier aplicación social en la que hay usuarios, debe haber una posibilidad de poder bloquear a usuarios a los que no quieres ver y que no quieres que te vean en la app. 
