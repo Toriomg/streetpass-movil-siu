@@ -61,10 +61,18 @@ En nuestro caso, la navegación y la selección se produce de manera muy similar
 
 La selección de dichos gestos, a parte de por la facilidad, naturalidad y discrección de los mismos, se ha producido por sus similitud con otras aplicaciones del mismo tipo, como ya hemos mencionado al comienzo de la sección. Al ser una aplicación con gestos, entendemos que la fricción de uso es mayor, pues el usuario debe memorizar los gestos para su correcta utilización. Por ello, y con la intención de reducir la dificultad y el tiempo de aprendizaje del usuario, consideramos que hacerlo lo más similar posible a las opciones cotidianas y ya conocidas por los usuarios era vital para facilitar el uso y hacer la aplicación más atractiva a nuevos usuarios. 
 
+Además, la decisión de hacer la navegación hacia la derecha y la selección hacia la izquierda se han tomado por comodidad gestual. Entendemos que hay una mayoría de personas distras respecto a zurdas, por lo que el usuario promedio será diestro. Para un usuario diestro, es más comodo hacer el movimiento a la derecha que a la izquierda, dado que se pasa más tiempo navegando que seleccionando, el gesto más comodo debe ser el mayoritario. 
 
-=== Control de funciones principales 
 
+=== Control de funcionalidades principales 
+La idea con nuestra aplicación es que el usuario pueda conectar con otros usarios. Por ello, el usuario tiene que poder *conocer, conectar, aceptar solicitudes de conexión y rechazar solicitudes de conexion*. 
 
+Para reducir el número de gestos, que es una cuestión que nos hemos propuesto de manera muy explicita durante el diseño de la aplicación para facilitar el aprendizaje de uso, el número de gestos nuevos que se asocian a estas acciones es muy bajo. 
+
+- *Conocer* se corresponde con la navegación que hemos definido en el apartado anterior, es decir movimiento del teléfono hacia la *derecha*.
+- Para *conectar* con alguien, también mantenemos el movimiento hacia la *izquierda*. 
+- *La aceptación de solicitudes de conexión* se hará también con el gesto de conexión, *giro a la izquierda*, como si se tratara de una selección. De esta manera, se mantiene la misma intuición de _aceptar = movimiento izquierdo_ y se permite que el usuario no tenga que aprender muchos gestos. 
+- De la misma manera, el gesto definido para *rechazar solicitudes* es el de navegación *hacia la derecha*, esencialmente, porque te devuelve a la navegación general de la aplicación, volviendo a mostrarte a las personas y a las pantallas y secciones principales de la aplicación. 
 
 === Salida o confirmación. - REPASAR !!!!!!!
 Para salir completamente de la aplicación porque el usuario no quiere estar conectado, ni aparecer a otros usuarios hemos decidido que el gesto empleado sea *gesto*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
@@ -73,7 +81,7 @@ Para salir completamente de la aplicación porque el usuario no quiere estar con
 
 El flujo de uso de las funcionalidades principales es el que se muestra en el siguiente automata:
 
-// aqui tengo que añadir un automata 
+// automata del funconamiento total de las funcionalidades principales
 
 === Funcionalidaded adicionales
 Además de lo indicado en el apartado anterior, hemos desarrollado tres funcionalidades adicionales que están planteadas para mejorar el uso o porque son cuestiones que, aunque no se plantearan en el proceso de ideación, nos parecía interesante añadir como posibles usuarios de una aplicación como la que estamos desarrollando. 
@@ -111,7 +119,7 @@ En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos
 
 En nuestro caso hemos establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
-// imagen del cambio de rango !!!
+// imagen del cambio de rango
 
 Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
