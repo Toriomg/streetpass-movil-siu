@@ -27,27 +27,7 @@ En general, hemos intenado mantener la interfaz lo más sencilla posible, manten
 
 Hemos intentado mantener una interfaz lo más sencilla y funcional posible, minimizando el texto y haciendo que la información relevante, como imagenes o texto aparezca lo suficientemente grande como para ser legible en un dispositivo pequeño como lo es un _smartwatch_. 
 
-Por otro lado, hemos diseñado interfaces para el movil. Esto se debe a que nuestra funcionalidad adicional es poder ver las personas con las que te has cruzado mientras tienes desactivada la aplicación (_el modo silencio_). De esta manera, al coger el telefono, puedes acceder mediante reconocimiento facial a las personas que no has visto con el reloj. 
-#grid(
-  columns: 2,
-  image("../../docs/interfaces/movil_inicio.png", width: 60%),
-  image("../../docs/interfaces/movil_navegacion.png", width: 60%),
-  )
-
-Como se puede ver, la interfaz es una réplica adaptada a otro dispositivo de la que encontramos en las interfaces principales del reloj. Como veremos a continuación, el uso será el mismo.
-
-== Descripción y Justificación de las Interacciones Implementadas
-
-=== Recomendación de personas con gustos similares
-=== Lo del tinder que ns como se llama
-=== Funcionalidaded adicionales
-#h(2.2em) A continuación, se desarrollarán las funcionalidades adicionales implementadas.
-==== Bloqueo de Personas
-==== Recomendación de sitios concurridos para conocer personas
-==== Gestión de Amigos
-
-// Luego explica como se divide las pantallas y como funciona el programa
-Las pantallas del reloj se componen de lo siguiente:
+En el siguiente automata, se puede observar el funcionamiento y el cambio de pantallas en base a la interacción del usuario: 
 #automaton((
   "Reloj": ("Info": none, "Perfil": none),
   "Perfil": ("Match": none),
@@ -55,5 +35,40 @@ Las pantallas del reloj se componen de lo siguiente:
   "Conexión": (),
   "Info": ("Reloj": none),
 ))
+
+Por otro lado, hemos diseñado interfaces para el movil. Esto se debe a que nuestra funcionalidad adicional es poder ver las personas con las que te has cruzado mientras tienes desactivada la aplicación (_el modo silencio_). De esta manera, al coger el telefono, puedes acceder mediante reconocimiento facial a las personas que no has visto con el reloj. 
+#grid(
+  columns: 2,
+  image("../../docs/interfaces/movil_inicio.png", width: 55%),
+  image("../../docs/interfaces/movil_navegacion.png", width: 55%),
+  )
+
+Como se puede ver, la interfaz es una réplica adaptada a otro dispositivo de la que encontramos en las interfaces principales del reloj. Como veremos a continuación, el uso será el mismo.
+
+Otro apunte relevante, es que el soporte con explicaciones acerca del uso, getsos y funcionalidades de la aplicación se encontrarán en estas pantallas del movil, ya que resultan más simples y cómodas para el usuario. 
+
+== Descripción y Justificación de las Interacciones Implementadas
+Como ya hemos visto en el diseño de la interfaz, para nosotros, la funcionalidad y la comodidad del usuario cuando se haga uso de la aplicación es un pilar fundamental. 
+
+Por ello, a continuación describiremos debidamente los gestos seleccionados para las diferentes funcionalidades presentadas por nuestra aplicación. 
+
+Un apunte relevante sobre los gestos que se describen en esta sección se plantean de modo que el usuario tenga ccogido el teléfono desde el bolsillo del pantalón o cerca. De esta manera, el usuario puede hacer los gestos de manera discreta, como ya habiamos mencionado con anterioridad.
+
+=== Navegación y selección. 
+En nuestro caso, la navegación y la selección se produce de manera muy similar a la de otras aplicaciones de conocimiento de personas como _Tinder_, salvo que en este caso, se sustituye cuaquier interacción con la pantalla por un gesto. 
+
+*La navegación*, consiste en el paso de personas cercanas, para ello, hemos decidido el movimiento del teléfono *hacia la derecha*. La selección, consiste en querer conectar con alguno de los usuarios tras navegar por ellos, por lo que la *selección* se hace con el movimiento del teléfono *hacia la izquierda*. Cualquier otra selección o confirmación, como cuando eliges confirmar una conexión realizada por otra persona, para acceder a su información de contacto. 
+
+=== Control de funciones principales 
+
+=== Salida o confirmación.
+
+=== Funcionalidaded adicionales
+#h(2.2em) A continuación, se desarrollarán las funcionalidades adicionales implementadas.
+==== Bloqueo de Personas
+==== Recomendación de sitios concurridos para conocer personas
+==== Gestión de Amigos
+
+
 == Videos que Muestran el Prototipo en Funcionamiento
 #h(2.2em)Los correspondientes vídeos realizados demostrando el correcto funcionamiento del prototipo creado se encuentran en Youtube@videos_yutu1.
