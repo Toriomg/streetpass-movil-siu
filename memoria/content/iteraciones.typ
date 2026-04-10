@@ -5,3 +5,5 @@
 #h(2.2em)
 == Nuevas Ideas generadas
 #h(2.2em)
+
+// las alternativas

@@ -123,5 +123,10 @@ En nuestro caso hemos establecido que el rango radial de búsqueda del usuario s
 
 Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
+==== Recomendación de actividades
+
+
 == Videos que Muestran el Prototipo en Funcionamiento
 #h(2.2em)Los correspondientes vídeos realizados demostrando el correcto funcionamiento del prototipo creado se encuentran en Youtube@videos_yutu1.
+
+// nuestra solución final 
