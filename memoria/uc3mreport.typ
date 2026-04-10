@@ -47,7 +47,7 @@
 
   // authors
   #{
-    set text(20pt)
+    set text(15pt)
     for author in authors [
       #author.name #author.surname ---
       #link("mailto:" + str(author.nia) + "@alumnos.uc3m.es")[#author.nia]\
@@ -164,7 +164,7 @@
   /* TEXT */
   set text(size: 12pt, lang: language)
 
-  set par(leading: 0.65em, spacing: 1em, first-line-indent: 24pt, justify: true)
+  set par(leading: 0.65em, spacing: 1em, first-line-indent: 0pt, justify: true)
   
 
   /* HEADINGS */
