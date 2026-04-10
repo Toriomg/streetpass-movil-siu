@@ -39,8 +39,8 @@ En el siguiente automata, se puede observar el funcionamiento y el cambio de pan
 Por otro lado, hemos diseñado interfaces para el movil. Esto se debe a que nuestra funcionalidad adicional es poder ver las personas con las que te has cruzado mientras tienes desactivada la aplicación (_el modo silencio_). De esta manera, al coger el telefono, puedes acceder mediante reconocimiento facial a las personas que no has visto con el reloj. 
 #grid(
   columns: 2,
-  image("../../docs/interfaces/movil_inicio.png", width: 55%),
-  image("../../docs/interfaces/movil_navegacion.png", width: 55%),
+  align(center, image("../../docs/interfaces/movil_inicio.png", width: 45%)),
+  align(center, image("../../docs/interfaces/movil_navegacion.png", width: 45%)),
   )
 
 Como se puede ver, la interfaz es una réplica adaptada a otro dispositivo de la que encontramos en las interfaces principales del reloj. Como veremos a continuación, el uso será el mismo.
@@ -59,16 +59,33 @@ En nuestro caso, la navegación y la selección se produce de manera muy similar
 
 *La navegación*, consiste en el paso de personas cercanas, para ello, hemos decidido el movimiento del teléfono *hacia la derecha*. La selección, consiste en querer conectar con alguno de los usuarios tras navegar por ellos, por lo que la *selección* se hace con el movimiento del teléfono *hacia la izquierda*. Cualquier otra selección o confirmación, como cuando eliges confirmar una conexión realizada por otra persona, para acceder a su información de contacto. 
 
+La selección de dichos gestos, a parte de por la facilidad, naturalidad y discrección de los mismos, se ha producido por sus similitud con otras aplicaciones del mismo tipo, como ya hemos mencionado al comienzo de la sección. Al ser una aplicación con gestos, entendemos que la fricción de uso es mayor, pues el usuario debe memorizar los gestos para su correcta utilización. Por ello, y con la intención de reducir la dificultad y el tiempo de aprendizaje del usuario, consideramos que hacerlo lo más similar posible a las opciones cotidianas y ya conocidas por los usuarios era vital para facilitar el uso y hacer la aplicación más atractiva a nuevos usuarios. 
+
+
 === Control de funciones principales 
 
-=== Salida o confirmación.
+=== Salida o confirmación. - REPASAR !!!!!!!
+Para salir completamente de la aplicación porque el usuario no quiere estar conectado, ni aparecer a otros usuarios cuando está en un determinado sitio hemos decidido que la salida se produzca al agitar. 
+// ahora definimos mejor esto y cuando veamos bien los gestos hago imagenes y explico mejor los movimientos 
+
 
 === Funcionalidaded adicionales
-#h(2.2em) A continuación, se desarrollarán las funcionalidades adicionales implementadas.
-==== Bloqueo de Personas
-==== Recomendación de sitios concurridos para conocer personas
-==== Gestión de Amigos
+Además de lo indicado en el apartado anterior, hemos desarrollado tres funcionalidades adicionales que están planteadas para mejorar el uso o porque son cuestiones que, aunque no se plantearan en el proceso de ideación, nos parecía interesante añadir como posibles usuarios de una aplicación como la que estamos desarrollando. 
+==== Modo bloqueo 
 
+==== Bloqueo de usuarios 
+Como en cualquier aplicación social en la que hay usuarios, debe haber una posibilidad de poder bloquear a usuarios a los que no quieres ver y que no quieres que te vean en la app. 
+
+Para ello, hemos añadido un gesto de bloqueo como funcionalidad adicional a las principales de la aplicación. Cuando, mientras navegas por las personas cercanas, te aparece una persona a la que quieres bloquear, en vez de hacer el movimiento a derecha o a izquierda (navegación o selección) el movimiento que se realiza es hacia *arriba*. 
+
+==== Ampliar rango de búsqueda de personas 
+En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos usuarios. Para ello, hemos añadido una funcionalidad adicional en la que se permite al usuario ampliar el rango de búsqueda de personas cercanas, para salirle a personas que están más lejos y que a el le salgan personas también más lejanas. 
+
+En nuestro caso hemos establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
+
+// imagen del cambio de rango !!!
+
+Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
 == Videos que Muestran el Prototipo en Funcionamiento
 #h(2.2em)Los correspondientes vídeos realizados demostrando el correcto funcionamiento del prototipo creado se encuentran en Youtube@videos_yutu1.
