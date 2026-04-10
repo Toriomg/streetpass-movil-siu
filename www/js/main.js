@@ -4,6 +4,7 @@ import { MobileUI } from "./modules/ui/mobileUI.js";
 import { socketManager } from "./core/socketManager.js";
 import { uiRouter } from "./core/uiRouter.js";
 
+import { initGestures } from './modules/gestures.js';
 // EXPONER PARA PRUEBAS (Solo para desarrollo)
 // TODO: quitar esto
 window.sm = socketManager;
@@ -77,23 +78,24 @@ const initializeUI = () => {
       uiRouter.navigate("stack", users);
     });
 
-socketManager.on("gesture:received", (data) => {
-  // Si estamos en casa, el Router le pasa el gesto a HomeUI
-  // (HomeUI debe tener lógica para procesar gestos dentro de su render o similar)
-  if (!isWatch) {
-    // Aquí podrías llamar a un método de homeInterface directamente
-    // o hacer que el router gestione el cambio de carta
-    uiRouter.activeInterface.processGesture(data.type);
+    socketManager.on("gesture:received", (data) => {
+      // Si estamos en casa, el Router le pasa el gesto a HomeUI
+      // (HomeUI debe tener lógica para procesar gestos dentro de su render o similar)
+      if (!isWatch) {
+        // Aquí podrías llamar a un método de homeInterface directamente
+        // o hacer que el router gestione el cambio de carta
+        uiRouter.activeInterface.processGesture(data.type);
+      }
+    });
+
+    const socket = io();
+    initGestures(socket);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("App lista y conectada al socket");
+
+      setupSensors(socket);
+    });
+
   }
-});
-
-import { initGestures } from './modules/gestures.js';
-const socket = io();
-initGestures(socket);
-
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("App lista y conectada al socket");
-
-  setupSensors(socket);
-});
-
+}
