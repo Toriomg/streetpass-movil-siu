@@ -86,6 +86,11 @@ El flujo de uso de las funcionalidades principales es el que se muestra en el si
 === Funcionalidaded adicionales
 Además de lo indicado en el apartado anterior, hemos desarrollado tres funcionalidades adicionales que están planteadas para mejorar el uso o porque son cuestiones que, aunque no se plantearan en el proceso de ideación, nos parecía interesante añadir como posibles usuarios de una aplicación como la que estamos desarrollando. 
 
+==== Bloqueo de usuarios 
+Como en cualquier aplicación social en la que hay usuarios, debe haber una posibilidad de poder bloquear a usuarios a los que no quieres ver y que no quieres que te vean en la app. 
+
+Para ello, hemos añadido un gesto de bloqueo como funcionalidad adicional a las principales de la aplicación. Cuando, mientras navegas por las personas cercanas, te aparece una persona a la que quieres bloquear, en vez de hacer el movimiento a derecha o a izquierda (navegación o selección) el movimiento que se realiza es hacia *arriba*. 
+
 ==== Modo bloqueo 
 Entendemos que como usuarios no siempre vamos a querer estar pegados mirando el reloj pero eso no hace que no queramos seguir almacenando a gente con la que nos hemo cruzado o que ha estado en ambientes similares a los nuestros. Por ello, como nuestra principal funcionalidad adicional hemos desarrollado el _modo bloqueo_. 
 
@@ -108,11 +113,10 @@ En el siguiente automata podemos ver el funcionamiento exacto del modo bloqueo.
 
 // automata para funcionamiento 
 
+==== Recomendación de actividades
+Además, se van a utilizar los gustos introducidos por los usuarios de modo que se pueda, además de enseñar a personas cercanas con gustos similares, mostrar lugares que puedan ser de interés para hacer planes. Ya sean museos, restaurantes, o cualquier sitio cercano que pueda interesar al usuario en base a sus gustos. 
 
-==== Bloqueo de usuarios 
-Como en cualquier aplicación social en la que hay usuarios, debe haber una posibilidad de poder bloquear a usuarios a los que no quieres ver y que no quieres que te vean en la app. 
-
-Para ello, hemos añadido un gesto de bloqueo como funcionalidad adicional a las principales de la aplicación. Cuando, mientras navegas por las personas cercanas, te aparece una persona a la que quieres bloquear, en vez de hacer el movimiento a derecha o a izquierda (navegación o selección) el movimiento que se realiza es hacia *arriba*. 
+Los sitios cercanos aparecerán del mismo modo que las personas y con ellos no puede hacerse nada más que la navegación normal. 
 
 ==== Ampliar rango de búsqueda de personas 
 En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos usuarios. Para ello, hemos añadido una funcionalidad adicional en la que se permite al usuario ampliar el rango de búsqueda de personas cercanas, para salirle a personas que están más lejos y que a el le salgan personas también más lejanas. 
@@ -123,12 +127,7 @@ En nuestro caso hemos establecido que el rango radial de búsqueda del usuario s
 
 Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
-==== Recomendación de actividades
-Además, se van a utilizar los gustos introducidos por los usuarios de modo que se pueda, además de enseñar a personas cercanas con gustos similares, mostrar lugares que puedan ser de interés para hacer planes. Ya sean museos, restaurantes, o cualquier sitio cercano que pueda interesar al usuario en base a sus gustos. 
-
-Los sitios cercanos aparecerán del mismo modo que las personas y con ellos no puede hacerse nada más que la navegación normal. 
-
 == Videos que Muestran el Prototipo en Funcionamiento
-#h(2.2em)Los correspondientes vídeos realizados demostrando el correcto funcionamiento del prototipo creado se encuentran en Youtube@videos_yutu1.
+Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente lista de youtube: *aquí iría el link*
 
 // nuestra solución final 
