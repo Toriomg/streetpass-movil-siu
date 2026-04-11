@@ -1,7 +1,7 @@
 = Prototipado Experiencial
-== Descripción de las sesiones realizadas
-#h(2.2em)
-== Reflexión sobre cómo influyeron en la implementación del prototipo
-#h(2.2em)
+== Descripción de las sesiones realizadas y reflexiones al respcto 
+Para establecer debidamente el funcionamiento de la aplicación, realizamos diferente ssesiones para evaluar ideas de funcionamiento del prototipo desarrollado. 
+
+
+
 == Vídeos de las sesiones de prototipado y análisis de los hallazgos obtenidos
-#h(2.2em)Los correspondientes vídeos realizados demostrando el correcto funcionamiento del prototipo creado se encuentran en Youtube@videos_yutu2.
