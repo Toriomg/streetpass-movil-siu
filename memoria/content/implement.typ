@@ -74,10 +74,11 @@ Para reducir el número de gestos, que es una cuestión que nos hemos propuesto 
 - *La aceptación de solicitudes de conexión* se hará también con el gesto de conexión, *giro a la izquierda*, como si se tratara de una selección. De esta manera, se mantiene la misma intuición de _aceptar = movimiento izquierdo_ y se permite que el usuario no tenga que aprender muchos gestos. 
 - De la misma manera, el gesto definido para *rechazar solicitudes* es el de navegación *hacia la derecha*, esencialmente, porque te devuelve a la navegación general de la aplicación, volviendo a mostrarte a las personas y a las pantallas y secciones principales de la aplicación. 
 
-=== Salida o confirmación. - REPASAR !!!!!!!
-Para salir completamente de la aplicación porque el usuario no quiere estar conectado, ni aparecer a otros usuarios hemos decidido que el gesto empleado sea *gesto*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
+=== Salida o confirmación. 
+Para salir completamente de la aplicación porque el usuario no quiere estar conectado, ni aparecer a otros usuarios hemos decidido que el gesto empleado sea *dar dos golpes al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
 
-// ahora definimos mejor esto y cuando veamos bien los gestos hago imagenes y explico mejor los movimientos 
+Es un gesto completamente diferenciado de los anteriores y esto hace que se eviten posibles errores y salidas no intencionadas por parte de los usuarios. Una cosa muy útil en una aplicación como es la nuestra. Además, es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. 
+
 
 El flujo de uso de las funcionalidades principales es el que se muestra en el siguiente automata:
 
