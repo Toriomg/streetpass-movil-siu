@@ -36,6 +36,16 @@ const initializeUI = () => {
     uiRouter.navigate("watch", userProfile);
     socketManager.identifyDevice("watch");
 
+    // Botón de demo: simular que alguien se acerca para los videos
+    const debugPanel = document.getElementById("debug-panel");
+    const triggerBtn = document.createElement("button");
+    triggerBtn.textContent = "Simular persona cercana";
+    triggerBtn.style.marginLeft = "8px";
+    triggerBtn.addEventListener("click", () => {
+      socketManager.emit("user:nearby:trigger");
+    });
+    debugPanel.appendChild(triggerBtn);
+
     // Persona cercana detectada → mostrar perfil
     socketManager.on("user:nearby", (userData) => {
       currentUser = userData;
