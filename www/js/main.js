@@ -36,8 +36,10 @@ const initializeUI = () => {
     uiRouter.navigate("watch", userProfile);
     socketManager.identifyDevice("watch");
 
-    // Botón de demo: simular que alguien se acerca para los videos
+    // ── Panel de simulación (solo en el reloj) ──────────────────
     const debugPanel = document.getElementById("debug-panel");
+
+    // Botón manual: una persona aparece al pulsar
     const triggerBtn = document.createElement("button");
     triggerBtn.textContent = "Simular persona cercana";
     triggerBtn.style.marginLeft = "8px";
@@ -45,6 +47,34 @@ const initializeUI = () => {
       socketManager.emit("user:nearby:trigger");
     });
     debugPanel.appendChild(triggerBtn);
+
+    // Botón auto-trigger: aparece una persona cada 12 segundos
+    let autoInterval = null;
+    const autoBtn = document.createElement("button");
+    autoBtn.textContent = "Auto OFF";
+    autoBtn.style.marginLeft = "8px";
+    autoBtn.addEventListener("click", () => {
+      if (autoInterval) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+        autoBtn.textContent = "Auto OFF";
+      } else {
+        socketManager.emit("user:nearby:trigger"); // disparo inmediato
+        autoInterval = setInterval(() => {
+          socketManager.emit("user:nearby:trigger");
+        }, 12000);
+        autoBtn.textContent = "Auto ON (12s)";
+      }
+    });
+    debugPanel.appendChild(autoBtn);
+
+    // Atajo de teclado: Espacio = siguiente persona (útil al grabar)
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space" && e.target.tagName !== "BUTTON") {
+        e.preventDefault();
+        socketManager.emit("user:nearby:trigger");
+      }
+    });
 
     // Persona cercana detectada → mostrar perfil
     socketManager.on("user:nearby", (userData) => {

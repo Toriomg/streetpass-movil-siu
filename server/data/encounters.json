@@ -64,11 +64,9 @@
       "id": 110,
       "name": "Alba",
       "telefono": "611777888",
-      "gustos": [
-        "Surf",
-        "Viajes",
-        "Fotografía"
-      ],
+      "phone": "611777888",
+      "gustos": ["Surf", "Viajes", "Fotografía"],
+      "interests": ["Senderismo", "Películas", "Gimnasio"],
       "photo": "https://i.pravatar.cc/600?u=110",
       "date": "4/7/2026, 6:43:14 PM"
     },
@@ -76,11 +74,9 @@
       "id": 103,
       "name": "Sara",
       "telefono": "655666777",
-      "gustos": [
-        "Gaming",
-        "Anime",
-        "Lectura"
-      ],
+      "phone": "655666777",
+      "gustos": ["Gaming", "Anime", "Lectura"],
+      "interests": ["Videojuegos", "Películas", "Lectura"],
       "photo": "https://i.pravatar.cc/600?u=103",
       "date": "4/7/2026, 6:42:41 PM"
     },
@@ -88,11 +84,9 @@
       "id": 101,
       "name": "Noa",
       "telefono": "611222333",
-      "gustos": [
-        "Música",
-        "Cine",
-        "Arte"
-      ],
+      "phone": "611222333",
+      "gustos": ["Música", "Cine", "Arte"],
+      "interests": ["Música", "Películas", "Derecho"],
       "photo": "https://i.pravatar.cc/600?u=101",
       "date": "4/7/2026, 6:37:21 PM"
     }
