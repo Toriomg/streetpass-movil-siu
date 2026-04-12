@@ -3,6 +3,12 @@ import { socketManager } from "../core/socketManager.js";
 // Estado actual del sistema, sincronizado con el servidor
 let currentMode = "active"; // "active" | "sleep" | "stack"
 
+let externalCooldownUntil = 0;
+
+export function lockGestures(ms) {
+  externalCooldownUntil = Date.now() + ms;
+}
+
 export function initGestures() {
   const btn = document.getElementById("start-sensors");
 
@@ -12,20 +18,23 @@ export function initGestures() {
     console.log(`[Gestures] Modo actualizado a: ${mode}`);
   });
 
-  btn.onclick = () => {
-    // iOS requiere permiso explícito para los sensores
-    if (
-      typeof DeviceOrientationEvent !== "undefined" &&
-      typeof DeviceOrientationEvent.requestPermission === "function"
-    ) {
+  const needsIOSPermission =
+    typeof DeviceOrientationEvent !== "undefined" &&
+    typeof DeviceOrientationEvent.requestPermission === "function";
+
+  if (needsIOSPermission) {
+    // iOS: el permiso solo se puede pedir desde un gesto del usuario
+    btn.style.display = "";
+    btn.onclick = () => {
       DeviceOrientationEvent.requestPermission().then((state) => {
         if (state === "granted") startListening();
       });
-    } else {
-      startListening();
-    }
-    btn.style.display = "none";
-  };
+      btn.style.display = "none";
+    };
+  } else {
+    // Android / otros: arrancar directamente sin interacción
+    startListening();
+  }
 
   function startListening() {
     console.log("[Gestures] Escuchando gestos...");
@@ -37,7 +46,7 @@ export function initGestures() {
     // ─────────────────────────────────────────────
     let lastTapTime = 0;
     document.addEventListener("touchstart", () => {
-      if (isCooldown) return;
+      // El doble toque ignora el cooldown — exit funciona siempre
       const now = Date.now();
       const delta = now - lastTapTime;
       if (delta < 300 && delta > 0) {
@@ -51,35 +60,40 @@ export function initGestures() {
 
     // ─────────────────────────────────────────────
     // INCLINACIÓN (deviceorientation)
-    //   • Inclinar derecha (gamma > 35) → nav (pasar)
-    //   • Inclinar izquierda (gamma < -35) → accept (conectar)
+    //   • Inclinar derecha (gamma > 55) → nav (pasar)
+    //   • Inclinar izquierda (gamma < -55) → accept (conectar)
     //   • Inclinar hacia arriba (beta < 45) → block (bloquear usuario)
     // ─────────────────────────────────────────────
+    let tiltActive = false; // true mientras el móvil sigue inclinado
+
     window.addEventListener("deviceorientation", (event) => {
-      if (isCooldown) return;
       const { gamma, beta } = event;
+      console.log(`[Orientation] beta=${beta?.toFixed(1)} gamma=${gamma?.toFixed(1)} cooldown=${isCooldown} tiltActive=${tiltActive} mode=${currentMode}`);
       if (gamma === null || beta === null) return;
 
-      // Prioridad 1: bloquear (beta bajo = pantalla apunta al techo)
-      // Solo en modo activo o stack (no cuando está en el bolsillo durmiendo)
-      if (
-        beta < 45 &&
-        Math.abs(gamma) < 25 &&
-        (currentMode === "active" || currentMode === "stack")
-      ) {
-        sendGesture("BLOQUEAR ⛔", "block");
-        activateCooldown(1500);
+      const isTilted = Math.abs(gamma) > 55;
+
+      // Esperar a que vuelva a posición neutral antes de aceptar otro gesto
+      if (!isTilted) {
+        tiltActive = false;
         return;
       }
 
-      // Prioridad 2: inclinación derecha / izquierda
-      if (gamma > 35) {
+      if (isCooldown || tiltActive || Date.now() < externalCooldownUntil) return;
+
+      tiltActive = true;
+      if (gamma > 55) {
         sendGesture("DERECHA →", "nav");
-        activateCooldown(500);
-      } else if (gamma < -35) {
+      } else {
+        const canVibrate = "vibrate" in navigator;
+        console.log(`[Vibrate] API disponible: ${canVibrate}`);
+        if (canVibrate) {
+          const ok = navigator.vibrate([80, 60, 80]);
+          console.log(`[Vibrate] resultado: ${ok}`);
+        }
         sendGesture("IZQUIERDA", "accept");
-        activateCooldown(500);
       }
+      activateCooldown(300);
     });
 
     // ─────────────────────────────────────────────
@@ -102,6 +116,7 @@ export function initGestures() {
       const totalAcc = Math.sqrt(
         (acc.x ?? 0) ** 2 + ay ** 2 + (acc.z ?? 0) ** 2,
       );
+      console.log(`[Motion] ay=${ay.toFixed(1)} total=${totalAcc.toFixed(1)} cooldown=${isCooldown} mode=${currentMode}`);
 
       // AGITAR — prioridad máxima (umbral alto, cooldown largo)
       if (totalAcc > 30 && !isCooldown) {
@@ -123,7 +138,7 @@ export function initGestures() {
           armGesture.peakAcc = Math.min(armGesture.peakAcc, ay);
           const elapsed = now - armGesture.startTime;
 
-          if (elapsed > 350 && currentMode === "sleep") {
+          if (elapsed > 550 && currentMode === "sleep") {
             const isSharpPull = armGesture.peakAcc < -20;
             if (isSharpPull) {
               sendGesture("VER PERSONAS", "stack-open");

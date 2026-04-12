@@ -53,15 +53,6 @@ module.exports = function (io) {
         case "nav":
           socket.currentEncounter = null;
           io.to(userID).emit("gesture:received", { type: "nav" });
-
-          // En modo activo, buscar automáticamente la siguiente persona
-          if (socket.mode === "active") {
-            const next = dataManager.getRandomMockUser(userID);
-            if (next) {
-              socket.currentEncounter = next;
-              io.to(userID).emit("user:nearby", next);
-            }
-          }
           break;
 
         // ── BLOQUEAR USUARIO ────────────────────

@@ -23,8 +23,8 @@ const renderProfile = (data) => {
   const interestsHtml = data.interests
     .map(
       (interest) => `
-        <img src="assets/icons/${interest}.svg" 
-             class="interest-icon" 
+        <img src="assets/icons/${interest}.svg"
+             class="interest-icon"
              alt="${interest}">
       `,
     )
@@ -33,6 +33,7 @@ const renderProfile = (data) => {
   return `
     <div class="profile-card">
         <img src="${data.photo}" alt="Perfil" class="profile-img">
+        <div class="swipe-indicator" id="swipe-indicator"></div>
     </div>
     <div class="info-section">
         <p class="match-text">A ${data.name} le gusta:</p>
@@ -75,9 +76,29 @@ const renderMessage = (data) => `
     </div>
 `;
 
+const renderClosed = () => `
+    <div class="watch-header">
+        <span class="watch-time watch-time-large" id="watch-time">00:00</span>
+    </div>
+    <div class="closed-indicator">
+        <span class="closed-dot"></span>
+        App cerrada
+    </div>
+`;
+
 export class WatchUI extends BaseUI {
   constructor(container) {
     super(container); // Le pasamos el contenedor a la clase padre (BaseUI)
+  }
+
+  showSwipeIndicator(type, callback) {
+    const el = document.getElementById("swipe-indicator");
+    if (!el) { callback(); return; }
+
+    el.className = "swipe-indicator " + (type === "accept" ? "swipe-accept" : "swipe-reject");
+    el.textContent = type === "accept" ? "LIKE" : "NOPE";
+
+    setTimeout(callback, 600);
   }
 
   // Ya no necesitamos pasar el 'container' por parámetro porque lo tiene el padre
@@ -102,6 +123,9 @@ export class WatchUI extends BaseUI {
       case "message":
         content = renderMessage(data);
         showHeader = true;
+        break;
+      case "closed":
+        content = renderClosed();
         break;
       default: // Default el reloj
         content = renderWatch(data);
@@ -134,7 +158,7 @@ export class WatchUI extends BaseUI {
       });
     }
 
-    if (showHeader || viewType == "watch") {
+    if (showHeader || viewType === "watch" || viewType === "closed") {
       startClock();
     }
   }
