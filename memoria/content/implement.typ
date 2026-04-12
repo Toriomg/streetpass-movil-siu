@@ -179,7 +179,7 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
       "Bloqueo": (4, 0),
     ),
   ),
-  caption: [Máquina de estados del funcionamiento en modo bloqueo y transición a perfiles.]
+  caption: [Máquina de estados del funcionamiento con modo bloqueo.]
 )<bloquo>
 
 ==== Recomendación de actividades
