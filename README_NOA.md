@@ -147,6 +147,99 @@ streetpass-movil-siu/
 
 ---
 
+## Pendientes
+
+### Código — bugs y mejoras necesarias
+
+- **Foto propia hardcodeada en la pantalla de conexión** — `watchUI.js:64` usa siempre
+  `https://i.pravatar.cc/300` en vez de la foto real del usuario logueado. Hay que pasarle
+  `userProfile.photo`.
+
+- **Indicadores visuales de la pila invertidos** — `mobileUI.js:47-49` muestra
+  `"← Rechazar | Aceptar →"`, pero el gesto real es inclinar a la **izquierda** para aceptar
+  y a la **derecha** para pasar (`gestures.js:76-82`). O bien se corrige el texto, o se
+  cambia el mapping del swipe táctil (`mobileUI.js:261-265`) para que sea coherente.
+
+- **Modo bloqueo no acumula personas** — durante el modo `sleep` el servidor sí puede
+  disparar `user:nearby:trigger`, pero nadie llama a `saveEncounter` mientras `socket.mode`
+  es `"sleep"`. Al abrir la pila (`stack-open`) solo aparecen conexiones ya aceptadas
+  previamente, no personas "vistas de lejos". Hay que guardar automáticamente el encuentro
+  en el servidor cuando llega un `user:nearby` y el modo es `sleep`.
+
+- **`package.json` sin script `start`** — para arrancar el proyecto hay que recordar
+  `node server/index.js`. Añadir `"start": "node server/index.js"` en los scripts facilita
+  tanto la entrega como el README exigido por el enunciado.
+
+- **`index.js` raíz no se usa** — hay un `index.js` en la raíz del repo que arranca un
+  servidor antiguo (sin módulos) apuntando a `www/` y escuchando en el puerto 3000. Es
+  confuso y puede lanzarse por error. Eliminar o dejar solo `server/index.js`.
+
+- **Dependencia de internet para las fotos** — `dataManager.js:53` y `:63` usan
+  `i.pravatar.cc`. Si no hay red la UI se queda sin imágenes. Valorar usar fotos locales en
+  `www/assets/` al menos para la demo.
+
+- **Botón de ayuda `?` con los gestos** — el TODO.md y el enunciado lo mencionan
+  explícitamente ("muy importante para el profe"). Falta un botón en ambas pantallas
+  (reloj y móvil) que abra un modal con la tabla de gestos.
+
+- **Feedback háptico** — no hay ninguna llamada a `navigator.vibrate()`. Añadir vibración
+  al recibir un match y al reconocer un gesto mejora la experiencia y sube la nota en la
+  rúbrica de interacción.
+
+- **Transiciones CSS entre pantallas** — cada llamada a `uiRouter.navigate()` sustituye el
+  DOM sin animación. Añadir un fade o scale en `baseUI.js` hace la demo mucho más fluida.
+
+- **Reconocimiento facial (FaceAPI) no implementado** — la memoria lo cita en §3.1.2 como
+  mecanismo para identificar que el usuario ha sacado el teléfono del bolsillo y mostrar la
+  pila. Actualmente se sustituye por el gesto de tirón brusco hacia arriba, lo que es
+  funcional, pero la memoria queda incoherente. O se implementa o se actualiza el texto
+  de la memoria para eliminar esa referencia.
+
+---
+
+### Memoria — secciones con placeholder sin rellenar
+
+- **§1.1 Detalles de inicio y uso** — contiene el placeholder
+  `"aqui incluis como se inicia y todas las historietas con mucho detalle como dijo en clase"`.
+  Hay que sustituirlo por el flujo real de arranque y los escenarios de uso (flujo activo,
+  flujo modo bloqueo), copiando y ampliando lo que ya está en este README.
+
+- **§2.2 Tecnologías Utilizadas** — los puntos 3 (gestos), 4 (reconocimiento facial) y
+  5 (localización) están en blanco. Completar con DeviceOrientation/DeviceMotion API,
+  FaceAPI (si se implementa) o qué lo sustituye, y la Geolocation API.
+
+- **§3.3 Vídeos del prototipo** — pone `"→ aquí iría el link"`. Hay que añadir los links
+  reales de YouTube (o los archivos mp4 si se entregan adjuntos).
+
+- **§4.1 Vídeos de sesiones de prototipado** — "link del video" × 2 (sesión 1 y sesión 2).
+  Ídem: añadir los enlaces reales.
+
+- **§5.1 Problemas técnicos** — dice `"aqui poned problemas durante el desarrollo"`. Hay
+  que redactar al menos: problemas con la calibración del acelerómetro, conflicto entre
+  gesto de bloqueo (bajar brazo) y gesto de agitar, la decisión de eliminar FaceAPI, etc.
+
+- **§5.2 Link al vídeo comparativo** — hay un `"link al video"` sin rellenar en el
+  apartado de cambios realizados respecto a las ideas originales.
+
+- **§6 Reflexión sobre IA generativa** — sección completamente vacía (obligatoria según
+  el enunciado, penaliza –0,3 pts si falta).
+
+---
+
+### Entregables pendientes (obligatorios para la entrega)
+
+- **Vídeos del prototipo** (max 100 MB en total, mp4 1080p H.264 o links YouTube privados):
+  - Vídeo 1: flujo principal (modo activo — persona aparece, gestos de pasar/conectar,
+    pantalla match y número de teléfono).
+  - Vídeo 2: flujo modo bloqueo (bajar brazo → bloqueo, sacar teléfono → pila,
+    navegar la pila, volver al modo activo).
+  - Vídeo comparativo original vs. final mencionado en §5.2.
+- **Vídeos de sesiones de prototipado** (sesión 1 y sesión 2).
+- **ZIP de entrega** sin `node_modules`, con `package.json` y un `README.md` con
+  instrucciones de arranque (el enunciado exige ese fichero).
+
+---
+
 ## IDs de usuario disponibles para pruebas
 
 | ID | Nombre | Intereses |
