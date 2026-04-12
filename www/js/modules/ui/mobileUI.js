@@ -1,4 +1,5 @@
 import { BaseUI } from "./baseUI.js";
+import { socketManager } from "../../core/socketManager.js";
 
 // --- COMPONENTES ATÓMICOS ---
 
@@ -156,8 +157,25 @@ const renderStatus = () => `
         <h2>Modo Sensor Activo</h2>
         <p>El móvil está funcionando como mando. Mira tu Apple Watch para ver los perfiles.</p>
         <div class="gesture-guide">
-            <p><strong>En el bolsillo:</strong> 1 toque (Aceptar) | 2 toques (Rechazar)</p>
-            <p><strong>En la mano:</strong> Inclinar lateralmente para navegar</p>
+            <p><strong>Inclinar derecha:</strong> Pasar persona</p>
+            <p><strong>Inclinar izquierda:</strong> Conectar</p>
+            <p><strong>Inclinar arriba:</strong> Bloquear usuario</p>
+            <p><strong>Doble toque:</strong> Cerrar app</p>
+            <p><strong>Agitar:</strong> Ampliar rango</p>
+            <p><strong>Bajar brazo:</strong> Modo bloqueo</p>
+        </div>
+    </div>
+`;
+
+const renderBlockMode = () => `
+    <div class="mobile-sensor-active">
+        <div class="radar-animation" style="opacity: 0.3; filter: grayscale(1);"></div>
+        <h2>Modo Bloqueo</h2>
+        <p>El reloj está guardado. Las personas cercanas se están almacenando.</p>
+        <div class="gesture-guide">
+            <p><strong>Subir brazo suave:</strong> Volver al modo activo</p>
+            <p><strong>Sacar el teléfono:</strong> Ver personas vistas</p>
+            <p><strong>Doble toque:</strong> Cerrar app</p>
         </div>
     </div>
 `;
@@ -207,9 +225,7 @@ export class MobileUI extends BaseUI {
   }
 
   emitGesture(gestureType) {
-    if (window.sm) {
-      window.sm.emit("gesture:sent", { gestureType });
-    }
+    socketManager.emit("gesture:sent", { gestureType });
   }
 
   // Método para manejar swipe manual
@@ -258,8 +274,11 @@ export class MobileUI extends BaseUI {
 
   processGesture(type) {
     console.log(`Gesto recibido en Móvil: ${type}`);
-    if (type === "accept" || type === "reject") {
-      this.processGestureWithAnimation(type);
+    if (type === "accept") {
+      this.processGestureWithAnimation("accept");
+    } else if (type === "nav") {
+      // nav = pasar/siguiente → animación de rechazo visual
+      this.processGestureWithAnimation("reject");
     }
   }
 
@@ -328,6 +347,9 @@ export class MobileUI extends BaseUI {
         break;
       case "sensor":
         content = renderStatus();
+        break;
+      case "block-mode":
+        content = renderBlockMode();
         break;
       default:
         content = renderStart();
