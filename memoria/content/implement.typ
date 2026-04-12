@@ -12,7 +12,7 @@ Pese a que no se pide de manera explicita en las especificaciones de la práctic
 
 A parte de basarnos en los principios de usabilidad modernos, hemos hecho que el uso de la aplicación sea lo más claro, visual y sencillo posible. 
 
-=== Diseño pantalla (reloj)
+=== Diseño pantalla (Reloj)
 En el modo normal, en el que el usuario pasa la mayor parte de su tiempo, el reloj es la pantalla principal. 
 
 En general, se ha intenado mantener la interfaz lo más sencilla posible, manteniendo la hora, para dar más sencillez y hacer el uso de la aplicación algo más disimulado y útil. 
@@ -30,6 +30,8 @@ caption: "Prototipos de la interfaz del reloj."
 )
 
 Se ha tratado de mantener una interfaz lo más sencilla y funcional posible, minimizando el texto y haciendo que la información relevante, como imágenes o texto que aparezca lo suficientemente grande, como para ser legible en un dispositivo pequeño como lo es un _smartwatch_. 
+
+=== Diseño pantalla (Móvil)
 
 Por otro lado, se han diseñadon interfaces para el móvil. Esto se debe a que nuestra funcionalidad adicional es poder ver las personas con las que te has cruzado mientras se tiene desactivada la aplicación, i.e. está el modo silencio activado. De esta manera, al coger el telefono, se puede acceder mediante reconocimiento facial a las personas que no se han contactado con el reloj. 
 
