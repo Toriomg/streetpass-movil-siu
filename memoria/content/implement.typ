@@ -31,38 +31,7 @@ caption: "Prototipos de la interfaz del reloj."
 
 Se ha tratado de mantener una interfaz lo más sencilla y funcional posible, minimizando el texto y haciendo que la información relevante, como imágenes o texto que aparezca lo suficientemente grande, como para ser legible en un dispositivo pequeño como lo es un _smartwatch_. 
 
-<<<<<<< HEAD
-Por otro lado, hemos diseñado interfaces para el movil. Esto se debe a que nuestra funcionalidad adicional es poder ver las personas con las que te has cruzado mientras tienes desactivada la aplicación (_el modo silencio_). De esta manera, al coger el telefono, puedes acceder mediante reconocimiento facial a las personas que no has visto con el reloj. 
-#grid(
-  columns: 2,
-  align(center, image("../../docs/interfaces/movil_inicio.png", width: 45%)),
-  align(center, image("../../docs/interfaces/movil_navegacion.png", width: 45%)),
-  )
-=======
-En la @transiciones, se puede observar el funcionamiento y el cambio de pantallas en base a la interacción del usuario: 
-#figure(
-  automaton(
-    final: none,
-    (
-      "Reloj": ("Info": none, "Perfil": none),
-      "Info": ("Reloj": none),
-      "Perfil": ("Match": none),
-      "Match": ("Conex": none),
-      "Conex": ("Reloj": none),
-    ),
-    layout: (
-      "Reloj": (4,-1),
-      "Info": (0,-1),
-      "Perfil": (7,0),
-      "Match": (10, -1),
-      "Conex": (7, -2)
-    ),
-  ),
-  caption: "Máquina de estados de la transición de pantallas del reloj."
-)<transiciones>
-
 Por otro lado, se han diseñadon interfaces para el móvil. Esto se debe a que nuestra funcionalidad adicional es poder ver las personas con las que te has cruzado mientras se tiene desactivada la aplicación, i.e. está el modo silencio activado. De esta manera, al coger el telefono, se puede acceder mediante reconocimiento facial a las personas que no se han contactado con el reloj. 
->>>>>>> 26cff82a151a5a71b2858fa66dba21a0fbfac88c
 
 #figure(
   grid(
@@ -112,7 +81,6 @@ Es un gesto completamente diferenciado de los anteriores y esto hace que se evit
 
 El flujo de uso de las funcionalidades principales es el que se muestra en la @total:
 
-// automata del funconamiento total de las funcionalidades principales
 #figure(
   automaton(
     final: ("Reloj",),
@@ -130,7 +98,7 @@ El flujo de uso de las funcionalidades principales es el que se muestra en la @t
         "Reloj": "\nDoble golpe\n(Cerrar)"
       ),
       "Match": (
-        "Conex": "\nConfirmar /\nRecibida",
+        "Conex": "\nGesto Izq.\n(Conectar)",
         "Perfil": "\nGesto Der.\n(Cancelar)"
       ),
       "Conex": (
@@ -146,7 +114,7 @@ El flujo de uso de las funcionalidades principales es el que se muestra en la @t
       "Conex": (7, -5),   // Bajado para evitar que la flecha a Reloj cruce Perfil
     ),
   ),
-  caption: [Máquina de estados de las funcionalidades principales: Navegación, Conexión y Gestión de Perfiles.]
+  caption: [Máquina de estados de las funcionalidades principales]
 )<total>
 
 === Funcionalidaded adicionales
@@ -179,26 +147,34 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
 
 #figure(
   automaton(
-    final: ("Reloj",),
+    final: ("Cierre",),
     (
-      "Bloqueo": ("Identif": "Levantar brazo"),
-      "Identif": ("Perfil": "Reconoc.\nFacial OK\n "),
-      "Perfil": (
-        "Perfil": "Gesto: Pasar", 
-        "Match": "Gesto: Conectar", 
-        "Bloqueo": "Bajar brazo"
+      "Cierre": ("Navegación": "Levantar brazo"),
+      "Navegación": (
+        "Navegación": "Gesto Der.",
+        "Match": "Gesto Izq.", 
+        "Bloqueo": "Bajar brazo",
+        "Cierre": "Dos toques"
       ),
-      "Match": ("Conex": "Vincular"),
-      "Conex": ("Reloj": "Finalizar"),
-      "Reloj": ("Bloqueo": "Bajar brazo /\nInactividad\n"),
+      "Bloqueo": (
+        "Cierre": "Dos toques" 
+        ),
+      "Match": (
+        "Navegación":"Gesto Der.",
+        "Conexión":"Gesto Izq."
+        ),
+      "Conexión": (
+        "Cierre": "Dos toques", 
+        "Navegación":"Gesto Der."
+
+        ),
     ),
     layout: (
-      "Bloqueo": (0, 0),
-      "Identif": (4, 0), // Aumentado de 2 a 4
-      "Perfil": (8, 0),  // Aumentado de 4 a 8
-      "Match": (8, -3),  // Bajado a -3 para dar aire
-      "Conex": (4, -3),
-      "Reloj": (0, -3),
+      "Cierre": (0, 0),
+      "Navegación": (0, 9),
+      "Match": (-5, 5),
+      "Conexión": (-10, 5),
+      "Bloqueo": (4, 0),
     ),
   ),
   caption: [Máquina de estados del funcionamiento en modo bloqueo y transición a perfiles.]
@@ -215,12 +191,6 @@ En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos
 En nuestro caso hemos establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
 #align(center, image("../img/modo_ampliar.png", width: 70%))
-=======
-#figure(
-  image("../diagramas/arquitectura.png"),
-  caption: "Cambio de rango de búsqueda."
-)
->>>>>>> 26cff82a151a5a71b2858fa66dba21a0fbfac88c
 
 Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
