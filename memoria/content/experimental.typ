@@ -1,7 +1,20 @@
 = Prototipado Experiencial
-== Descripción de las sesiones realizadas
-#h(2.2em)
-== Reflexión sobre cómo influyeron en la implementación del prototipo
-#h(2.2em)
+Para establecer debidamente el funcionamiento de la aplicación, se han realizado diferentes sesiones para evaluar las ideas de funcionamiento del prototipo desarrollado. Para ello, se han realizadon tres distintas sesiones en las que se probaron diferentes ideas para la implementación del prototipo. 
+
+=== Sesión Primera
+En la primera sesión, no se llego desarrollar código para el prototipo. Simplemente, se simuló un prototipo funcional, tal y como se hizo en el _brainstorming_ de la práctica anterior. Esto, permitió situar un caso real de manera más realizta y probar las ideas de las que se partían antes de la implementación. 
+
+En ella, se destacó que el planteamiento que se había realizado era incómodo y quizás no fuese este el adecuado. Esto, obligó a realizar los cambios ya mencionados en diferentes secciones sobre dispositivos. 
+
+=== Sesión Segunda
+En esta segunda sesión se realizó una vez se decidieron los dispositivos y su función en la aplicación. Así, como los gestos que pretendíamos usar. La sesión estuvo centrada en iterar acerca de los gestos, probando diferentes gestos para diferentes funcionalidades de la aplicación. 
+
+En ella, se agruparon los gestos de modo que estos fueran lo más naturales posibles y se clasificaran y organizaran de manera lógica. Con el fin de facilitar al usuario y evitar colisiones entre diferentes funcionalidades, p. ej.: qué un gesto de conexión no pudiese dar lugar a equivocarse con un gesto de salida de la aplicación. 
+
+=== Sesión Tercera
+En la úlitma sesión, se validaron las decisiones implementadas y tomadas en la segunda sesión y se utilizó el prototipo final para asegurar que el uso era el correcto, que las funcionalidades y la implementación actuaban de la manera esperada y que se cumpliesen así con las expectativas establecidas al comienzo de la práctica. 
+
 == Vídeos de las sesiones de prototipado y análisis de los hallazgos obtenidos
-#h(2.2em)Los correspondientes vídeos realizados demostrando el correcto funcionamiento del prototipo creado se encuentran en Youtube@videos_yutu2.
+En los siguientes links se pueden encontrar los videos de las sesiones 1 y 2, pues la sesión 3 fue la final en la que se evaluó el prototipo final y el link a dicho video se adjuntó en la sección anterior. 
+- *Sesión Primera*: *link del video*
+- *Sesión Segunda*: *link del video* 
