@@ -17,31 +17,52 @@ En el modo normal, en el que el usuario pasa la mayor parte de su tiempo, el rel
 
 En general, se ha intenado mantener la interfaz lo más sencilla posible, manteniendo la hora, para dar más sencillez y hacer el uso de la aplicación algo más disimulado y útil. 
 
-#grid(
+#figure(
+
+grid(
   columns: 4,
   image("../../docs/interfaces/reloj_mensajes.png", width: 100%),
   image("../../docs/interfaces/reloj_principal.png", width: 100%),
   image("../../docs/interfaces/reloj_gustas.png", width: 100%),
   image("../../docs/interfaces/reloj_conexion.png", width: 100%),
+),
+caption: "Prototipos de la interfaz del reloj."
 )
 
 Se ha tratado de mantener una interfaz lo más sencilla y funcional posible, minimizando el texto y haciendo que la información relevante, como imágenes o texto que aparezca lo suficientemente grande, como para ser legible en un dispositivo pequeño como lo es un _smartwatch_. 
 
-En el siguiente autómata, se puede observar el funcionamiento y el cambio de pantallas en base a la interacción del usuario: 
-#automaton((
-  "Reloj": ("Info": none, "Perfil": none),
-  "Perfil": ("Match": none),
-  "Match": ("Conexión": none),
-  "Conexión": (),
-  "Info": ("Reloj": none),
-))
+En la @transiciones, se puede observar el funcionamiento y el cambio de pantallas en base a la interacción del usuario: 
+#figure(
+  automaton(
+    final: none,
+    (
+      "Reloj": ("Info": none, "Perfil": none),
+      "Info": ("Reloj": none),
+      "Perfil": ("Match": none),
+      "Match": ("Conex": none),
+      "Conex": ("Reloj": none),
+    ),
+    layout: (
+      "Reloj": (4,-1),
+      "Info": (0,-1),
+      "Perfil": (7,0),
+      "Match": (10, -1),
+      "Conex": (7, -2)
+    ),
+  ),
+  caption: "Máquina de estados de la transición de pantallas del reloj."
+)<transiciones>
 
 Por otro lado, se han diseñadon interfaces para el móvil. Esto se debe a que nuestra funcionalidad adicional es poder ver las personas con las que te has cruzado mientras se tiene desactivada la aplicación, i.e. está el modo silencio activado. De esta manera, al coger el telefono, se puede acceder mediante reconocimiento facial a las personas que no se han contactado con el reloj. 
-#grid(
-  columns: 2,
-  align(center, image("../../docs/interfaces/movil_inicio.png", width: 45%)),
-  align(center, image("../../docs/interfaces/movil_navegacion.png", width: 45%)),
-  )
+
+#figure(
+  grid(
+    columns: 2,
+    align(center, image("../../docs/interfaces/movil_inicio.png", width: 45%)),
+    align(center, image("../../docs/interfaces/movil_navegacion.png", width: 45%)),
+  ),
+  caption: "Prototipos de la interfaz del móvil."
+)
 
 Como se puede apreciar, la interfaz es una réplica adaptada a otro dispositivo de la que encontramos en las interfaces principales del reloj. Como se verá a continuación, el uso será el mismo.
 
@@ -80,9 +101,44 @@ Para salir completamente de la aplicación debido a que el usuario no busca esta
 Es un gesto completamente diferenciado de los anteriores y esto hace que se eviten posibles errores y salidas no intencionadas por parte de los usuarios. Una cosa muy útil en una aplicación como es la nuestra. Además, es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. 
 
 
-El flujo de uso de las funcionalidades principales es el que se muestra en el siguiente automata:
+El flujo de uso de las funcionalidades principales es el que se muestra en la @total:
 
 // automata del funconamiento total de las funcionalidades principales
+#figure(
+  automaton(
+    final: ("Reloj",),
+    (
+      "Reloj": (
+        "Perfil": "Abrir App", 
+        "Info": "Ver mi Info"
+      ),
+      "Info": (
+        "Reloj": "Doble golpe\n(Cerrar)\n "
+      ),
+      "Perfil": (
+        "Perfil": "Gesto Der.\n(Pasar)\n ", 
+        "Match": "Gesto Izq.\n(Conectar)\n ",
+        "Reloj": "\nDoble golpe\n(Cerrar)"
+      ),
+      "Match": (
+        "Conex": "\nConfirmar /\nRecibida",
+        "Perfil": "\nGesto Der.\n(Cancelar)"
+      ),
+      "Conex": (
+        "Reloj": "\nDoble golpe\n(Finalizar)",
+        "Perfil": "\nGesto Der.\n(Volver)"
+      ),
+    ),
+    layout: (
+      "Reloj": (0, 0),
+      "Info": (-4, -4),   // Movido abajo a la izquierda
+      "Perfil": (7, 0),   // Mucho más espacio a la derecha
+      "Match": (14, 0),   // Espacio extra para que el texto no choque
+      "Conex": (7, -5),   // Bajado para evitar que la flecha a Reloj cruce Perfil
+    ),
+  ),
+  caption: [Máquina de estados de las funcionalidades principales: Navegación, Conexión y Gestión de Perfiles.]
+)<total>
 
 === Funcionalidaded adicionales
 Además de lo indicado en el apartado anterior, se han desarrollado tres funcionalidades adicionales que están planteadas para mejorar el uso o porque son cuestiones que, aunque no se plantearan en el proceso de ideación, resultaban interesantes al añadir como posibles usuarios de una aplicación que se estaba desarrollando. 
@@ -110,9 +166,34 @@ En cuanto a mostrar las personas, los movimientos que se realizan son practicame
 
 Se utilizan los mismos gestos, debido a que estos facilitan enormemente el tiempo de aprendizaje de uso de la aplicación y ahorrando al usuario el esfuerzo de memorizarlos, al ser este número de acciones limitado en el usuario.  
 
-En el siguiente automata podemos ver el funcionamiento exacto del modo bloqueo. 
+En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo. 
 
-// automata para funcionamiento 
+#figure(
+  automaton(
+    final: ("Reloj",),
+    (
+      "Bloqueo": ("Identif": "Levantar brazo"),
+      "Identif": ("Perfil": "Reconoc.\nFacial OK\n "),
+      "Perfil": (
+        "Perfil": "Gesto: Pasar", 
+        "Match": "Gesto: Conectar", 
+        "Bloqueo": "Bajar brazo"
+      ),
+      "Match": ("Conex": "Vincular"),
+      "Conex": ("Reloj": "Finalizar"),
+      "Reloj": ("Bloqueo": "Bajar brazo /\nInactividad\n"),
+    ),
+    layout: (
+      "Bloqueo": (0, 0),
+      "Identif": (4, 0), // Aumentado de 2 a 4
+      "Perfil": (8, 0),  // Aumentado de 4 a 8
+      "Match": (8, -3),  // Bajado a -3 para dar aire
+      "Conex": (4, -3),
+      "Reloj": (0, -3),
+    ),
+  ),
+  caption: [Máquina de estados del funcionamiento en modo bloqueo y transición a perfiles.]
+)<bloquo>
 
 ==== Recomendación de actividades
 Asimismo, se utilizarán los gustos introducidos por los usuarios de modo que se pueda, además de enseñar a personas cercanas con gustos similares, mostrar lugares que puedan ser de interés para hacer planes. Sean estos: museos, restaurantes, o cualquier sitio cercano que pueda interesar al usuario en base a sus gustos. 
@@ -124,7 +205,10 @@ En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos
 
 En nuestro caso hemos establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
-// imagen del cambio de rango
+#figure(
+  image("../diagramas/arquitectura.png"),
+  caption: "Cambio de rango de búsqueda."
+)
 
 Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
