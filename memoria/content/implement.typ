@@ -129,7 +129,7 @@ Además de lo indicado en el apartado anterior, se han desarrollado tres funcion
 ==== Bloqueo de usuarios 
 Como en cualquier aplicación social en la que hay usuarios, debe existir una posibilidad de poder bloquear a usuarios. A los que no se les quiere ver y no se les desea encontrarse en la aplicación. 
 
-Para ello, se ha añadido un gesto de bloqueo como funcionalidad adicional a las principales de la aplicación. Cuando, mientras se navega por las personas cercanas, aparece una persona a la que se le quiere bloquear, en vez de hacer el movimiento a derecha o a izquierda, i.e. navegación o selección, el movimiento que se realiza es hacia *arriba*. 
+Para ello, se ha añadido un gesto de bloqueo como funcionalidad adicional a las principales de la aplicación. Cuando, mientras se navega por las personas cercanas, aparece una persona a la que se le quiere bloquear, en vez de hacer el movimiento a derecha o a izquierda, i.e. navegación o selección, el movimiento que se realiza es *agitar* el teléfono. Hemos elegido este gesto porque entendemos que el bloqueo de personas no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad concreta. 
 
 ==== Modo bloqueo 
 Se entiende que los usuarios no siempre querrán estar el reloj. Sin embargo, eso no hace que no quiera seguir almacenando a gente con la que uno se ha encontrado, o que haya estado en ambientes similares. Por ello, como nuestra principal funcionalidad adicional hemos desarrollado el "Modo Bloqueo". 
@@ -139,15 +139,11 @@ El "Modo Bloqueo" permite que mientras el usuario no tenga el reloj activado, se
 Esta funcionalidad se decidió con la ayuda del Prof. Roberto Cuervo. Siendo así, un escenario de uso claro que se ha planteado: el de un usuario que vuelve a casa y al subir al ascensor coge su teléfono movil y, de esta manera, se puede ver a personas similares del sitio del que uno viene. Además, en nuestro caso, es algo muy cotidiano y natural volver de un sitio social o un plan y utilizar el móvil al llegar a casa o en el trayecto a esta. 
 
 ===== Gestos del modo bloqueo 
-Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa una vez el usuario le da *un toque* al teléfono. Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a *dar un toque al teléfono*. 
+Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa una vez el usuario le da *dps toques* al teléfono. Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a *dar dos toques al teléfono*. 
 
-La selección de este gesto es, por un lado una solución a un problema recurrente que se encontró en una de las sesiones experenciales (como se explica en secciones posteriores). Por otro lado, resulta facil de entender por el usuario ya que, es un punto intemedio entre el funcionamiento normal de la aplicación en el modo activo y el cierre, que se hace con dos toques. Por ello, el gesto resulta facil y discreto, como todos los anteriores, y a su vez, tiene un sentido lógico e integrado en el flujo de gestos y cambios de modo diseñados. 
+La selección de este gesto es, por un lado una solución a un problema recurrente que se encontró en una de las sesiones experenciales (como se explica en secciones posteriores). Por otro lado, resulta facil de entender por el usuario ya que, es un punto intemedio entre el funcionamiento normal de la aplicación en el modo activo y el cierre, que se hace con tres toques. Por ello, el gesto resulta facil y discreto, como todos los anteriores, y a su vez, tiene un sentido lógico e integrado en el flujo de gestos y cambios de modo diseñados. 
 
-Asimismo, las personas que se han almacenado se mostrarán usando reconocimiento facial si se identifica que el usuario ha levantado el telefono. 
-
-En cuanto a mostrar las personas, los movimientos que se realizan son practicamente idénticos a los que se realizan con el reloj. Para cerrar la aplicación completamente y dejar de mostrar a las personas se darán *dos toques*, tal y como se produce el cierre en todos los modos, para pasar personas y conectar con ellos se realizan exactamente los mismos gestos que hemos definido en el modo normal. 
-
-Se utilizan los mismos gestos, debido a que estos facilitan enormemente el tiempo de aprendizaje de uso de la aplicación y ahorrando al usuario el esfuerzo de memorizarlos, al ser este número de acciones limitado en el usuario.  
+Asimismo, las personas que se han almacenado se mostrarán usando si se identifica que el usuario ha levantado el telefono. Al mostrar las personas, los estos son similares pero en este caso se harán en la pantalla como si fuera un aplicación normal, deslizando sobre las imagenes a la derecha o la izquierda como corresponda. *esto hay que mejorarlo un poco* 
 
 En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo. 
 
@@ -190,25 +186,24 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
 ==== Recomendación de actividades
 Asimismo, se utilizarán los gustos introducidos por los usuarios de modo que se pueda, además de enseñar a personas cercanas con gustos similares, mostrar lugares que puedan ser de interés para hacer planes. Sean estos: museos, restaurantes, o cualquier sitio cercano que pueda interesar al usuario en base a sus gustos. 
 
-Los sitios cercanos aparecerán del mismo modo que las personas y con ellos no puede hacerse nada más que la navegación normal. 
+Los sitos y recomendaciones cercanas se han simulado y no tienen en cuenta los gustos de los usuarios (pues no disponemos de un sistema de recomendaciones). Estos, se presentan al salir del modo bloqueo y haber visto todos los usuarios almacenados durante dicho modo con el teléfono movil. 
 
 ==== Ampliar rango de búsqueda de personas 
-En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos usuarios. Para ello, hemos añadido una funcionalidad adicional en la que se permite al usuario ampliar el rango de búsqueda de personas cercanas, para salirle a personas que están más lejos y que a el le salgan personas también más lejanas. 
+En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos usuarios. Para ello, hemos añadido una funcionalidad adicional en la que se permite al usuario ampliar el rango de búsqueda de personas cercanas, para salirle a personas que están más lejos y que a él le salgan personas también más lejanas. 
 
-En nuestro caso se ha establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
+En nuestro caso se ha establecido que el rango radial de búsqueda del usuario sea de *2 metros*, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
 #figure(
   align(center, image("../img/modo_ampliar.png", width: 90%)),
   caption: "Representación esquemática de la ampliación de rango"
 )
 
-Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
+Para dicho cambio, el gesto seleccionado es *dar un toque*. Los toques, se definen de la misma menera que los hemos definido en puntos anteriores. Este gesto es similar a todos los de cambio de modo (modo bloqueo o cierre de la aplicación) y consideramos que es una buena práctica estructurar los gestos en dos grupos con gestos similares entre si, los de navegación y gestión de usuarios (match, bloqueo etc) y los de cambio de modo (ampliación de rango, modo bloqueo y cierre). Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
 == Videos que Muestran el Prototipo en Funcionamiento
-Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente lista de youtube:
+Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente carpeta de Google Drive: #link("https://drive.google.com/drive/folders/1wuKr6mu8ZOwzwYkYambhlD6vbhnzihUy?usp=sharing")
 
-// nuestra solución final 
-#sym.arrow.r *aquí iría el link*
+En ella, se presenta un video técnico, en el que se puede apreciar de cerca las funcionalidaes implementadas, cambios de pantalla y otras cuestiones con más detalle, y casos de usao variados para entender mejor el funcionamiento y utilidad de la apliación. 
 
 == Reflexiones finales
 Notesé, como nuestra implementación está enormemente basada en la utilización de gestos sencillos y discretos. Además, se ha tratado de minimizar lo máximo posible el número de gestos, para lo que se ha empleado una mecánica en la que se utiliza el mismo gesto para la entrada y la salida de los modos (tomesé como ejemplo la entrada y la salida del modo bloqueo, que utiliza el mismo gesto). De esta manera, se facilita el aprendizaje del usuario y se reduce la fricción de uso del mismo. 
