@@ -3,78 +3,91 @@
     "id": 101,
     "name": "Noa",
     "phone": "611222333",
-    "interests": ["Música", "Películas", "Derecho"]
+    "interests": ["Música", "Películas", "Derecho"],
+    "distancia": 8
   },
   {
     "id": 102,
     "name": "Alejandra",
     "phone": "633444555",
-    "interests": ["Gimnasio", "Senderismo", "Dieta"]
+    "interests": ["Gimnasio", "Senderismo", "Dieta"],
+    "distancia": 45
   },
   {
     "id": 103,
     "name": "Sara",
     "phone": "655666777",
-    "interests": ["Videojuegos", "Películas", "Lectura"]
+    "interests": ["Videojuegos", "Películas", "Lectura"],
+    "distancia": 23
   },
   {
     "id": 104,
     "name": "Martina",
     "phone": "677888999",
-    "interests": ["Gimnasio", "Películas", "Ecologismo"]
+    "interests": ["Gimnasio", "Películas", "Ecologismo"],
+    "distancia": 67
   },
   {
     "id": 105,
     "name": "Valeria",
     "phone": "622333444",
-    "interests": ["Electrónica", "Películas", "Ajedrez"]
+    "interests": ["Electrónica", "Películas", "Ajedrez"],
+    "distancia": 12
   },
   {
     "id": 106,
     "name": "Carla",
     "phone": "644555666",
-    "interests": ["Películas", "Música", "Derecho"]
+    "interests": ["Películas", "Música", "Derecho"],
+    "distancia": 88
   },
   {
     "id": 107,
     "name": "Julia",
     "phone": "688999000",
-    "interests": ["Lectura", "Películas", "Religión"]
+    "interests": ["Lectura", "Películas", "Religión"],
+    "distancia": 34
   },
   {
     "id": 108,
     "name": "Elena",
     "phone": "600111222",
-    "interests": ["Senderismo", "Electrónica", "Animales"]
+    "interests": ["Senderismo", "Electrónica", "Animales"],
+    "distancia": 5
   },
   {
     "id": 109,
     "name": "Olivia",
     "phone": "699000111",
-    "interests": ["Espacio", "Música", "Ecologismo"]
+    "interests": ["Espacio", "Música", "Ecologismo"],
+    "distancia": 56
   },
   {
     "id": 110,
     "name": "Alba",
     "phone": "611777888",
-    "interests": ["Senderismo", "Películas", "Gimnasio"]
+    "interests": ["Senderismo", "Películas", "Gimnasio"],
+    "distancia": 19
   },
   {
     "id": 111,
     "name": "Carmen",
     "phone": "633999222",
-    "interests": ["Dieta", "Música", "Derecho"]
+    "interests": ["Dieta", "Música", "Derecho"],
+    "distancia": 72
   },
   {
     "id": 112,
     "name": "Paula",
     "phone": "655222888",
-    "interests": ["Gimnasio", "Electrónica", "Animales"]
+    "interests": ["Gimnasio", "Electrónica", "Animales"],
+    "distancia": 31
   },
   {
     "id": 113,
     "name": "Daniela",
     "phone": "677444111",
-    "interests": ["Derecho", "Espacio", "Películas"]
+    "interests": ["Derecho", "Espacio", "Películas"],
+    "distancia": 93
   }
 ]

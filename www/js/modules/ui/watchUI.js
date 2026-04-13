@@ -23,12 +23,16 @@ const renderProfile = (data) => {
   const interestsHtml = data.interests
     .map(
       (interest) => `
-        <img src="assets/icons/${interest}.svg"
+        <img src="assets/icons/iconos/${interest}.svg"
              class="interest-icon"
              alt="${interest}">
       `,
     )
     .join("");
+
+  const distanciaHtml = data.distancia != null
+    ? `<span class="profile-distance">📍 ${data.distancia} m</span>`
+    : "";
 
   return `
     <div class="profile-card">
@@ -36,7 +40,7 @@ const renderProfile = (data) => {
         <div class="swipe-indicator" id="swipe-indicator"></div>
     </div>
     <div class="info-section">
-        <p class="match-text">A ${data.name} le gusta:</p>
+        <p class="match-text">A ${data.name} le gusta: ${distanciaHtml}</p>
         <div class="interests-icons">
             ${interestsHtml}
         </div>
@@ -60,8 +64,8 @@ const renderMatch = (data) => `
 const renderConnection = (data) => `
     <div class="connection-overlay">
         <div class="connection-photos">
+            <img src="${data.userPhoto || 'https://i.pravatar.cc/300'}" class="conn-img">
             <img src="${data.photo}" class="conn-img">
-            <img src="https://i.pravatar.cc/300" class="conn-img">
         </div>
         <h2 class="conn-title">¡Feliz conexión!</h2>
         <p class="description">Aquí tienes el teléfono de ${data.name} para seguir conectando.</p>
@@ -73,6 +77,16 @@ const renderMessage = (data) => `
     <div class="message-overlay">
         <div class="warning-icon">⚠️</div>
         <p class="message-text">${data.message || "Has ampliado el rango de búsqueda de personas "}</p>
+    </div>
+`;
+
+const renderSleep = () => `
+    <div class="watch-header">
+        <span class="watch-time watch-time-large" id="watch-time">00:00</span>
+    </div>
+    <div class="closed-indicator">
+        <span class="closed-dot" style="background:rgba(100,160,255,0.9);box-shadow:0 0 6px rgba(100,160,255,0.6)"></span>
+        Modo bloqueo
     </div>
 `;
 
@@ -95,10 +109,13 @@ export class WatchUI extends BaseUI {
     const el = document.getElementById("swipe-indicator");
     if (!el) { callback(); return; }
 
+    let called = false;
+    const safe = () => { if (!called) { called = true; callback(); } };
+
     el.className = "swipe-indicator " + (type === "accept" ? "swipe-accept" : "swipe-reject");
     el.textContent = type === "accept" ? "LIKE" : "NOPE";
 
-    setTimeout(callback, 600);
+    setTimeout(safe, 600);
   }
 
   // Ya no necesitamos pasar el 'container' por parámetro porque lo tiene el padre
@@ -123,6 +140,9 @@ export class WatchUI extends BaseUI {
       case "message":
         content = renderMessage(data);
         showHeader = true;
+        break;
+      case "sleep":
+        content = renderSleep();
         break;
       case "closed":
         content = renderClosed();
@@ -158,7 +178,7 @@ export class WatchUI extends BaseUI {
       });
     }
 
-    if (showHeader || viewType === "watch" || viewType === "closed") {
+    if (showHeader || viewType === "watch" || viewType === "closed" || viewType === "sleep") {
       startClock();
     }
   }

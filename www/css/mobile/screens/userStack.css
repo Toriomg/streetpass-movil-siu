@@ -1,3 +1,34 @@
+/* --- INDICADOR LIKE/NOPE --- */
+.mobile-swipe-indicator {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  padding: 6px 20px;
+  border-radius: 10px;
+  border-width: 3px;
+  border-style: solid;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.15s ease;
+}
+
+.mobile-swipe-accept {
+  color: #30d158;
+  border-color: #30d158;
+  opacity: 1;
+}
+
+.mobile-swipe-reject {
+  color: #ff3b30;
+  border-color: #ff3b30;
+  opacity: 1;
+}
+
 /* --- TARJETA DE USUARIO --- */
 .user-card-mobile {
   flex: 1;
@@ -8,6 +39,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
   animation: slideUp 0.5s ease-out;
 }
 
@@ -244,4 +276,17 @@
 
 .swipe-left {
   animation: swipeLeft 0.5s ease forwards;
+}
+
+.exit-block-btn {
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 999px;
+  background: #1c1c1e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
 }

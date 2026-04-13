@@ -44,8 +44,8 @@ const renderUserStack = (
             </div>
 
             <footer class="gesture-hint">
-                <div class="hint-item"><span>←</span> Rechazar</div>
-                <div class="hint-item">Aceptar <span>→</span></div>
+                <div class="hint-item"><span>←</span> Conectar</div>
+                <div class="hint-item">Pasar <span>→</span></div>
             </footer>
         </div>
     `;
@@ -85,6 +85,8 @@ const renderRecommendations = (
             <button class="location-btn">Ver mi ubicación</button>
             <button class="refresh-btn">Actualizar planes</button>
         </div>
+
+        <button class="exit-block-btn">Salir del modo bloqueo</button>
     </div>
 `;
 
@@ -151,6 +153,48 @@ const buildRecommendations = (interests) => {
   ];
 };
 
+const renderSleepStack = (user) => {
+  // Estado vacío lo gestiona render() mostrando recomendaciones
+  if (!user) return "";
+
+  const interests = user.interests
+    ? user.interests.map(g => `<span class="interest-tag">${g}</span>`).join(" ")
+    : "";
+
+  return `
+    <div class="mobile-stack-container">
+      <header class="stack-header">
+        <p>Mientras estabas bloquead@</p>
+      </header>
+
+      <div class="user-card-mobile">
+        <div class="mobile-swipe-indicator" id="mobile-swipe-indicator"></div>
+        <div class="image-container">
+          <img src="${user.photo}" alt="${user.name}" class="user-img">
+        </div>
+        <div class="user-details">
+          <h2 class="user-name">${user.name}</h2>
+          <div class="user-interests">${interests}</div>
+          <p class="user-hint">${user.name} ha intentado conectar contigo. Acepta para ver su teléfono.</p>
+        </div>
+      </div>
+
+      <footer class="gesture-hint">
+        <div class="hint-item"><span>←</span> Conectar</div>
+        <div class="hint-item">Pasar <span>→</span></div>
+      </footer>
+    </div>
+  `;
+};
+
+const renderAppClosed = () => `
+    <div class="mobile-sensor-active">
+        <div class="radar-animation" style="opacity:0.2; filter:grayscale(1) brightness(0.5)"></div>
+        <h2>App cerrada</h2>
+        <p>Da tres toques para volver a abrirla.</p>
+    </div>
+`;
+
 const renderStatus = () => `
     <div class="mobile-sensor-active">
         <div class="radar-animation"></div>
@@ -190,6 +234,7 @@ export class MobileUI extends BaseUI {
     this.location = null;
     this.locationError = null;
     this.isAnimating = false;
+    this.currentViewType = "start";
   }
 
   setUserProfile(profile) {
@@ -198,6 +243,8 @@ export class MobileUI extends BaseUI {
 
   // Anima la tarjeta y avanza a la siguiente — NO emite gesto al servidor.
   // Usar cuando el gesto ya fue enviado por gestures.js (flujo físico).
+  // accept → vuela a la IZQUIERDA (gesto físico: inclinar izquierda = conectar)
+  // reject → vuela a la DERECHA  (gesto físico: inclinar derecha  = pasar)
   _animateCard(direction) {
     if (this.isAnimating || !this.pendingStack[0]) return;
 
@@ -208,7 +255,14 @@ export class MobileUI extends BaseUI {
       return;
     }
 
-    card.classList.add(direction === "accept" ? "swipe-right" : "swipe-left");
+    // Mostrar indicador LIKE/NOPE
+    const indicator = this.container.querySelector("#mobile-swipe-indicator");
+    if (indicator) {
+      indicator.textContent = direction === "accept" ? "LIKE" : "NOPE";
+      indicator.className = "mobile-swipe-indicator " + (direction === "accept" ? "mobile-swipe-accept" : "mobile-swipe-reject");
+    }
+
+    card.classList.add(direction === "accept" ? "swipe-left" : "swipe-right");
 
     setTimeout(() => {
       card.classList.remove("swipe-right", "swipe-left");
@@ -251,6 +305,20 @@ export class MobileUI extends BaseUI {
       currentX = e.touches[0].clientX;
       const diff = currentX - startX;
       card.style.transform = `translateX(${diff}px) rotate(${diff * 0.1}deg)`;
+
+      // Mostrar indicador mientras se arrastra
+      const indicator = this.container.querySelector("#mobile-swipe-indicator");
+      if (indicator) {
+        if (Math.abs(diff) > 40) {
+          const isAccept = diff < 0;
+          indicator.textContent = isAccept ? "LIKE" : "NOPE";
+          indicator.className = "mobile-swipe-indicator " + (isAccept ? "mobile-swipe-accept" : "mobile-swipe-reject");
+          indicator.style.opacity = Math.min(1, (Math.abs(diff) - 40) / 60).toString();
+        } else {
+          indicator.className = "mobile-swipe-indicator";
+          indicator.style.opacity = "0";
+        }
+      }
     };
 
     const handleEnd = () => {
@@ -260,11 +328,18 @@ export class MobileUI extends BaseUI {
 
       const diff = currentX - startX;
       if (Math.abs(diff) > 100) {
-        const gestureType = diff > 0 ? "accept" : "nav";
-        this._animateCard(gestureType === "accept" ? "accept" : "reject");
+        // Swipe izquierda (diff < 0) = conectar/accept  (igual que inclinar izquierda)
+        // Swipe derecha  (diff > 0) = pasar/nav         (igual que inclinar derecha)
+        const gestureType = diff > 0 ? "nav" : "accept";
+        this._animateCard(diff > 0 ? "reject" : "accept");
         this.emitGesture(gestureType);
       } else {
         card.style.transform = "";
+        const indicator = this.container.querySelector("#mobile-swipe-indicator");
+        if (indicator) {
+          indicator.className = "mobile-swipe-indicator";
+          indicator.style.opacity = "0";
+        }
       }
     };
 
@@ -336,6 +411,23 @@ export class MobileUI extends BaseUI {
           this.locationError,
         );
         break;
+      case "sleep-list":
+        // Si llega un array lo guardamos como pila, luego renderizamos la primera tarjeta
+        if (Array.isArray(data)) this.pendingStack = [...data];
+        if (this.pendingStack[0]) {
+          content = renderSleepStack(this.pendingStack[0]);
+        } else {
+          // Pila agotada → mostrar recomendaciones
+          content = renderRecommendations(
+            this.getRecommendations(),
+            this.getLocationLabel(),
+            this.locationError,
+          );
+        }
+        break;
+      case "app-closed":
+        content = renderAppClosed();
+        break;
       case "sensor":
         content = renderStatus();
         break;
@@ -355,15 +447,23 @@ export class MobileUI extends BaseUI {
             </div>
         `;
 
+    this.currentViewType = viewType;
     this.renderTemplate(html);
 
-    if (viewType === "stack" && !this.pendingStack[0]) {
+    // Botones de recomendaciones (stack vacío o sleep-list agotada)
+    const showingRecos =
+      (viewType === "stack" && !this.pendingStack[0]) ||
+      (viewType === "sleep-list" && !this.pendingStack[0]);
+    if (showingRecos) {
       this.addEvent(".location-btn", "click", () => this.requestLocation());
-      this.addEvent(".refresh-btn", "click", () => this.render(null, "stack"));
+      this.addEvent(".refresh-btn", "click", () => this.render(null, viewType));
+      this.addEvent(".exit-block-btn", "click", () => {
+        socketManager.emit("gesture:sent", { gestureType: "stack-close" });
+      });
     }
 
-    // Inicializar gestos de swipe si hay usuario
-    if (viewType === "stack" && this.pendingStack[0]) {
+    // Inicializar gestos de swipe si hay usuario (stack o sleep-list)
+    if ((viewType === "stack" || viewType === "sleep-list") && this.pendingStack[0]) {
       this.initSwipeGestures();
     }
   }
@@ -371,6 +471,7 @@ export class MobileUI extends BaseUI {
   // Método para avanzar en la pila cuando se hace un gesto en el móvil
   nextUser() {
     this.pendingStack.shift();
-    this.render(null, "stack");
+    // Mantener el mismo tipo de vista (stack normal o sleep-list)
+    this.render(null, this.currentViewType === "sleep-list" ? "sleep-list" : "stack");
   }
 }

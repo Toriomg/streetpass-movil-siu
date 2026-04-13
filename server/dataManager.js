@@ -34,22 +34,15 @@ const writeJSON = (file, data) => {
 
 const dataManager = {
   // Obtener un usuario aleatorio para el "Streetpass"
-  getRandomMockUser: (userID) => {
+  getRandomMockUser: (userID, shownIds = new Set()) => {
     const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
-    const excludedIds = new Set([
-      Number(userID),
-      ...dataManager.getBlockedUsers(userID).map((item) => item.id),
-    ]);
+    const blockedIds = dataManager.getBlockedUsers(userID).map((item) => item.id);
+    const excludedIds = new Set([Number(userID), ...blockedIds, ...shownIds]);
 
-    const availableUsers = users.filter((user) => !excludedIds.has(user.id));
-    const pool =
-      availableUsers.length > 0
-        ? availableUsers
-        : users.filter((user) => user.id !== Number(userID));
+    const available = users.filter((user) => !excludedIds.has(user.id));
+    if (available.length === 0) return null;
 
-    if (pool.length === 0) return null;
-
-    const user = pool[Math.floor(Math.random() * pool.length)];
+    const user = available[Math.floor(Math.random() * available.length)];
     return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
   },
 
