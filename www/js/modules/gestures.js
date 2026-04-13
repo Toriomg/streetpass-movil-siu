@@ -57,7 +57,10 @@ export function initGestures() {
         const count = tapCount;
         tapCount = 0;
         if (count === 1)      sendGesture("AMPLIAR RANGO 📡", "shake");
-        else if (count === 2) sendGesture("MODO BLOQUEO 🌙", "sleep");
+        else if (count === 2) {
+          if (currentMode === "sleep") sendGesture("VER PERSONAS 📋", "stack-open");
+          else sendGesture("MODO BLOQUEO 🌙", "sleep");
+        }
         else if (count >= 3)  sendGesture("CERRAR ✖", "exit");
         activateCooldown(800);
       }, 350);
@@ -79,6 +82,7 @@ export function initGestures() {
     const SHAKE_WINDOW_MS = 600;
 
     window.addEventListener("deviceorientation", (event) => {
+      if (currentMode === "sleep") return;
       const { gamma, beta } = event;
       console.log(`[Orientation] beta=${beta?.toFixed(1)} gamma=${gamma?.toFixed(1)} cooldown=${isCooldown} tiltActive=${tiltActive} mode=${currentMode}`);
       if (gamma === null || beta === null) return;
@@ -130,6 +134,28 @@ export function initGestures() {
         (acc.x ?? 0) ** 2 + ay ** 2 + (acc.z ?? 0) ** 2,
       );
       console.log(`[Motion] ay=${ay.toFixed(1)} total=${totalAcc.toFixed(1)} peaks=${shakePeaks} cooldown=${isCooldown} mode=${currentMode}`);
+
+      // En modo bloqueo solo se procesa el gesto de brazo (stack-open / wake)
+      if (currentMode === "sleep") {
+        if (isCooldown) return;
+        const now = Date.now();
+        if (ay < -9) {
+          if (!armGesture || armGesture.type !== "up") {
+            armGesture = { type: "up", startTime: now, peakAcc: ay };
+          } else {
+            armGesture.peakAcc = Math.min(armGesture.peakAcc, ay);
+            if (now - armGesture.startTime > 550) {
+              const isSharpPull = armGesture.peakAcc < -20;
+              sendGesture(isSharpPull ? "VER PERSONAS" : "MODO ACTIVO", isSharpPull ? "stack-open" : "wake");
+              armGesture = null;
+              activateCooldown(2500);
+            }
+          }
+        } else {
+          if (armGesture && now - armGesture.startTime > 200) armGesture = null;
+        }
+        return;
+      }
 
       // Contar picos de aceleración para detectar shake real
       if (totalAcc > SHAKE_PEAK_THRESHOLD) {

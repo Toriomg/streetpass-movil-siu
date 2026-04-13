@@ -1,1 +1,28 @@
-{}
+{
+  "1": [
+    {
+      "id": 102,
+      "name": "Alejandra",
+      "phone": "633444555",
+      "interests": [
+        "Gimnasio",
+        "Senderismo",
+        "Dieta"
+      ],
+      "photo": "https://i.pravatar.cc/150?u=102",
+      "blockedAt": "4/13/2026, 12:40:38 PM"
+    },
+    {
+      "id": 104,
+      "name": "Martina",
+      "phone": "677888999",
+      "interests": [
+        "Gimnasio",
+        "Películas",
+        "Ecologismo"
+      ],
+      "photo": "https://i.pravatar.cc/150?u=104",
+      "blockedAt": "4/13/2026, 12:42:33 PM"
+    }
+  ]
+}

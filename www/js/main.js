@@ -31,6 +31,8 @@ function setWatchState(s) {
 }
 
 function returnToIdle() {
+  // No salir de sleeping ni closed desde aquí — esos estados tienen su propia lógica
+  if (watchState === "sleeping" || watchState === "closed") return;
   currentUser = null;
   setWatchState("idle");
   if (nearbyQueue.length > 0) {
@@ -119,8 +121,8 @@ const initializeUI = () => {
 
     // Persona cercana detectada → mostrar si libre, encolar si ocupado, ignorar si cerrado
     socketManager.on("user:nearby", (userData) => {
-      if (watchState === "closed") {
-        console.log("[Watch] user:nearby ignorado — app cerrada");
+      if (watchState === "closed" || watchState === "sleeping") {
+        console.log(`[Watch] user:nearby ignorado — estado: ${watchState}`);
         return;
       }
       if (watchState === "idle") {
@@ -171,7 +173,8 @@ const initializeUI = () => {
         // Cerrar / reabrir app (toggle)
         case "exit":
           if (watchState === "closed") {
-            returnToIdle();
+            setWatchState("idle");
+            uiRouter.navigate("watch", userProfile);
           } else {
             closeApp();
           }
@@ -189,19 +192,24 @@ const initializeUI = () => {
           break;
         }
 
-        // Modo bloqueo activado
+        // Modo bloqueo activado — pantalla persistente en el reloj
         case "sleep":
-          returnToIdle();
-          uiRouter.navigate("message", { message: "Modo bloqueo activo" });
+          currentUser = null;
+          nearbyQueue = [];
+          setWatchState("sleeping");
+          uiRouter.navigate("sleep");
           break;
 
-        // Volver a activo desde bloqueo
+        // Volver a activo desde bloqueo sin ver personas (gesto suave de brazo)
         case "wake":
+          setWatchState("idle");
           uiRouter.navigate("watch", userProfile);
           break;
 
-        // stack-close no tiene efecto visible en el reloj
+        // Pila revisada — volver a activo en el reloj
         case "stack-close":
+          setWatchState("idle");
+          uiRouter.navigate("watch", userProfile);
           break;
       }
     });
@@ -224,8 +232,11 @@ const initializeUI = () => {
     // Arrancar en pantalla de sensor activo (el reloj es la pantalla principal)
     uiRouter.navigate("sensor");
 
+    let mobileAppClosed = false;
+
     // Cambios de modo desde el servidor → actualizar pantalla del móvil
     socketManager.on("mode:change", ({ mode }) => {
+      if (mobileAppClosed) return; // app cerrada — ignorar cambios de modo
       if (mode === "active") {
         uiRouter.navigate("sensor");
       } else if (mode === "sleep") {
@@ -236,15 +247,21 @@ const initializeUI = () => {
 
     // Servidor envía la pila de personas (tras stack-open)
     socketManager.on("missed_encounters_data", (users) => {
-      uiRouter.navigate("stack", users);
+      if (mobileAppClosed) return;
+      uiRouter.navigate("sleep-list", users);
     });
 
-    // Feedback de gestos en el móvil — solo animar si estamos viendo la pila
+    // Gestos en el móvil
     socketManager.on("gesture:received", (data) => {
+      if (data.type === "exit") {
+        mobileAppClosed = !mobileAppClosed;
+        uiRouter.navigate(mobileAppClosed ? "app-closed" : "sensor");
+        return;
+      }
+
       const currentView =
         uiRouter.history[uiRouter.history.length - 1]?.viewType;
       if (currentView !== "stack") return;
-
       if (data.type === "accept" || data.type === "nav") {
         uiRouter.activeInterface.processGesture(data.type);
       }

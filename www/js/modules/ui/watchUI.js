@@ -76,6 +76,16 @@ const renderMessage = (data) => `
     </div>
 `;
 
+const renderSleep = () => `
+    <div class="watch-header">
+        <span class="watch-time watch-time-large" id="watch-time">00:00</span>
+    </div>
+    <div class="closed-indicator">
+        <span class="closed-dot" style="background:rgba(100,160,255,0.9);box-shadow:0 0 6px rgba(100,160,255,0.6)"></span>
+        Modo bloqueo
+    </div>
+`;
+
 const renderClosed = () => `
     <div class="watch-header">
         <span class="watch-time watch-time-large" id="watch-time">00:00</span>
@@ -124,6 +134,9 @@ export class WatchUI extends BaseUI {
         content = renderMessage(data);
         showHeader = true;
         break;
+      case "sleep":
+        content = renderSleep();
+        break;
       case "closed":
         content = renderClosed();
         break;
@@ -158,7 +171,7 @@ export class WatchUI extends BaseUI {
       });
     }
 
-    if (showHeader || viewType === "watch" || viewType === "closed") {
+    if (showHeader || viewType === "watch" || viewType === "closed" || viewType === "sleep") {
       startClock();
     }
   }

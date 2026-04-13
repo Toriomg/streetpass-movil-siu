@@ -151,6 +151,47 @@ const buildRecommendations = (interests) => {
   ];
 };
 
+const renderSleepList = (users) => {
+  if (!users || users.length === 0) {
+    return `
+      <div class="sleep-list">
+        <header class="stack-header">
+          <h3>Nadie mientras estabas guardado</h3>
+        </header>
+      </div>
+    `;
+  }
+
+  const items = users.map(u => `
+    <div class="sleep-list-item">
+      <img src="${u.photo}" alt="${u.name}" class="sleep-list-avatar">
+      <div class="sleep-list-info">
+        <span class="sleep-list-name">${u.name}</span>
+        <span class="sleep-list-interests">${(u.interests || []).join(', ')}</span>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="sleep-list">
+      <header class="stack-header">
+        <h3>${users.length} persona${users.length !== 1 ? 's' : ''} mientras estabas guardado</h3>
+      </header>
+      <div class="sleep-list-scroll">
+        ${items}
+      </div>
+    </div>
+  `;
+};
+
+const renderAppClosed = () => `
+    <div class="mobile-sensor-active">
+        <div class="radar-animation" style="opacity:0.2; filter:grayscale(1) brightness(0.5)"></div>
+        <h2>App cerrada</h2>
+        <p>Da tres toques para volver a abrirla.</p>
+    </div>
+`;
+
 const renderStatus = () => `
     <div class="mobile-sensor-active">
         <div class="radar-animation"></div>
@@ -339,6 +380,12 @@ export class MobileUI extends BaseUI {
           this.getLocationLabel(),
           this.locationError,
         );
+        break;
+      case "sleep-list":
+        content = renderSleepList(data);
+        break;
+      case "app-closed":
+        content = renderAppClosed();
         break;
       case "sensor":
         content = renderStatus();
