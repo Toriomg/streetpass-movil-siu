@@ -2,6 +2,7 @@
   {
     "id": 101,
     "name": "Noa",
+    "photo": "url.com",
     "phone": "611222333",
     "interests": ["Música", "Películas", "Derecho"],
     "distancia": 8
@@ -9,6 +10,7 @@
   {
     "id": 102,
     "name": "Alejandra",
+    "photo": "url.com",
     "phone": "633444555",
     "interests": ["Gimnasio", "Senderismo", "Dieta"],
     "distancia": 45
@@ -16,6 +18,7 @@
   {
     "id": 103,
     "name": "Sara",
+    "photo": "url.com",
     "phone": "655666777",
     "interests": ["Videojuegos", "Películas", "Lectura"],
     "distancia": 23
@@ -23,6 +26,7 @@
   {
     "id": 104,
     "name": "Martina",
+    "photo": "url.com",
     "phone": "677888999",
     "interests": ["Gimnasio", "Películas", "Ecologismo"],
     "distancia": 67
@@ -30,6 +34,7 @@
   {
     "id": 105,
     "name": "Valeria",
+    "photo": "url.com",
     "phone": "622333444",
     "interests": ["Electrónica", "Películas", "Ajedrez"],
     "distancia": 12
@@ -37,6 +42,7 @@
   {
     "id": 106,
     "name": "Carla",
+    "photo": "url.com",
     "phone": "644555666",
     "interests": ["Películas", "Música", "Derecho"],
     "distancia": 88
@@ -44,6 +50,7 @@
   {
     "id": 107,
     "name": "Julia",
+    "photo": "url.com",
     "phone": "688999000",
     "interests": ["Lectura", "Películas", "Religión"],
     "distancia": 34
@@ -51,6 +58,7 @@
   {
     "id": 108,
     "name": "Elena",
+    "photo": "url.com",
     "phone": "600111222",
     "interests": ["Senderismo", "Electrónica", "Animales"],
     "distancia": 5
@@ -58,6 +66,7 @@
   {
     "id": 109,
     "name": "Olivia",
+    "photo": "url.com",
     "phone": "699000111",
     "interests": ["Espacio", "Música", "Ecologismo"],
     "distancia": 56
@@ -65,6 +74,7 @@
   {
     "id": 110,
     "name": "Alba",
+    "photo": "url.com",
     "phone": "611777888",
     "interests": ["Senderismo", "Películas", "Gimnasio"],
     "distancia": 19
@@ -72,6 +82,7 @@
   {
     "id": 111,
     "name": "Carmen",
+    "photo": "url.com",
     "phone": "633999222",
     "interests": ["Dieta", "Música", "Derecho"],
     "distancia": 72
@@ -79,6 +90,7 @@
   {
     "id": 112,
     "name": "Paula",
+    "photo": "url.com",
     "phone": "655222888",
     "interests": ["Gimnasio", "Electrónica", "Animales"],
     "distancia": 31
@@ -86,6 +98,7 @@
   {
     "id": 113,
     "name": "Daniela",
+    "photo": "url.com",
     "phone": "677444111",
     "interests": ["Derecho", "Espacio", "Películas"],
     "distancia": 93
