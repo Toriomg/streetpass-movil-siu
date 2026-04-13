@@ -25,9 +25,6 @@ let nearbyQueue = [];
 // Estados locales del reloj: "idle" | "profile" | "animating" | "match" | "connection" | "closed"
 let watchState = "idle";
 
-// Modo del servidor sincronizado vía mode:change: "active" | "sleep" | "stack"
-let serverMode = "active";
-
 function setWatchState(s) {
   watchState = s;
   console.log(`[Watch] estado → ${s} (cola: ${nearbyQueue.length})`);
@@ -120,26 +117,10 @@ const initializeUI = () => {
       }
     });
 
-    // Sincronizar el modo del servidor en el reloj
-    socketManager.on("mode:change", ({ mode }) => {
-      serverMode = mode;
-      if (mode === "stack") {
-        // El móvil está mostrando la pila: el reloj vuelve a la esfera del reloj
-        setWatchState("idle");
-        currentUser = null;
-        nearbyQueue = [];
-        uiRouter.navigate("watch", userProfile);
-      }
-    });
-
-    // Persona cercana detectada → solo procesar en modo activo
+    // Persona cercana detectada → mostrar si libre, encolar si ocupado, ignorar si cerrado
     socketManager.on("user:nearby", (userData) => {
       if (watchState === "closed") {
         console.log("[Watch] user:nearby ignorado — app cerrada");
-        return;
-      }
-      if (serverMode !== "active") {
-        console.log(`[Watch] user:nearby ignorado — modo ${serverMode}`);
         return;
       }
       if (watchState === "idle") {
@@ -181,14 +162,19 @@ const initializeUI = () => {
           break;
         }
 
-        // Bloquear usuario (gesto físico) o botón del reloj → ya lo gestiona user:blocked
+        // Bloquear usuario por gesto — mostrar confirmación breve
         case "block":
-          returnToIdle();
+          uiRouter.navigate("message", { message: "Usuario bloqueado ⛔" });
+          setTimeout(() => returnToIdle(), 2000);
           break;
 
-        // Cerrar app — cualquier estado → pantalla cerrada
+        // Cerrar / reabrir app (toggle)
         case "exit":
-          closeApp();
+          if (watchState === "closed") {
+            returnToIdle();
+          } else {
+            closeApp();
+          }
           break;
 
         // Ampliar rango → mensaje temporal, luego vuelve donde estaba
@@ -222,7 +208,8 @@ const initializeUI = () => {
 
     // Bloqueo por botón en la UI del reloj
     socketManager.on("user:blocked", () => {
-      returnToIdle();
+      uiRouter.navigate("message", { message: "Usuario bloqueado ⛔" });
+      setTimeout(() => returnToIdle(), 2000);
     });
 
     // ═══════════════════════════════════════════════

@@ -42,67 +42,76 @@ export function initGestures() {
     let isCooldown = false;
 
     // ─────────────────────────────────────────────
-    // DOBLE TOQUE → exit (cierre, cualquier estado)
+    // TOQUES:
+    //   • 1 toque  → ampliar rango (shake)
+    //   • 2 toques → modo bloqueo (sleep)
+    //   • 3 toques → cerrar app (exit)
+    // Los toques ignoran el cooldown siempre
     // ─────────────────────────────────────────────
-    let lastTapTime = 0;
+    let tapCount = 0;
+    let tapTimer = null;
     document.addEventListener("touchstart", () => {
-      // El doble toque ignora el cooldown — exit funciona siempre
-      const now = Date.now();
-      const delta = now - lastTapTime;
-      if (delta < 300 && delta > 0) {
-        lastTapTime = 0;
-        sendGesture("CERRAR ✖", "exit");
-        activateCooldown(1000);
-      } else {
-        lastTapTime = now;
-      }
+      tapCount++;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => {
+        const count = tapCount;
+        tapCount = 0;
+        if (count === 1)      sendGesture("AMPLIAR RANGO 📡", "shake");
+        else if (count === 2) sendGesture("MODO BLOQUEO 🌙", "sleep");
+        else if (count >= 3)  sendGesture("CERRAR ✖", "exit");
+        activateCooldown(800);
+      }, 350);
     });
 
     // ─────────────────────────────────────────────
     // INCLINACIÓN (deviceorientation)
     //   • Inclinar derecha (gamma > 55) → nav (pasar)
     //   • Inclinar izquierda (gamma < -55) → accept (conectar)
-    //   • Inclinar hacia arriba (beta < 45) → block (bloquear usuario)
     // ─────────────────────────────────────────────
-    let tiltActive = false; // true mientras el móvil sigue en posición de gesto
+    let tiltActive = false;
+    let pendingTilt = null; // { type, timer }
+
+    // Detección de shake por conteo de picos
+    let shakePeaks = 0;
+    let shakeWindowStart = 0;
+    const SHAKE_PEAK_THRESHOLD = 22;
+    const SHAKE_PEAKS_NEEDED = 3;
+    const SHAKE_WINDOW_MS = 600;
 
     window.addEventListener("deviceorientation", (event) => {
       const { gamma, beta } = event;
       console.log(`[Orientation] beta=${beta?.toFixed(1)} gamma=${gamma?.toFixed(1)} cooldown=${isCooldown} tiltActive=${tiltActive} mode=${currentMode}`);
       if (gamma === null || beta === null) return;
 
-      const isGammaTilted = Math.abs(gamma) > 55;  // inclinación izq / der
-      const isBetaUp      = beta < 45;             // pantalla mirando al techo (bloquear)
-      const isAnyTilted   = isGammaTilted || isBetaUp;
+      const isTilted = Math.abs(gamma) > 55;
 
-      // Volver a posición neutral → permitir el siguiente gesto
-      if (!isAnyTilted) {
+      if (!isTilted) {
         tiltActive = false;
         return;
       }
 
       if (isCooldown || tiltActive || Date.now() < externalCooldownUntil) return;
 
-      tiltActive = true;
+      // Si ya se ha confirmado un shake (≥2 picos), no lanzar tilt
+      if (shakePeaks >= 2 && Date.now() - shakeWindowStart < SHAKE_WINDOW_MS) return;
 
-      // BLOQUEAR tiene prioridad: pantalla al techo y sin inclinación lateral fuerte
-      if (isBetaUp && !isGammaTilted) {
-        sendGesture("ARRIBA ↑ BLOQUEAR", "block");
-        activateCooldown(1000);
-      } else if (gamma > 55) {
-        sendGesture("DERECHA →", "nav");
-        activateCooldown(300);
-      } else {
-        // gamma < -55 → aceptar / conectar
-        if ("vibrate" in navigator) navigator.vibrate([80, 60, 80]);
-        sendGesture("IZQUIERDA ←", "accept");
-        activateCooldown(300);
-      }
+      tiltActive = true;
+      const tiltType = gamma > 55 ? "nav" : "accept";
+
+      // Esperar 350ms antes de enviar — el shake puede cancelarlo si llega antes
+      pendingTilt = { type: tiltType };
+      pendingTilt.timer = setTimeout(() => {
+        if (!pendingTilt) return;
+        pendingTilt = null;
+        if (tiltType === "accept" && "vibrate" in navigator) navigator.vibrate([80, 60, 80]);
+        sendGesture(tiltType === "nav" ? "DERECHA →" : "IZQUIERDA ←", tiltType);
+      }, 350);
+      activateCooldown(400);
     });
 
     // ─────────────────────────────────────────────
     // MOVIMIENTO (devicemotion)
-    //   • Agitar → shake (ampliar rango)
+    //   • Agitar → block (bloquear usuario)
     //   • Bajar brazo → sleep (modo bloqueo) [solo en activo]
     //   • Subir brazo suave → wake (volver a activo) [solo en sleep]
     //   • Subir brazo fuerte/brusco → stack-open [solo en sleep]
@@ -120,14 +129,28 @@ export function initGestures() {
       const totalAcc = Math.sqrt(
         (acc.x ?? 0) ** 2 + ay ** 2 + (acc.z ?? 0) ** 2,
       );
-      console.log(`[Motion] ay=${ay.toFixed(1)} total=${totalAcc.toFixed(1)} cooldown=${isCooldown} mode=${currentMode}`);
+      console.log(`[Motion] ay=${ay.toFixed(1)} total=${totalAcc.toFixed(1)} peaks=${shakePeaks} cooldown=${isCooldown} mode=${currentMode}`);
 
-      // AGITAR — prioridad máxima (umbral alto, cooldown largo)
-      if (totalAcc > 30 && !isCooldown) {
-        armGesture = null;
-        sendGesture("AMPLIAR RANGO 📡", "shake");
-        activateCooldown(2000);
-        return;
+      // Contar picos de aceleración para detectar shake real
+      if (totalAcc > SHAKE_PEAK_THRESHOLD) {
+        const now = Date.now();
+        if (now - shakeWindowStart > SHAKE_WINDOW_MS) {
+          shakePeaks = 0;
+          shakeWindowStart = now;
+        }
+        shakePeaks++;
+
+        if (shakePeaks >= SHAKE_PEAKS_NEEDED && !isCooldown) {
+          shakePeaks = 0;
+          if (pendingTilt) { clearTimeout(pendingTilt.timer); pendingTilt = null; }
+          armGesture = null;
+          sendGesture("BLOQUEAR ⛔", "block");
+          activateCooldown(2000);
+          return;
+        }
+      } else {
+        // Fuera de pico — resetear ventana si ha pasado suficiente tiempo
+        if (Date.now() - shakeWindowStart > SHAKE_WINDOW_MS) shakePeaks = 0;
       }
 
       if (isCooldown) return;

@@ -10,7 +10,6 @@ module.exports = function (io) {
     // Estado por conexión
     socket.mode = "active";          // "active" | "sleep" | "stack"
     socket.currentEncounter = null;  // Persona que se está mostrando ahora mismo
-    socket.sleepQueue = [];          // Personas vistas mientras el reloj estaba guardado
 
     // Enviar el perfil propio al cliente
     const profile = dataManager.getProfile(userID);
@@ -20,17 +19,6 @@ module.exports = function (io) {
       const randomUser = dataManager.getRandomMockUser(userID);
       if (!randomUser) return;
       socket.currentEncounter = randomUser;
-
-      // Durante modo bloqueo o pila: acumular en la cola sin duplicados (máx. 20)
-      if (socket.mode === "sleep" || socket.mode === "stack") {
-        const alreadyQueued = socket.sleepQueue.some(u => u.id === randomUser.id);
-        if (!alreadyQueued && socket.sleepQueue.length < 20) {
-          socket.sleepQueue.push(randomUser);
-          console.log(`[Socket] Usuario ${userID} | sleepQueue +1 → ${socket.sleepQueue.length} personas`);
-        }
-        return; // No emitir user:nearby mientras el reloj está guardado
-      }
-
       io.to(userID).emit("user:nearby", randomUser);
     });
 
@@ -82,7 +70,6 @@ module.exports = function (io) {
         case "exit":
           socket.mode = "active";
           socket.currentEncounter = null;
-          socket.sleepQueue = [];
           io.to(userID).emit("mode:change", { mode: "active" });
           io.to(userID).emit("gesture:received", { type: "exit" });
           break;
@@ -117,8 +104,8 @@ module.exports = function (io) {
           if (socket.mode !== "sleep") break;
           socket.mode = "stack";
           io.to(userID).emit("mode:change", { mode: "stack" });
-          io.to(userID).emit("missed_encounters_data", socket.sleepQueue);
-          console.log(`[Socket] Usuario ${userID} | abriendo pila → ${socket.sleepQueue.length} personas`);
+          const encounters = dataManager.getEncounters(userID);
+          io.to(userID).emit("missed_encounters_data", encounters);
           break;
         }
 
