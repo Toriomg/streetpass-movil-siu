@@ -22,6 +22,11 @@ module.exports = function (io) {
     const userID = socket.handshake.auth.token;
     if (!userID) return socket.disconnect();
 
+    const state = getState(userID);
+    state.shownIds = new Set();    // Permite que vuelvan a salir las mismas personas
+    state.pendingIds = new Set();  // Limpia registros temporales
+    state.currentEncounter = null; // Desbloquea el trigger
+
     socket.join(userID);
 
     // Enviar el perfil propio al cliente
@@ -31,12 +36,12 @@ module.exports = function (io) {
     socket.on("user:nearby:trigger", () => {
       const state = getState(userID);
 
-      if (state.mode === "active" && state.currentEncounter) {
-        console.log(
-          `[Socket] Ignorando user:nearby:trigger, ya hay un encuentro activo para ${userID}`,
-        );
-        return;
-      }
+      // if (state.mode === "active" && state.currentEncounter) {
+      //   console.log(
+      //     `[Socket] Ignorando user:nearby:trigger, ya hay un encuentro activo para ${userID}`,
+      //   );
+      //   return;
+      // }
 
       const excludedIds = new Set([...state.shownIds, ...state.pendingIds]);
       const randomUser = dataManager.getRandomMockUser(

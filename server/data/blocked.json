@@ -1,1 +1,17 @@
-{}
+{
+  "1": [
+    {
+      "id": 101,
+      "name": "Noa",
+      "phone": "611222333",
+      "interests": [
+        "Música",
+        "Películas",
+        "Derecho"
+      ],
+      "distancia": 8,
+      "photo": "https://i.pravatar.cc/150?u=101",
+      "blockedAt": "4/13/2026, 6:20:16 PM"
+    }
+  ]
+}

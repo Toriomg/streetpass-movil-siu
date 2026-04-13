@@ -53,6 +53,14 @@ function showNearbyUser(userData) {
   currentUser = userData;
   setWatchState("profile");
   uiRouter.navigate("profile", currentUser);
+
+  // OPTIONAL: Auto-skip after 10 seconds if no gesture is made
+  setTimeout(() => {
+    if (watchState === "profile" && currentUser?.id === userData.id) {
+      console.log("Auto-skipping user due to inactivity");
+      returnToIdle();
+    }
+  }, 10000);
 }
 
 socketManager.on("profile:data", (profile) => {
@@ -133,6 +141,15 @@ const initializeUI = () => {
     // Precargar 3 personas al inicio — DESPUÉS de registrar el handler
     console.log("[Watch] 🚀 Precargando 3 personas iniciales...");
     for (let i = 0; i < 3; i++) socketManager.emit("user:nearby:trigger");
+
+    // Añade este nuevo intervalo justo debajo
+    console.log("[Watch] ⏱️ Iniciando generador automático (1 cada 5s)");
+    setInterval(() => {
+      // Solo pedimos más personas si no estamos en modo "cerrado" o "durmiendo"
+      if (watchState !== "closed" && watchState !== "sleeping") {
+        socketManager.emit("user:nearby:trigger");
+      }
+    }, 5000);
 
     // El reloj reacciona a todos los gestos
     let acceptTimers = []; // timers de match/connection — se pueden cancelar con gesto
