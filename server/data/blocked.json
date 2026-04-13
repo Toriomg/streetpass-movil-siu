@@ -12,6 +12,19 @@
       "distancia": 8,
       "photo": "https://i.pravatar.cc/150?u=101",
       "blockedAt": "4/13/2026, 6:20:16 PM"
+    },
+    {
+      "id": 103,
+      "name": "Sara",
+      "phone": "655666777",
+      "interests": [
+        "Videojuegos",
+        "Películas",
+        "Lectura"
+      ],
+      "distancia": 23,
+      "photo": "https://i.pravatar.cc/150?u=103",
+      "blockedAt": "4/13/2026, 6:36:19 PM"
     }
   ]
 }

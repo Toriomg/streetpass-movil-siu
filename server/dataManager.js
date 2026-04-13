@@ -60,7 +60,10 @@ const dataManager = {
     if (available.length === 0) return null;
     available.sort((a, b) => a.distancia - b.distancia);
     const user = available[0];
-    return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
+    return {
+      ...user,
+      photo: user.photo || `https://i.pravatar.cc/150?u=${user.id}`
+    };
   },
 
   // Obtener el perfil propio del usuario (desde mockUsers)
@@ -68,7 +71,10 @@ const dataManager = {
     const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
     const user = users.find((u) => u.id === Number(userID));
     if (user) {
-      return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
+      return {
+        ...user,
+        photo: user.photo || `https://i.pravatar.cc/150?u=${user.id}`
+      };
     }
     // Perfil por defecto si no existe
     return {
