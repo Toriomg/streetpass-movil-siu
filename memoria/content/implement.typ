@@ -7,6 +7,8 @@ Uno de lo factores claves que se ha tenido en cuenta a la hora de diseñar y pla
 
 Para conseguir dicho objetivo, se ha tenido que modificar ligeramente lo presentado en la entrega anterior en cuanto al uso de los dispositivos se refiere. De modo que la navegación y los movimientos puedan ser lo más discretos y cómodos posibles, hemos cambiado nuestra pantalla a que se presente en el _smartwatch_ y el sensor en el móvil del usuario. De este modo, los movimientos a realizar por el usuario pueden esconderse dentro de un bolsillo, bajo una chaqueta o hacerse de manera disimulada muy pegados al cuerpo. Y mientras estos movimientos se producen, la impresión es tan cómoda y cotidiana como la de mirar la hora en un reloj. 
 
+Además, muchas de las cuestiones de distancia, o usuarios cercanos se han trampeado, de modo que 
+
 == Diseño de interfaz
 Pese a que no se pide de manera explicita en las especificaciones de la práctica, se ha considerado relevante mencionar brevemente cuales han sido las decisiones a la hora de diseñar las interfaces. 
 
@@ -76,11 +78,11 @@ Con tal de reducir el número de gestos, cuestión que se ha propuesto de manera
 - De la misma manera, el gesto definido para *rechazar solicitudes* es el de navegación *hacia la derecha*, esencialmente, porque te devuelve a la navegación general de la aplicación, volviendo a mostrarte a las personas y a las pantallas y secciones principales de la aplicación. 
 
 === Acceso, salida y confirmación. 
-Para abrir la aplicación, se darán *dos toques* al teléfono, que actua como sensor en nuestro modelo.
+La aplicación se abre de manera automática, de modo que la pantalla espera a personas cercanas para mostrarlas en el reloj. 
 
-De la misma manera, para salir completamente de la aplicación debido a que el usuario no busca estar conectado, ni aparecer a otros usuarios se ha planeado que el gesto empleado sea *dar dos golpes al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
+Por otro lado, para salir completamente de la aplicación debido a que el usuario no busca estar conectado, ni aparecer a otros usuarios se ha planeado que el gesto empleado sea *dar tres toques al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. Para reconocer los toques, estos deben darse en la pantalla del teléfono con un dedo.
 
-Es un gesto completamente diferenciado de los anteriores y esto hace que se eviten posibles errores y salidas o entradas no intencionadas por parte de los usuarios. Una cosa muy útil en una aplicación como es la nuestra. Además, es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. 
+Es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. Además, es lo suficientemente largo (tres toques) como para que sea muy dificil que le usuario lo haga de manera no intencionada, lo que evita problemas de salidas y perdidas de nformación de manera erronea.
 
 
 El flujo de uso de las funcionalidades principales es el que se muestra en la @total:
@@ -94,19 +96,19 @@ El flujo de uso de las funcionalidades principales es el que se muestra en la @t
         "Info": "Ver mi Info"
       ),
       "Info": (
-        "Reloj": "Doble golpe\n(Cerrar)\n "
+        "Reloj": "Triple golpe\n(Cerrar)\n "
       ),
       "Perfil": (
         "Perfil": "Gesto Der.\n(Pasar)\n ", 
         "Match": "Gesto Izq.\n(Conectar)\n ",
-        "Reloj": "\nDoble golpe\n(Cerrar)"
+        "Reloj": "\nTriple golpe\n(Cerrar)"
       ),
       "Match": (
         "Conex": "\nGesto Izq.\n(Conectar)",
         "Perfil": "\nGesto Der.\n(Cancelar)"
       ),
       "Conex": (
-        "Reloj": "\nDoble golpe\n(Finalizar)",
+        "Reloj": "\nTriple golpe\n(Finalizar)",
         "Perfil": "\nGesto Der.\n(Volver)"
       ),
     ),
@@ -153,12 +155,12 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
   automaton(
     final: ("Cierre",),
     (
-      "Cierre": ("Navegación": "Dos toques"),
+      "Cierre": ("Navegación": "Espera"),
       "Navegación": (
         "Navegación": "Gesto Der.",
         "Match": "Gesto Izq.", 
-        "Bloqueo": "Un toque",
-        "Cierre": "Dos toques"
+        "Bloqueo": "Dos toque",
+        "Cierre": "Tres toques"
       ),
       "Bloqueo": (
         "Cierre": "Dos toques",
@@ -169,7 +171,7 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
         "Conexión":"Gesto Izq."
         ),
       "Conexión": (
-        "Cierre": "Dos toques", 
+        "Cierre": "Tres toques", 
         "Navegación":"Gesto Der."
 
         ),
