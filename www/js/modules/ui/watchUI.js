@@ -30,13 +30,17 @@ const renderProfile = (data) => {
     )
     .join("");
 
+  const distanciaHtml = data.distancia != null
+    ? `<span class="profile-distance">📍 ${data.distancia} m</span>`
+    : "";
+
   return `
     <div class="profile-card">
         <img src="${data.photo}" alt="Perfil" class="profile-img">
         <div class="swipe-indicator" id="swipe-indicator"></div>
     </div>
     <div class="info-section">
-        <p class="match-text">A ${data.name} le gusta:</p>
+        <p class="match-text">A ${data.name} le gusta: ${distanciaHtml}</p>
         <div class="interests-icons">
             ${interestsHtml}
         </div>

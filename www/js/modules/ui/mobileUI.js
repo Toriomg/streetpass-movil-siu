@@ -151,35 +151,36 @@ const buildRecommendations = (interests) => {
   ];
 };
 
-const renderSleepList = (users) => {
-  if (!users || users.length === 0) {
-    return `
-      <div class="sleep-list">
-        <header class="stack-header">
-          <h3>Nadie mientras estabas guardado</h3>
-        </header>
-      </div>
-    `;
-  }
+const renderSleepStack = (user) => {
+  // Estado vacío lo gestiona render() mostrando recomendaciones
+  if (!user) return "";
 
-  const items = users.map(u => `
-    <div class="sleep-list-item">
-      <img src="${u.photo}" alt="${u.name}" class="sleep-list-avatar">
-      <div class="sleep-list-info">
-        <span class="sleep-list-name">${u.name}</span>
-        <span class="sleep-list-interests">${(u.interests || []).join(', ')}</span>
-      </div>
-    </div>
-  `).join('');
+  const interests = user.interests
+    ? user.interests.map(g => `<span class="interest-tag">${g}</span>`).join(" ")
+    : "";
 
   return `
-    <div class="sleep-list">
+    <div class="mobile-stack-container">
       <header class="stack-header">
-        <h3>${users.length} persona${users.length !== 1 ? 's' : ''} mientras estabas guardado</h3>
+        <p>Mientras estabas bloquead@</p>
       </header>
-      <div class="sleep-list-scroll">
-        ${items}
+
+      <div class="user-card-mobile">
+        <div class="mobile-swipe-indicator" id="mobile-swipe-indicator"></div>
+        <div class="image-container">
+          <img src="${user.photo}" alt="${user.name}" class="user-img">
+        </div>
+        <div class="user-details">
+          <h2 class="user-name">${user.name}</h2>
+          <div class="user-interests">${interests}</div>
+          <p class="user-hint">${user.name} ha intentado conectar contigo. Acepta para ver su teléfono.</p>
+        </div>
       </div>
+
+      <footer class="gesture-hint">
+        <div class="hint-item"><span>←</span> Conectar</div>
+        <div class="hint-item">Pasar <span>→</span></div>
+      </footer>
     </div>
   `;
 };
@@ -231,6 +232,7 @@ export class MobileUI extends BaseUI {
     this.location = null;
     this.locationError = null;
     this.isAnimating = false;
+    this.currentViewType = "start";
   }
 
   setUserProfile(profile) {
@@ -249,6 +251,13 @@ export class MobileUI extends BaseUI {
     if (!card) {
       this.isAnimating = false;
       return;
+    }
+
+    // Mostrar indicador LIKE/NOPE
+    const indicator = this.container.querySelector("#mobile-swipe-indicator");
+    if (indicator) {
+      indicator.textContent = direction === "accept" ? "LIKE" : "NOPE";
+      indicator.className = "mobile-swipe-indicator " + (direction === "accept" ? "mobile-swipe-accept" : "mobile-swipe-reject");
     }
 
     card.classList.add(direction === "accept" ? "swipe-left" : "swipe-right");
@@ -294,6 +303,20 @@ export class MobileUI extends BaseUI {
       currentX = e.touches[0].clientX;
       const diff = currentX - startX;
       card.style.transform = `translateX(${diff}px) rotate(${diff * 0.1}deg)`;
+
+      // Mostrar indicador mientras se arrastra
+      const indicator = this.container.querySelector("#mobile-swipe-indicator");
+      if (indicator) {
+        if (Math.abs(diff) > 40) {
+          const isAccept = diff < 0;
+          indicator.textContent = isAccept ? "LIKE" : "NOPE";
+          indicator.className = "mobile-swipe-indicator " + (isAccept ? "mobile-swipe-accept" : "mobile-swipe-reject");
+          indicator.style.opacity = Math.min(1, (Math.abs(diff) - 40) / 60).toString();
+        } else {
+          indicator.className = "mobile-swipe-indicator";
+          indicator.style.opacity = "0";
+        }
+      }
     };
 
     const handleEnd = () => {
@@ -310,6 +333,11 @@ export class MobileUI extends BaseUI {
         this.emitGesture(gestureType);
       } else {
         card.style.transform = "";
+        const indicator = this.container.querySelector("#mobile-swipe-indicator");
+        if (indicator) {
+          indicator.className = "mobile-swipe-indicator";
+          indicator.style.opacity = "0";
+        }
       }
     };
 
@@ -382,7 +410,18 @@ export class MobileUI extends BaseUI {
         );
         break;
       case "sleep-list":
-        content = renderSleepList(data);
+        // Si llega un array lo guardamos como pila, luego renderizamos la primera tarjeta
+        if (Array.isArray(data)) this.pendingStack = [...data];
+        if (this.pendingStack[0]) {
+          content = renderSleepStack(this.pendingStack[0]);
+        } else {
+          // Pila agotada → mostrar recomendaciones
+          content = renderRecommendations(
+            this.getRecommendations(),
+            this.getLocationLabel(),
+            this.locationError,
+          );
+        }
         break;
       case "app-closed":
         content = renderAppClosed();
@@ -406,15 +445,20 @@ export class MobileUI extends BaseUI {
             </div>
         `;
 
+    this.currentViewType = viewType;
     this.renderTemplate(html);
 
-    if (viewType === "stack" && !this.pendingStack[0]) {
+    // Botones de recomendaciones (stack vacío o sleep-list agotada)
+    const showingRecos =
+      (viewType === "stack" && !this.pendingStack[0]) ||
+      (viewType === "sleep-list" && !this.pendingStack[0]);
+    if (showingRecos) {
       this.addEvent(".location-btn", "click", () => this.requestLocation());
-      this.addEvent(".refresh-btn", "click", () => this.render(null, "stack"));
+      this.addEvent(".refresh-btn", "click", () => this.render(null, viewType));
     }
 
-    // Inicializar gestos de swipe si hay usuario
-    if (viewType === "stack" && this.pendingStack[0]) {
+    // Inicializar gestos de swipe si hay usuario (stack o sleep-list)
+    if ((viewType === "stack" || viewType === "sleep-list") && this.pendingStack[0]) {
       this.initSwipeGestures();
     }
   }
@@ -422,6 +466,7 @@ export class MobileUI extends BaseUI {
   // Método para avanzar en la pila cuando se hace un gesto en el móvil
   nextUser() {
     this.pendingStack.shift();
-    this.render(null, "stack");
+    // Mantener el mismo tipo de vista (stack normal o sleep-list)
+    this.render(null, this.currentViewType === "sleep-list" ? "sleep-list" : "stack");
   }
 }

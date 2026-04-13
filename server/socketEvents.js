@@ -5,7 +5,7 @@ const userState = {};
 
 function getState(userID) {
   if (!userState[userID]) {
-    userState[userID] = { mode: "active", sleepQueue: [], currentEncounter: null };
+    userState[userID] = { mode: "active", sleepQueue: [], currentEncounter: null, shownIds: new Set() };
   }
   return userState[userID];
 }
@@ -23,15 +23,19 @@ module.exports = function (io) {
 
     socket.on("user:nearby:trigger", () => {
       const state = getState(userID);
-      const randomUser = dataManager.getRandomMockUser(userID);
-      if (!randomUser) return;
+      const randomUser = dataManager.getRandomMockUser(userID, state.shownIds);
+      if (!randomUser) {
+        console.log(`[Socket] Sin personas nuevas para ${userID} — todas vistas`);
+        io.to(userID).emit("user:nearby:empty");
+        return;
+      }
+      state.shownIds.add(randomUser.id);
       state.currentEncounter = randomUser;
 
       if (state.mode === "sleep" || state.mode === "stack") {
         const alreadyQueued = state.sleepQueue.some(u => u.id === randomUser.id);
         if (!alreadyQueued && state.sleepQueue.length < 20) {
           state.sleepQueue.push(randomUser);
-          console.log(`[Socket] Usuario ${userID} | sleepQueue +1 → ${state.sleepQueue.length} personas`);
         }
         return;
       }
@@ -73,11 +77,10 @@ module.exports = function (io) {
           break;
 
         case "block":
-          if (state.currentEncounter) {
-            dataManager.saveBlockedUser(userID, state.currentEncounter);
-            io.to(userID).emit("user:blocked", { blockedId: state.currentEncounter.id });
-            state.currentEncounter = null;
-          }
+          if (!state.currentEncounter) break;
+          dataManager.saveBlockedUser(userID, state.currentEncounter);
+          io.to(userID).emit("user:blocked", { blockedId: state.currentEncounter.id });
+          state.currentEncounter = null;
           io.to(userID).emit("gesture:received", { type: "block" });
           break;
 
@@ -128,6 +131,10 @@ module.exports = function (io) {
         default:
           console.warn(`[Socket] Gesto desconocido: ${gestureType}`);
       }
+    });
+
+    socket.on("gesture:lock", ({ ms } = {}) => {
+      io.to(userID).emit("gesture:lock", { ms: ms || 1500 });
     });
 
     socket.on("request_missed_encounters", () => {

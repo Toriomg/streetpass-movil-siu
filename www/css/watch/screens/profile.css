@@ -51,6 +51,21 @@
   font-size: 1rem;
   margin-bottom: 8px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.profile-distance {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #007aff;
+  background: rgba(0, 122, 255, 0.12);
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
 .interests-icons {

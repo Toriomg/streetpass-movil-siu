@@ -18,6 +18,12 @@ export function initGestures() {
     console.log(`[Gestures] Modo actualizado a: ${mode}`);
   });
 
+  // El reloj pide bloquear gestos (e.g. tras saltar match/connection)
+  socketManager.on("gesture:lock", ({ ms } = {}) => {
+    externalCooldownUntil = Date.now() + (ms || 1500);
+    console.log(`[Gestures] Lock externo: ${ms || 1500}ms`);
+  });
+
   const needsIOSPermission =
     typeof DeviceOrientationEvent !== "undefined" &&
     typeof DeviceOrientationEvent.requestPermission === "function";

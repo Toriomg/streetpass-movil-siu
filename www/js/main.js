@@ -83,21 +83,11 @@ const initializeUI = () => {
     });
     debugPanel.appendChild(triggerBtn);
 
-    // Pre-cargar 10 personas al inicio
-    for (let i = 0; i < 10; i++) {
-      socketManager.emit("user:nearby:trigger");
-    }
-
-    // Botón auto-trigger: recarga la cola cada 5 segundos
-    const startAuto = () => {
-      return setInterval(() => {
-        socketManager.emit("user:nearby:trigger");
-      }, 5000);
-    };
-
-    let autoInterval = startAuto(); // arranca automáticamente
+    // Botón auto-trigger manual (desactivado por defecto, solo para pruebas)
+    let autoInterval = null;
+    const startAuto = () => setInterval(() => socketManager.emit("user:nearby:trigger"), 10000);
     const autoBtn = document.createElement("button");
-    autoBtn.textContent = "Auto ON (5s)";
+    autoBtn.textContent = "Auto OFF";
     autoBtn.style.marginLeft = "8px";
     autoBtn.addEventListener("click", () => {
       if (autoInterval) {
@@ -106,7 +96,7 @@ const initializeUI = () => {
         autoBtn.textContent = "Auto OFF";
       } else {
         autoInterval = startAuto();
-        autoBtn.textContent = "Auto ON (5s)";
+        autoBtn.textContent = "Auto ON (10s)";
       }
     });
     debugPanel.appendChild(autoBtn);
@@ -121,6 +111,7 @@ const initializeUI = () => {
 
     // Persona cercana detectada → mostrar si libre, encolar si ocupado, ignorar si cerrado
     socketManager.on("user:nearby", (userData) => {
+      console.log(`[Watch] ✅ user:nearby recibido: ${userData?.name} | estado: ${watchState}`);
       if (watchState === "closed" || watchState === "sleeping") {
         console.log(`[Watch] user:nearby ignorado — estado: ${watchState}`);
         return;
@@ -129,32 +120,58 @@ const initializeUI = () => {
         showNearbyUser(userData);
       } else {
         nearbyQueue.push(userData);
+        nearbyQueue.sort((a, b) => (a.distancia ?? 999) - (b.distancia ?? 999));
         console.log(`[Watch] user:nearby encolado (cola: ${nearbyQueue.length})`);
       }
     });
 
+    // Precargar 3 personas al inicio — DESPUÉS de registrar el handler
+    console.log("[Watch] 🚀 Precargando 3 personas iniciales...");
+    for (let i = 0; i < 3; i++) socketManager.emit("user:nearby:trigger");
+
     // El reloj reacciona a todos los gestos
+    let acceptTimers = []; // timers de match/connection — se pueden cancelar con gesto
+
+    const skipToNext = () => {
+      acceptTimers.forEach(clearTimeout);
+      acceptTimers = [];
+      socketManager.emit("gesture:lock", { ms: 1500 }); // decirle al móvil que bloquee gestos
+      returnToIdle();
+    };
+
     socketManager.on("gesture:received", (data) => {
       switch (data.type) {
 
         case "accept": {
+          // Durante match/connection: saltar a la siguiente persona
+          if (watchState === "match" || watchState === "connection") {
+            skipToNext();
+            break;
+          }
           if (watchState !== "profile" || !currentUser) break;
           const accepted = currentUser; // capturar valor, no referencia
           setWatchState("animating");
           watchUI.showSwipeIndicator("accept", () => {
             setWatchState("match");
             uiRouter.navigate("match", accepted);
-            setTimeout(() => {
+            const t1 = setTimeout(() => {
               setWatchState("connection");
               uiRouter.navigate("connection", { ...accepted, userPhoto: userProfile?.photo });
-              setTimeout(() => returnToIdle(), 5000);
+              const t2 = setTimeout(() => skipToNext(), 5000);
+              acceptTimers = [t2];
             }, 5000);
+            acceptTimers = [t1];
           });
           break;
         }
 
         // Pasar persona → el servidor ya manda la siguiente vía user:nearby
         case "nav": {
+          // Durante match/connection: saltar a la siguiente persona
+          if (watchState === "match" || watchState === "connection") {
+            skipToNext();
+            break;
+          }
           if (watchState !== "profile" || !currentUser) break;
           setWatchState("animating");
           watchUI.showSwipeIndicator("reject", () => {
@@ -166,6 +183,7 @@ const initializeUI = () => {
 
         // Bloquear usuario por gesto — mostrar confirmación breve
         case "block":
+          if (watchState !== "profile") break;
           uiRouter.navigate("message", { message: "Usuario bloqueado ⛔" });
           setTimeout(() => returnToIdle(), 2000);
           break;
@@ -180,9 +198,10 @@ const initializeUI = () => {
           }
           break;
 
-        // Ampliar rango → mensaje temporal, luego vuelve donde estaba
+        // Ampliar rango → añade 10 personas a la cola + mensaje temporal
         case "shake": {
           if (watchState !== "profile" && watchState !== "idle") break;
+          for (let i = 0; i < 10; i++) socketManager.emit("user:nearby:trigger");
           const backView = currentUser ? "profile" : "watch";
           const backData = currentUser ? currentUser : userProfile;
           uiRouter.navigate("message", {
@@ -218,6 +237,13 @@ const initializeUI = () => {
     socketManager.on("user:blocked", () => {
       uiRouter.navigate("message", { message: "Usuario bloqueado ⛔" });
       setTimeout(() => returnToIdle(), 2000);
+    });
+
+    // No hay más personas nuevas — mostrar mensaje breve y quedarse en idle
+    socketManager.on("user:nearby:empty", () => {
+      if (watchState !== "idle") return;
+      uiRouter.navigate("message", { message: "No hay nadie más cerca" });
+      setTimeout(() => uiRouter.navigate("watch", userProfile), 3000);
     });
 
     // ═══════════════════════════════════════════════
@@ -261,7 +287,7 @@ const initializeUI = () => {
 
       const currentView =
         uiRouter.history[uiRouter.history.length - 1]?.viewType;
-      if (currentView !== "stack") return;
+      if (currentView !== "stack" && currentView !== "sleep-list") return;
       if (data.type === "accept" || data.type === "nav") {
         uiRouter.activeInterface.processGesture(data.type);
       }
