@@ -151,10 +151,6 @@ streetpass-movil-siu/
 
 ### Código — bugs y mejoras necesarias
 
-- **Foto propia hardcodeada en la pantalla de conexión** — `watchUI.js:64` usa siempre
-  `https://i.pravatar.cc/300` en vez de la foto real del usuario logueado. Hay que pasarle
-  `userProfile.photo`.
-
 - **Indicadores visuales de la pila invertidos** — `mobileUI.js:47-49` muestra
   `"← Rechazar | Aceptar →"`, pero el gesto real es inclinar a la **izquierda** para aceptar
   y a la **derecha** para pasar (`gestures.js:76-82`). O bien se corrige el texto, o se
@@ -170,13 +166,6 @@ streetpass-movil-siu/
   `node server/index.js`. Añadir `"start": "node server/index.js"` en los scripts facilita
   tanto la entrega como el README exigido por el enunciado.
 
-- **`index.js` raíz no se usa** — hay un `index.js` en la raíz del repo que arranca un
-  servidor antiguo (sin módulos) apuntando a `www/` y escuchando en el puerto 3000. Es
-  confuso y puede lanzarse por error. Eliminar o dejar solo `server/index.js`.
-
-- **Dependencia de internet para las fotos** — `dataManager.js:53` y `:63` usan
-  `i.pravatar.cc`. Si no hay red la UI se queda sin imágenes. Valorar usar fotos locales en
-  `www/assets/` al menos para la demo.
 
 - **Botón de ayuda `?` con los gestos** — el TODO.md y el enunciado lo mencionan
   explícitamente ("muy importante para el profe"). Falta un botón en ambas pantallas
@@ -195,59 +184,16 @@ streetpass-movil-siu/
   funcional, pero la memoria queda incoherente. O se implementa o se actualiza el texto
   de la memoria para eliminar esa referencia.
 
----
+### TODO DESARROLLO 
+- [] Visión en movil de las personas almacenadas en el modo bloqueo - MUY IMPORTANTE 
+- Ampliar rango de búsequeda de personas agitando - MUY IMPORTANTE 
+- [] Botón de soporte con gestos - MUY IMPORTANTE (que lo mencionó en clase que era esencial)
+- [] Corrección del acceso al modo bloqueo y salida del modo bloqueo con un toque ????
+- [] Corrección de la entrada a la aplicación con dos toques 
+- [] Ver lo del reconocimiento facial y si no simularlo para ver a las personas almacenadas en modo bloqueo - SI NO DA TIEMPO LO QUITAMOS 
 
-### Memoria — secciones con placeholder sin rellenar
+### VIDEOS A GRABAR
+1. Video con la versión inicial de la entrega anterior en la que se hacian los gestos con el brazo del reloj y se miraban en el movil 
+2. Video en el que probamos diferentes gestos para diferentes cosas como conexiones y tal - esto hay que ver como lo trucamos sin tener que picar código o picando código realmente 
+3. Video de la implementación final
 
-- **§1.1 Detalles de inicio y uso** — contiene el placeholder
-  `"aqui incluis como se inicia y todas las historietas con mucho detalle como dijo en clase"`.
-  Hay que sustituirlo por el flujo real de arranque y los escenarios de uso (flujo activo,
-  flujo modo bloqueo), copiando y ampliando lo que ya está en este README.
-
-- **§2.2 Tecnologías Utilizadas** — los puntos 3 (gestos), 4 (reconocimiento facial) y
-  5 (localización) están en blanco. Completar con DeviceOrientation/DeviceMotion API,
-  FaceAPI (si se implementa) o qué lo sustituye, y la Geolocation API.
-
-- **§3.3 Vídeos del prototipo** — pone `"→ aquí iría el link"`. Hay que añadir los links
-  reales de YouTube (o los archivos mp4 si se entregan adjuntos).
-
-- **§4.1 Vídeos de sesiones de prototipado** — "link del video" × 2 (sesión 1 y sesión 2).
-  Ídem: añadir los enlaces reales.
-
-- **§5.1 Problemas técnicos** — dice `"aqui poned problemas durante el desarrollo"`. Hay
-  que redactar al menos: problemas con la calibración del acelerómetro, conflicto entre
-  gesto de bloqueo (bajar brazo) y gesto de agitar, la decisión de eliminar FaceAPI, etc.
-
-- **§5.2 Link al vídeo comparativo** — hay un `"link al video"` sin rellenar en el
-  apartado de cambios realizados respecto a las ideas originales.
-
-- **§6 Reflexión sobre IA generativa** — sección completamente vacía (obligatoria según
-  el enunciado, penaliza –0,3 pts si falta).
-
----
-
-### Entregables pendientes (obligatorios para la entrega)
-
-- **Vídeos del prototipo** (max 100 MB en total, mp4 1080p H.264 o links YouTube privados):
-  - Vídeo 1: flujo principal (modo activo — persona aparece, gestos de pasar/conectar,
-    pantalla match y número de teléfono).
-  - Vídeo 2: flujo modo bloqueo (bajar brazo → bloqueo, sacar teléfono → pila,
-    navegar la pila, volver al modo activo).
-  - Vídeo comparativo original vs. final mencionado en §5.2.
-- **Vídeos de sesiones de prototipado** (sesión 1 y sesión 2).
-- **ZIP de entrega** sin `node_modules`, con `package.json` y un `README.md` con
-  instrucciones de arranque (el enunciado exige ese fichero).
-
----
-
-## IDs de usuario disponibles para pruebas
-
-| ID | Nombre | Intereses |
-|---|---|---|
-| 101 | Noa | Música, Películas, Derecho |
-| 102 | Alejandra | Gimnasio, Senderismo, Dieta |
-| 103 | Sara | Videojuegos, Películas, Lectura |
-| 104 | Martina | Gimnasio, Películas, Ecologismo |
-| 105 | Valeria | Electrónica, Películas, Ajedrez |
-
-Para simular dos usuarios distintos en la misma red, abre el reloj con `user=101` y el móvil con `user=102`.

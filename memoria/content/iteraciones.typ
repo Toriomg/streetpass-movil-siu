@@ -4,7 +4,7 @@ Un problema recurrente durante la realización de la práctica, ha sido llegar a
 
 Este problema resultó extremadamente relevante, debido a que forzó a retrasar el desarrollo de la aplicación y la implementación. No obstante, gracias a llegar a un entendimiento entre los miembros del grupo, y a ceder de modo que se encontrara un punto en el que todos estuvieran satisfechos con el uso de la aplicación, se pudo completar la práctica satisfactoriamente. 
 
-En cuanto a problemas técnicos, *aqui poned problemas durante el desarrollo* 
+En cuanto a problemas técnicos, hemos podido encontrar varios. Uno de los esenciales, ha sido el problema de detección de gestos, pues algunos de los gestos que se plantearon originalmente tuvieron que cambiarse porque no se diferenciaban bien una vez implementados y se confundian, haciendo que el sistema no fuera dle todo predecible. *aqui poned problemas durante el desarrollo* 
 
 == Cambios Realizados respecto a las Ideas originales
 Como ya hemos mencionado en secciones anteriores de la memoria, hemos realizado cambios notables con respecto a las ideas originales que presentamos. 
