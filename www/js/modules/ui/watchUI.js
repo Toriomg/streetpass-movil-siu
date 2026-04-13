@@ -23,7 +23,7 @@ const renderProfile = (data) => {
   const interestsHtml = data.interests
     .map(
       (interest) => `
-        <img src="assets/icons/iconos/${interest}.svg"
+        <img src="assets/icons/${interest}.svg"
              class="interest-icon"
              alt="${interest}">
       `,
