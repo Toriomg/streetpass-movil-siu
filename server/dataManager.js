@@ -33,16 +33,33 @@ const writeJSON = (file, data) => {
 };
 
 const dataManager = {
-  // Obtener un usuario aleatorio para el "Streetpass"
-  getRandomMockUser: (userID, shownIds = new Set()) => {
+  // Obtener un usuario aleatorio para el "Streetpass" (ahora el más cercano dentro del rango)
+  getRandomMockUser: (userID, shownIds = new Set(), maxDistance = 50) => {
     const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
-    const blockedIds = dataManager.getBlockedUsers(userID).map((item) => item.id);
+    const blockedIds = dataManager
+      .getBlockedUsers(userID)
+      .map((item) => item.id);
     const excludedIds = new Set([Number(userID), ...blockedIds, ...shownIds]);
 
-    const available = users.filter((user) => !excludedIds.has(user.id));
-    if (available.length === 0) return null;
+    const available = users.filter(
+      (user) => !excludedIds.has(user.id) && user.distancia <= maxDistance,
+    );
+    const outOfRange = users.filter(
+      (user) => !excludedIds.has(user.id) && user.distancia > maxDistance,
+    );
 
-    const user = available[Math.floor(Math.random() * available.length)];
+    console.log(
+      "Usuarios disponibles:",
+      available.map((u) => `${u.name}(${u.distancia}m)`),
+    );
+    console.log(
+      "Usuarios fuera de rango:",
+      outOfRange.map((u) => `${u.name}(${u.distancia}m)`),
+    );
+
+    if (available.length === 0) return null;
+    available.sort((a, b) => a.distancia - b.distancia);
+    const user = available[0];
     return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
   },
 
@@ -108,6 +125,11 @@ const dataManager = {
   getEncounters: (userID) => {
     const history = readJSON(paths.encounters);
     return history[userID] || [];
+  },
+
+  // Resetear historial de encuentros
+  resetEncounters: () => {
+    writeJSON(paths.encounters, {});
   },
 };
 

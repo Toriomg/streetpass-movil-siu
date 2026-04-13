@@ -85,7 +85,8 @@ const initializeUI = () => {
 
     // Botón auto-trigger manual (desactivado por defecto, solo para pruebas)
     let autoInterval = null;
-    const startAuto = () => setInterval(() => socketManager.emit("user:nearby:trigger"), 10000);
+    const startAuto = () =>
+      setInterval(() => socketManager.emit("user:nearby:trigger"), 10000);
     const autoBtn = document.createElement("button");
     autoBtn.textContent = "Auto OFF";
     autoBtn.style.marginLeft = "8px";
@@ -111,17 +112,21 @@ const initializeUI = () => {
 
     // Persona cercana detectada → mostrar si libre, encolar si ocupado, ignorar si cerrado
     socketManager.on("user:nearby", (userData) => {
-      console.log(`[Watch] ✅ user:nearby recibido: ${userData?.name} | estado: ${watchState}`);
+      console.log(
+        `[Watch] ✅ user:nearby recibido: ${userData?.name} | estado: ${watchState}`,
+      );
       if (watchState === "closed" || watchState === "sleeping") {
         console.log(`[Watch] user:nearby ignorado — estado: ${watchState}`);
         return;
       }
-      if (watchState === "idle") {
+      if (watchState === "idle" || !currentUser) {
         showNearbyUser(userData);
       } else {
         nearbyQueue.push(userData);
         nearbyQueue.sort((a, b) => (a.distancia ?? 999) - (b.distancia ?? 999));
-        console.log(`[Watch] user:nearby encolado (cola: ${nearbyQueue.length})`);
+        console.log(
+          `[Watch] user:nearby encolado (cola: ${nearbyQueue.length})`,
+        );
       }
     });
 
@@ -141,7 +146,6 @@ const initializeUI = () => {
 
     socketManager.on("gesture:received", (data) => {
       switch (data.type) {
-
         case "accept": {
           // Durante match/connection: saltar a la siguiente persona
           if (watchState === "match" || watchState === "connection") {
@@ -156,7 +160,10 @@ const initializeUI = () => {
             uiRouter.navigate("match", accepted);
             const t1 = setTimeout(() => {
               setWatchState("connection");
-              uiRouter.navigate("connection", { ...accepted, userPhoto: userProfile?.photo });
+              uiRouter.navigate("connection", {
+                ...accepted,
+                userPhoto: userProfile?.photo,
+              });
               const t2 = setTimeout(() => skipToNext(), 5000);
               acceptTimers = [t2];
             }, 5000);
@@ -209,7 +216,8 @@ const initializeUI = () => {
         // Ampliar rango → añade 10 personas a la cola + mensaje temporal
         case "shake": {
           if (watchState !== "profile" && watchState !== "idle") break;
-          for (let i = 0; i < 10; i++) socketManager.emit("user:nearby:trigger");
+          for (let i = 0; i < 10; i++)
+            socketManager.emit("user:nearby:trigger");
           const backView = currentUser ? "profile" : "watch";
           const backData = currentUser ? currentUser : userProfile;
           uiRouter.navigate("message", {
