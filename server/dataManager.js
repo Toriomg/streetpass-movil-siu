@@ -44,9 +44,20 @@ const dataManager = {
     const available = users.filter(
       (user) => !excludedIds.has(user.id) && user.distancia <= maxDistance,
     );
-    if (available.length === 0) return null;
+    const outOfRange = users.filter(
+      (user) => !excludedIds.has(user.id) && user.distancia > maxDistance,
+    );
 
-    // Ordenar por distancia ascendente y seleccionar el primero (más cercano)
+    console.log(
+      "Usuarios disponibles:",
+      available.map((u) => `${u.name}(${u.distancia}m)`),
+    );
+    console.log(
+      "Usuarios fuera de rango:",
+      outOfRange.map((u) => `${u.name}(${u.distancia}m)`),
+    );
+
+    if (available.length === 0) return null;
     available.sort((a, b) => a.distancia - b.distancia);
     const user = available[0];
     return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };

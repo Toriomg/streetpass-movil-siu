@@ -10,6 +10,7 @@ function getState(userID) {
       sleepQueue: [],
       currentEncounter: null,
       shownIds: new Set(),
+      pendingIds: new Set(),
       maxDistance: 50,
     };
   }
@@ -29,9 +30,18 @@ module.exports = function (io) {
 
     socket.on("user:nearby:trigger", () => {
       const state = getState(userID);
+
+      if (state.mode === "active" && state.currentEncounter) {
+        console.log(
+          `[Socket] Ignorando user:nearby:trigger, ya hay un encuentro activo para ${userID}`,
+        );
+        return;
+      }
+
+      const excludedIds = new Set([...state.shownIds, ...state.pendingIds]);
       const randomUser = dataManager.getRandomMockUser(
         userID,
-        state.shownIds,
+        excludedIds,
         state.maxDistance,
       );
       if (!randomUser) {
@@ -41,8 +51,8 @@ module.exports = function (io) {
         io.to(userID).emit("user:nearby:empty");
         return;
       }
-      state.shownIds.add(randomUser.id);
-      state.currentEncounter = randomUser;
+
+      state.pendingIds.add(randomUser.id);
 
       if (state.mode === "sleep" || state.mode === "stack") {
         const alreadyQueued = state.sleepQueue.some(
@@ -54,6 +64,7 @@ module.exports = function (io) {
         return;
       }
 
+      state.currentEncounter = randomUser;
       io.to(userID).emit("user:nearby", randomUser);
     });
 
@@ -81,19 +92,27 @@ module.exports = function (io) {
         case "accept":
           if (state.currentEncounter) {
             dataManager.saveEncounter(userID, state.currentEncounter);
+            state.shownIds.add(state.currentEncounter.id);
+            state.pendingIds.delete(state.currentEncounter.id);
             state.currentEncounter = null;
           }
           io.to(userID).emit("gesture:received", { type: "accept" });
           break;
 
         case "nav":
-          state.currentEncounter = null;
+          if (state.currentEncounter) {
+            state.shownIds.add(state.currentEncounter.id);
+            state.pendingIds.delete(state.currentEncounter.id);
+            state.currentEncounter = null;
+          }
           io.to(userID).emit("gesture:received", { type: "nav" });
           break;
 
         case "block":
           if (!state.currentEncounter) break;
           dataManager.saveBlockedUser(userID, state.currentEncounter);
+          state.shownIds.add(state.currentEncounter.id);
+          state.pendingIds.delete(state.currentEncounter.id);
           io.to(userID).emit("user:blocked", {
             blockedId: state.currentEncounter.id,
           });
@@ -111,7 +130,7 @@ module.exports = function (io) {
 
         case "shake":
           state.maxDistance += 15;
-          console.log("distancia actual: ", state.maxDistance)
+          console.log("distancia actual: ", state.maxDistance);
           io.to(userID).emit("gesture:received", { type: "shake" });
           break;
 
