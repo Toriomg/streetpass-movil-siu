@@ -5,7 +5,13 @@ const userState = {};
 
 function getState(userID) {
   if (!userState[userID]) {
-    userState[userID] = { mode: "active", sleepQueue: [], currentEncounter: null, shownIds: new Set() };
+    userState[userID] = {
+      mode: "active",
+      sleepQueue: [],
+      currentEncounter: null,
+      shownIds: new Set(),
+      maxDistance: 50,
+    };
   }
   return userState[userID];
 }
@@ -23,9 +29,15 @@ module.exports = function (io) {
 
     socket.on("user:nearby:trigger", () => {
       const state = getState(userID);
-      const randomUser = dataManager.getRandomMockUser(userID, state.shownIds);
+      const randomUser = dataManager.getRandomMockUser(
+        userID,
+        state.shownIds,
+        state.maxDistance,
+      );
       if (!randomUser) {
-        console.log(`[Socket] Sin personas nuevas para ${userID} — todas vistas`);
+        console.log(
+          `[Socket] Sin personas nuevas para ${userID} — todas vistas o fuera de rango`,
+        );
         io.to(userID).emit("user:nearby:empty");
         return;
       }
@@ -33,7 +45,9 @@ module.exports = function (io) {
       state.currentEncounter = randomUser;
 
       if (state.mode === "sleep" || state.mode === "stack") {
-        const alreadyQueued = state.sleepQueue.some(u => u.id === randomUser.id);
+        const alreadyQueued = state.sleepQueue.some(
+          (u) => u.id === randomUser.id,
+        );
         if (!alreadyQueued && state.sleepQueue.length < 20) {
           state.sleepQueue.push(randomUser);
         }
@@ -59,10 +73,11 @@ module.exports = function (io) {
       if (!gestureType) return;
 
       const state = getState(userID);
-      console.log(`[Socket] Usuario ${userID} | modo: ${state.mode} | gesto: ${gestureType}`);
+      console.log(
+        `[Socket] Usuario ${userID} | modo: ${state.mode} | gesto: ${gestureType}`,
+      );
 
       switch (gestureType) {
-
         case "accept":
           if (state.currentEncounter) {
             dataManager.saveEncounter(userID, state.currentEncounter);
@@ -79,7 +94,9 @@ module.exports = function (io) {
         case "block":
           if (!state.currentEncounter) break;
           dataManager.saveBlockedUser(userID, state.currentEncounter);
-          io.to(userID).emit("user:blocked", { blockedId: state.currentEncounter.id });
+          io.to(userID).emit("user:blocked", {
+            blockedId: state.currentEncounter.id,
+          });
           state.currentEncounter = null;
           io.to(userID).emit("gesture:received", { type: "block" });
           break;
@@ -93,6 +110,7 @@ module.exports = function (io) {
           break;
 
         case "shake":
+          state.maxDistance += 15;
           io.to(userID).emit("gesture:received", { type: "shake" });
           break;
 
@@ -116,7 +134,9 @@ module.exports = function (io) {
           state.mode = "stack";
           io.to(userID).emit("mode:change", { mode: "stack" });
           io.to(userID).emit("missed_encounters_data", state.sleepQueue);
-          console.log(`[Socket] Usuario ${userID} | abriendo pila → ${state.sleepQueue.length} personas`);
+          console.log(
+            `[Socket] Usuario ${userID} | abriendo pila → ${state.sleepQueue.length} personas`,
+          );
           break;
         }
 
