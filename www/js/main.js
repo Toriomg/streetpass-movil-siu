@@ -53,6 +53,14 @@ function showNearbyUser(userData) {
   currentUser = userData;
   setWatchState("profile");
   uiRouter.navigate("profile", currentUser);
+
+  // OPTIONAL: Auto-skip after 10 seconds if no gesture is made
+  setTimeout(() => {
+    if (watchState === "profile" && currentUser?.id === userData.id) {
+      console.log("Auto-skipping user due to inactivity");
+      returnToIdle();
+    }
+  }, 10000);
 }
 
 socketManager.on("profile:data", (profile) => {
