@@ -7,4 +7,11 @@ Para ello, se explicarán los diferentes procesos llevados a cabo para su desarr
 == Detalles de inicio y uso del prototipo final.
 Para el uso de la aplicación desarrollada, se deben seguir los siguientes pasos: 
 
-*aqui incluis como se inicia y todas lashistorietas con mucho detalle como dijo en clase*
+1. Estando en el directorio del proyecto `streetpass-movil-siu/` se debe ejecutar el servidor:
+
+```Bash
+# Ejecutar servidor
+node server/index.js
+```
+
+2. Conectarse a las páginas que salen. TEngo que seguir haciendolo.
