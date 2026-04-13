@@ -115,6 +115,9 @@ const dataManager = {
     const history = readJSON(paths.encounters);
     return history[userID] || [];
   },
-};
 
-module.exports = dataManager;
+  // Resetear historial de encuentros
+  resetEncounters: () => {
+    writeJSON(paths.encounters, {});
+  },
+};
