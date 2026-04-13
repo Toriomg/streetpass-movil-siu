@@ -1,4 +1,5 @@
 import { BaseUI } from "./baseUI.js";
+import { socketManager } from "../../core/socketManager.js";
 
 // --- COMPONENTES ATÓMICOS ---
 
@@ -156,8 +157,25 @@ const renderStatus = () => `
         <h2>Modo Sensor Activo</h2>
         <p>El móvil está funcionando como mando. Mira tu Apple Watch para ver los perfiles.</p>
         <div class="gesture-guide">
-            <p><strong>En el bolsillo:</strong> 1 toque (Aceptar) | 2 toques (Rechazar)</p>
-            <p><strong>En la mano:</strong> Inclinar lateralmente para navegar</p>
+            <p><strong>Inclinar derecha:</strong> Pasar persona</p>
+            <p><strong>Inclinar izquierda:</strong> Conectar</p>
+            <p><strong>Inclinar arriba:</strong> Bloquear usuario</p>
+            <p><strong>Doble toque:</strong> Cerrar app</p>
+            <p><strong>Agitar:</strong> Ampliar rango</p>
+            <p><strong>Bajar brazo:</strong> Modo bloqueo</p>
+        </div>
+    </div>
+`;
+
+const renderBlockMode = () => `
+    <div class="mobile-sensor-active">
+        <div class="radar-animation" style="opacity: 0.3; filter: grayscale(1);"></div>
+        <h2>Modo Bloqueo</h2>
+        <p>El reloj está guardado. Las personas cercanas se están almacenando.</p>
+        <div class="gesture-guide">
+            <p><strong>Subir brazo suave:</strong> Volver al modo activo</p>
+            <p><strong>Sacar el teléfono:</strong> Ver personas vistas</p>
+            <p><strong>Doble toque:</strong> Cerrar app</p>
         </div>
     </div>
 `;
@@ -178,8 +196,9 @@ export class MobileUI extends BaseUI {
     this.profile = profile;
   }
 
-  // Método para procesar gestos con animación
-  processGestureWithAnimation(gestureType) {
+  // Anima la tarjeta y avanza a la siguiente — NO emite gesto al servidor.
+  // Usar cuando el gesto ya fue enviado por gestures.js (flujo físico).
+  _animateCard(direction) {
     if (this.isAnimating || !this.pendingStack[0]) return;
 
     this.isAnimating = true;
@@ -189,30 +208,30 @@ export class MobileUI extends BaseUI {
       return;
     }
 
-    // Añadir clase de animación
-    if (gestureType === "accept") {
-      card.classList.add("swipe-right");
-    } else if (gestureType === "reject") {
-      card.classList.add("swipe-left");
-    }
+    card.classList.add(direction === "accept" ? "swipe-right" : "swipe-left");
 
-    // Después de la animación, quitar la clase y procesar
     setTimeout(() => {
       card.classList.remove("swipe-right", "swipe-left");
       this.nextUser();
       this.isAnimating = false;
-      // Enviar gesto al servidor
-      this.emitGesture(gestureType);
-    }, 500); // Duración de la animación
+    }, 500);
   }
 
   emitGesture(gestureType) {
-    if (window.sm) {
-      window.sm.emit("gesture:sent", { gestureType });
+    socketManager.emit("gesture:sent", { gestureType });
+  }
+
+  // Llamado desde main.js cuando llega gesture:received — el gesto ya está en el servidor.
+  processGesture(type) {
+    console.log(`[MobileUI] Gesto recibido: ${type}`);
+    if (type === "accept") {
+      this._animateCard("accept");
+    } else if (type === "nav") {
+      this._animateCard("reject");
     }
   }
 
-  // Método para manejar swipe manual
+  // Swipe táctil directo en pantalla — emite el gesto además de animar.
   initSwipeGestures() {
     const card = this.container.querySelector(".user-card-mobile");
     if (!card) return;
@@ -241,11 +260,9 @@ export class MobileUI extends BaseUI {
 
       const diff = currentX - startX;
       if (Math.abs(diff) > 100) {
-        if (diff > 0) {
-          this.processGestureWithAnimation("accept");
-        } else {
-          this.processGestureWithAnimation("reject");
-        }
+        const gestureType = diff > 0 ? "accept" : "nav";
+        this._animateCard(gestureType === "accept" ? "accept" : "reject");
+        this.emitGesture(gestureType);
       } else {
         card.style.transform = "";
       }
@@ -254,13 +271,6 @@ export class MobileUI extends BaseUI {
     card.addEventListener("touchstart", handleStart);
     card.addEventListener("touchmove", handleMove);
     card.addEventListener("touchend", handleEnd);
-  }
-
-  processGesture(type) {
-    console.log(`Gesto recibido en Móvil: ${type}`);
-    if (type === "accept" || type === "reject") {
-      this.processGestureWithAnimation(type);
-    }
   }
 
   async requestLocation() {
@@ -328,6 +338,9 @@ export class MobileUI extends BaseUI {
         break;
       case "sensor":
         content = renderStatus();
+        break;
+      case "block-mode":
+        content = renderBlockMode();
         break;
       default:
         content = renderStart();

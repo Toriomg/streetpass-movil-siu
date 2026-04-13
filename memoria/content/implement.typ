@@ -75,10 +75,12 @@ Con tal de reducir el número de gestos, cuestión que se ha propuesto de manera
 - *La aceptación de solicitudes de conexión* se hará también con el gesto de conexión, *giro a la izquierda*, como si se tratara de una selección. De esta manera, se mantiene la misma intuición de "_aceptar = movimiento izquierdo_" y se permite que el usuario no tenga que aprender muchos gestos. 
 - De la misma manera, el gesto definido para *rechazar solicitudes* es el de navegación *hacia la derecha*, esencialmente, porque te devuelve a la navegación general de la aplicación, volviendo a mostrarte a las personas y a las pantallas y secciones principales de la aplicación. 
 
-=== Salida o confirmación. 
-Para salir completamente de la aplicación debido a que el usuario no busca estar conectado, ni aparecer a otros usuarios se ha planeado que el gesto empleado sea *dar dos golpes al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
+=== Acceso, salida y confirmación. 
+Para abrir la aplicación, se darán *dos toques* al teléfono, que actua como sensor en nuestro modelo.
 
-Es un gesto completamente diferenciado de los anteriores y esto hace que se eviten posibles errores y salidas no intencionadas por parte de los usuarios. Una cosa muy útil en una aplicación como es la nuestra. Además, es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. 
+De la misma manera, para salir completamente de la aplicación debido a que el usuario no busca estar conectado, ni aparecer a otros usuarios se ha planeado que el gesto empleado sea *dar dos golpes al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
+
+Es un gesto completamente diferenciado de los anteriores y esto hace que se eviten posibles errores y salidas o entradas no intencionadas por parte de los usuarios. Una cosa muy útil en una aplicación como es la nuestra. Además, es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. 
 
 
 El flujo de uso de las funcionalidades principales es el que se muestra en la @total:
@@ -135,13 +137,13 @@ El "Modo Bloqueo" permite que mientras el usuario no tenga el reloj activado, se
 Esta funcionalidad se decidió con la ayuda del Prof. Roberto Cuervo. Siendo así, un escenario de uso claro que se ha planteado: el de un usuario que vuelve a casa y al subir al ascensor coge su teléfono movil y, de esta manera, se puede ver a personas similares del sitio del que uno viene. Además, en nuestro caso, es algo muy cotidiano y natural volver de un sitio social o un plan y utilizar el móvil al llegar a casa o en el trayecto a esta. 
 
 ===== Gestos del modo bloqueo 
-Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa cuando se identifica que el reloj ha dejado de ser usado u observado por el usuario. Es decir, cuando el usuario baja la mano, se activa el modo bloqueo a no ser que explicitamente el usuario decida salir de la aplicación. 
+Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa una vez el usuario le da *un toque* al teléfono. Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a *dar un toque al teléfono*. 
 
-Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a levantar el reloj. 
+La selección de este gesto es, por un lado una solución a un problema recurrente que se encontró en una de las sesiones experenciales (como se explica en secciones posteriores). Por otro lado, resulta facil de entender por el usuario ya que, es un punto intemedio entre el funcionamiento normal de la aplicación en el modo activo y el cierre, que se hace con dos toques. Por ello, el gesto resulta facil y discreto, como todos los anteriores, y a su vez, tiene un sentido lógico e integrado en el flujo de gestos y cambios de modo diseñados. 
 
 Asimismo, las personas que se han almacenado se mostrarán usando reconocimiento facial si se identifica que el usuario ha levantado el telefono. 
 
-En cuanto a mostrar las personas, los movimientos que se realizan son practicamente idénticos a los que se realizan con el reloj. Para cerrar la aplicación completamente y dejar de mostrar a las personas se *gesto*, para pasar personas y conectar con ellos se realizan exactamente los mismos gestos que hemos definido en el modo normal. 
+En cuanto a mostrar las personas, los movimientos que se realizan son practicamente idénticos a los que se realizan con el reloj. Para cerrar la aplicación completamente y dejar de mostrar a las personas se darán *dos toques*, tal y como se produce el cierre en todos los modos, para pasar personas y conectar con ellos se realizan exactamente los mismos gestos que hemos definido en el modo normal. 
 
 Se utilizan los mismos gestos, debido a que estos facilitan enormemente el tiempo de aprendizaje de uso de la aplicación y ahorrando al usuario el esfuerzo de memorizarlos, al ser este número de acciones limitado en el usuario.  
 
@@ -151,15 +153,16 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
   automaton(
     final: ("Cierre",),
     (
-      "Cierre": ("Navegación": "Levantar brazo"),
+      "Cierre": ("Navegación": "Dos toques"),
       "Navegación": (
         "Navegación": "Gesto Der.",
         "Match": "Gesto Izq.", 
-        "Bloqueo": "Bajar brazo",
+        "Bloqueo": "Un toque",
         "Cierre": "Dos toques"
       ),
       "Bloqueo": (
-        "Cierre": "Dos toques" 
+        "Cierre": "Dos toques",
+        "Navegación": "Un toque"
         ),
       "Match": (
         "Navegación":"Gesto Der.",
@@ -176,7 +179,7 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
       "Navegación": (0, 9),
       "Match": (-5, 5),
       "Conexión": (-10, 5),
-      "Bloqueo": (4, 0),
+      "Bloqueo": (5, 5),
     ),
   ),
   caption: [Máquina de estados del funcionamiento con modo bloqueo.]
@@ -193,7 +196,7 @@ En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos
 En nuestro caso se ha establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
 #figure(
-  align(center, image("../img/modo_ampliar.png", width: 70%)),
+  align(center, image("../img/modo_ampliar.png", width: 90%)),
   caption: "Representación esquemática de la ampliación de rango"
 )
 
@@ -204,3 +207,10 @@ Los videos que demuestran el correcto funcionamiento de la aplicación y los ges
 
 // nuestra solución final 
 #sym.arrow.r *aquí iría el link*
+
+== Reflexiones finales
+Notesé, como nuestra implementación está enormemente basada en la utilización de gestos sencillos y discretos. Además, se ha tratado de minimizar lo máximo posible el número de gestos, para lo que se ha empleado una mecánica en la que se utiliza el mismo gesto para la entrada y la salida de los modos (tomesé como ejemplo la entrada y la salida del modo bloqueo, que utiliza el mismo gesto). De esta manera, se facilita el aprendizaje del usuario y se reduce la fricción de uso del mismo. 
+
+Además, se ha reducido el número de botones que aparecen y se utilizan, tal y como se explicó en clase, jutilizando simplemente un botón para acceder a las instrucciones de uso de la aplicación/soporte. 
+
+En definitiva, aunque como explicaremos a continuación han quedado cosas pendientes de implementar que consideramos que enriquecerian notablemente la aplicación, estamos satisfechos con la implementación y el resultado obtenido. 
