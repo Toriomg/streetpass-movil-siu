@@ -196,8 +196,9 @@ export class MobileUI extends BaseUI {
     this.profile = profile;
   }
 
-  // Método para procesar gestos con animación
-  processGestureWithAnimation(gestureType) {
+  // Anima la tarjeta y avanza a la siguiente — NO emite gesto al servidor.
+  // Usar cuando el gesto ya fue enviado por gestures.js (flujo físico).
+  _animateCard(direction) {
     if (this.isAnimating || !this.pendingStack[0]) return;
 
     this.isAnimating = true;
@@ -207,28 +208,30 @@ export class MobileUI extends BaseUI {
       return;
     }
 
-    // Añadir clase de animación
-    if (gestureType === "accept") {
-      card.classList.add("swipe-right");
-    } else if (gestureType === "reject") {
-      card.classList.add("swipe-left");
-    }
+    card.classList.add(direction === "accept" ? "swipe-right" : "swipe-left");
 
-    // Después de la animación, quitar la clase y procesar
     setTimeout(() => {
       card.classList.remove("swipe-right", "swipe-left");
       this.nextUser();
       this.isAnimating = false;
-      // Enviar gesto al servidor
-      this.emitGesture(gestureType);
-    }, 500); // Duración de la animación
+    }, 500);
   }
 
   emitGesture(gestureType) {
     socketManager.emit("gesture:sent", { gestureType });
   }
 
-  // Método para manejar swipe manual
+  // Llamado desde main.js cuando llega gesture:received — el gesto ya está en el servidor.
+  processGesture(type) {
+    console.log(`[MobileUI] Gesto recibido: ${type}`);
+    if (type === "accept") {
+      this._animateCard("accept");
+    } else if (type === "nav") {
+      this._animateCard("reject");
+    }
+  }
+
+  // Swipe táctil directo en pantalla — emite el gesto además de animar.
   initSwipeGestures() {
     const card = this.container.querySelector(".user-card-mobile");
     if (!card) return;
@@ -257,11 +260,9 @@ export class MobileUI extends BaseUI {
 
       const diff = currentX - startX;
       if (Math.abs(diff) > 100) {
-        if (diff > 0) {
-          this.processGestureWithAnimation("accept");
-        } else {
-          this.processGestureWithAnimation("reject");
-        }
+        const gestureType = diff > 0 ? "accept" : "nav";
+        this._animateCard(gestureType === "accept" ? "accept" : "reject");
+        this.emitGesture(gestureType);
       } else {
         card.style.transform = "";
       }
@@ -270,16 +271,6 @@ export class MobileUI extends BaseUI {
     card.addEventListener("touchstart", handleStart);
     card.addEventListener("touchmove", handleMove);
     card.addEventListener("touchend", handleEnd);
-  }
-
-  processGesture(type) {
-    console.log(`Gesto recibido en Móvil: ${type}`);
-    if (type === "accept") {
-      this.processGestureWithAnimation("accept");
-    } else if (type === "nav") {
-      // nav = pasar/siguiente → animación de rechazo visual
-      this.processGestureWithAnimation("reject");
-    }
   }
 
   async requestLocation() {

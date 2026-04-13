@@ -22,8 +22,11 @@ let currentUser = null;
 let userProfile = null;
 let nearbyQueue = [];
 
-// Estados: "idle" | "profile" | "animating" | "match" | "connection"
+// Estados locales del reloj: "idle" | "profile" | "animating" | "match" | "connection" | "closed"
 let watchState = "idle";
+
+// Modo del servidor sincronizado vía mode:change: "active" | "sleep" | "stack"
+let serverMode = "active";
 
 function setWatchState(s) {
   watchState = s;
@@ -117,10 +120,26 @@ const initializeUI = () => {
       }
     });
 
-    // Persona cercana detectada → mostrar si libre, encolar si ocupado, ignorar si cerrado
+    // Sincronizar el modo del servidor en el reloj
+    socketManager.on("mode:change", ({ mode }) => {
+      serverMode = mode;
+      if (mode === "stack") {
+        // El móvil está mostrando la pila: el reloj vuelve a la esfera del reloj
+        setWatchState("idle");
+        currentUser = null;
+        nearbyQueue = [];
+        uiRouter.navigate("watch", userProfile);
+      }
+    });
+
+    // Persona cercana detectada → solo procesar en modo activo
     socketManager.on("user:nearby", (userData) => {
       if (watchState === "closed") {
         console.log("[Watch] user:nearby ignorado — app cerrada");
+        return;
+      }
+      if (serverMode !== "active") {
+        console.log(`[Watch] user:nearby ignorado — modo ${serverMode}`);
         return;
       }
       if (watchState === "idle") {
