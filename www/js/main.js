@@ -134,6 +134,15 @@ const initializeUI = () => {
     console.log("[Watch] 🚀 Precargando 3 personas iniciales...");
     for (let i = 0; i < 3; i++) socketManager.emit("user:nearby:trigger");
 
+    // Añade este nuevo intervalo justo debajo
+    console.log("[Watch] ⏱️ Iniciando generador automático (1 cada 5s)");
+    setInterval(() => {
+      // Solo pedimos más personas si no estamos en modo "cerrado" o "durmiendo"
+      if (watchState !== "closed" && watchState !== "sleeping") {
+        socketManager.emit("user:nearby:trigger");
+      }
+    }, 5000);
+
     // El reloj reacciona a todos los gestos
     let acceptTimers = []; // timers de match/connection — se pueden cancelar con gesto
 
