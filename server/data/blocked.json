@@ -25,6 +25,32 @@
       "distancia": 23,
       "photo": "https://i.pravatar.cc/150?u=103",
       "blockedAt": "4/13/2026, 6:36:19 PM"
+    },
+    {
+      "id": 112,
+      "name": "Paula",
+      "phone": "655222888",
+      "interests": [
+        "Gimnasio",
+        "Electrónica",
+        "Animales"
+      ],
+      "distancia": 31,
+      "photo": "https://i.pravatar.cc/150?u=112",
+      "blockedAt": "4/13/2026, 6:48:47 PM"
+    },
+    {
+      "id": 111,
+      "name": "Carmen",
+      "phone": "633999222",
+      "interests": [
+        "Dieta",
+        "Música",
+        "Derecho"
+      ],
+      "distancia": 72,
+      "photo": "https://i.pravatar.cc/150?u=111",
+      "blockedAt": "4/14/2026, 12:39:42 AM"
     }
   ]
 }

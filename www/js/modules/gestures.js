@@ -145,16 +145,24 @@ export function initGestures() {
       if (currentMode === "sleep") {
         if (isCooldown) return;
         const now = Date.now();
-        if (ay < -9) {
+        if (ay < -12) {
           if (!armGesture || armGesture.type !== "up") {
             armGesture = { type: "up", startTime: now, peakAcc: ay };
           } else {
             armGesture.peakAcc = Math.min(armGesture.peakAcc, ay);
-            if (now - armGesture.startTime > 550) {
+            if (now - armGesture.startTime > 800) {
               const isSharpPull = armGesture.peakAcc < -20;
-              sendGesture(isSharpPull ? "VER PERSONAS" : "MODO ACTIVO", isSharpPull ? "stack-open" : "wake");
-              armGesture = null;
-              activateCooldown(2500);
+              const isSoftRaise  = armGesture.peakAcc < -14; // wake requiere mínimo -14
+              if (isSharpPull) {
+                sendGesture("VER PERSONAS", "stack-open");
+                armGesture = null;
+                activateCooldown(2500);
+              } else if (isSoftRaise) {
+                sendGesture("MODO ACTIVO", "wake");
+                armGesture = null;
+                activateCooldown(2500);
+              }
+              // Si no alcanza el umbral mínimo, no hace nada (movimiento accidental)
             }
           }
         } else {

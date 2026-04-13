@@ -1,4 +1,4 @@
-/* www/css/watch/screens.css */
+/* www/css/watch/screens/message.css */
 
 .message-overlay {
     position: absolute;
@@ -10,29 +10,48 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.3); /* Oscurece un poco para legibilidad */
+    background: rgba(0, 0, 0, 0.55);
     padding: 20px;
     box-sizing: border-box;
     text-align: center;
     z-index: 50;
+    animation: messageIn 0.2s ease;
+}
+
+@keyframes messageIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
 }
 
 .warning-icon {
-    font-size: 3.5rem; /* Tamaño grande para el emoji o icono */
-    margin-bottom: 15px;
+    font-size: 3.2rem;
+    margin-bottom: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
+    line-height: 1;
 }
 
-/* Si prefieres usar una imagen en lugar de emoji */
 .warning-icon img {
     width: 60px;
     height: auto;
 }
 
+/* Animación de pulso para el icono de rango */
+.icon-pulse {
+    animation: iconPulse 0.7s ease-out;
+}
+
+@keyframes iconPulse {
+    0%   { transform: scale(0.6); opacity: 0.4; }
+    60%  { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
+}
+
 .message-text {
-    font-size: 17px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 600;
     margin: 0;
+    letter-spacing: -0.2px;
+    color: rgba(255, 255, 255, 0.92);
 }

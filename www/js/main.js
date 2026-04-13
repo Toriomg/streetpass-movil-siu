@@ -145,8 +145,8 @@ const initializeUI = () => {
     // Añade este nuevo intervalo justo debajo
     console.log("[Watch] ⏱️ Iniciando generador automático (1 cada 5s)");
     setInterval(() => {
-      // Solo pedimos más personas si no estamos en modo "cerrado" o "durmiendo"
-      if (watchState !== "closed" && watchState !== "sleeping") {
+      // En modo cerrado no pedimos personas; en modo bloqueo sí (para el móvil)
+      if (watchState !== "closed") {
         socketManager.emit("user:nearby:trigger");
       }
     }, 5000);
@@ -230,17 +230,18 @@ const initializeUI = () => {
           }
           break;
 
-        // Ampliar rango → añade 10 personas a la cola + mensaje temporal
+        // Ampliar rango → añade 10 personas a la cola + indicador visual
         case "shake": {
-          if (watchState !== "profile" && watchState !== "idle") break;
           for (let i = 0; i < 10; i++)
             socketManager.emit("user:nearby:trigger");
           const backView = currentUser ? "profile" : "watch";
           const backData = currentUser ? currentUser : userProfile;
           uiRouter.navigate("message", {
-            message: "Has ampliado el rango de búsqueda de personas",
+            icon: "📡",
+            iconClass: "icon-pulse",
+            message: `Rango ampliado`,
           });
-          setTimeout(() => uiRouter.navigate(backView, backData), 3000);
+          setTimeout(() => uiRouter.navigate(backView, backData), 2000);
           break;
         }
 
@@ -304,10 +305,29 @@ const initializeUI = () => {
       // "stack" lo gestiona missed_encounters_data
     });
 
-    // Servidor envía la pila de personas (tras stack-open)
+    // Persona añadida a la cola mientras el reloj está en modo bloqueo → mostrar en tiempo real
+    socketManager.on("user:queued", (user) => {
+      if (mobileAppClosed) return;
+      const currentView = uiRouter.history[uiRouter.history.length - 1]?.viewType;
+      console.log(`[Mobile] user:queued → ${user.name} | vista actual: ${currentView}`);
+      if (currentView === "sleep-list") {
+        mobileUI.pushUser(user);
+      } else {
+        uiRouter.navigate("sleep-list", [user]);
+      }
+    });
+
+    // Servidor envía la pila completa (tras wake o stack-open)
     socketManager.on("missed_encounters_data", (users) => {
       if (mobileAppClosed) return;
-      uiRouter.navigate("sleep-list", users);
+      const currentView = uiRouter.history[uiRouter.history.length - 1]?.viewType;
+      if (currentView === "sleep-list") {
+        // Ya estamos mostrando la lista — solo añadir los que no estén ya en la pila
+        const existingIds = new Set(mobileUI.pendingStack.map(u => u.id));
+        users.filter(u => !existingIds.has(u.id)).forEach(u => mobileUI.pushUser(u));
+      } else {
+        uiRouter.navigate("sleep-list", users);
+      }
     });
 
     // Gestos en el móvil

@@ -43,12 +43,17 @@ module.exports = function (io) {
       //   return;
       // }
 
-      const excludedIds = new Set([...state.shownIds, ...state.pendingIds]);
-      const randomUser = dataManager.getRandomMockUser(
-        userID,
-        excludedIds,
-        state.maxDistance,
-      );
+      let excludedIds = new Set([...state.shownIds, ...state.pendingIds]);
+      let randomUser = dataManager.getRandomMockUser(userID, excludedIds, state.maxDistance);
+
+      // Si no quedan personas disponibles, reiniciar el ciclo (solo shownIds, no pendingIds)
+      if (!randomUser && state.shownIds.size > 0) {
+        console.log(`[Socket] Pool agotado para ${userID} — reiniciando ciclo`);
+        state.shownIds = new Set();
+        excludedIds = new Set([...state.pendingIds]);
+        randomUser = dataManager.getRandomMockUser(userID, excludedIds, state.maxDistance);
+      }
+
       if (!randomUser) {
         console.log(
           `[Socket] Sin personas nuevas para ${userID} — todas vistas o fuera de rango`,
@@ -65,6 +70,10 @@ module.exports = function (io) {
         );
         if (!alreadyQueued && state.sleepQueue.length < 20) {
           state.sleepQueue.push(randomUser);
+          if (state.mode === "sleep") {
+            console.log(`[Sleep] ${randomUser.name} añadido a la cola (total: ${state.sleepQueue.length})`);
+            io.to(userID).emit("user:queued", randomUser);
+          }
         }
         return;
       }
@@ -142,15 +151,29 @@ module.exports = function (io) {
         case "sleep":
           if (state.mode !== "active") break;
           state.mode = "sleep";
+          console.log(`[Sleep] Usuario ${userID} entra en modo bloqueo`);
           io.to(userID).emit("mode:change", { mode: "sleep" });
           io.to(userID).emit("gesture:received", { type: "sleep" });
           break;
 
         case "wake":
           if (state.mode !== "sleep") break;
-          state.mode = "active";
+
+          // 1. Si hay personas acumuladas, las enviamos al móvil
+          if (state.sleepQueue.length > 0) {
+            // Enviamos la lista acumulada
+            io.to(userID).emit("missed_encounters_data", state.sleepQueue);
+
+            // Cambiamos a modo 'stack' para que el móvil sepa que debe mostrar la lista
+            state.mode = "stack";
+            io.to(userID).emit("mode:change", { mode: "stack" });
+          } else {
+            // Si no hay nadie, activamos normal
+            state.mode = "active";
+            io.to(userID).emit("mode:change", { mode: "active" });
+          }
+
           state.currentEncounter = null;
-          io.to(userID).emit("mode:change", { mode: "active" });
           io.to(userID).emit("gesture:received", { type: "wake" });
           break;
 
@@ -166,7 +189,7 @@ module.exports = function (io) {
         }
 
         case "stack-close":
-          if (state.mode !== "stack") break;
+          if (state.mode !== "stack" && state.mode !== "sleep") break;
           state.mode = "active";
           state.sleepQueue = [];
           io.to(userID).emit("mode:change", { mode: "active" });

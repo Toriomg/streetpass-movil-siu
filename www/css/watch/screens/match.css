@@ -11,11 +11,9 @@
   justify-content: center;
   align-items: center;
   /* Degradado oscuro para que resalte el texto blanco */
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.6) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.6) 100%);
   padding: 10px 30px;
   box-sizing: border-box;
   text-align: center;
