@@ -25,10 +25,10 @@ socketEvents(io);
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`==========================================`);
-  console.log(`🚀 Servidor corriendo en:`);
-  console.log(`👉 PC:\nhttp://localhost:${PORT}/?user=101&v=home`);
+  console.log(`Servidor corriendo en:`);
+  console.log(`Movil:\nhttp://localhost:${PORT}/?user=101&v=home`);
   console.log(
-    `👉 Móvil/Reloj:\nhttp://localhost:${PORT}/?user=101&v=watch\n-> en chrome://inspect con Port Forwarding`,
+    `Reloj:\nhttp://localhost:${PORT}/?user=101&v=watch\n-> en chrome://inspect con Port Forwarding`,
   );
   console.log(`==========================================`);
 });
