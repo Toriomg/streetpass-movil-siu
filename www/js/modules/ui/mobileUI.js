@@ -44,8 +44,8 @@ const renderUserStack = (
             </div>
 
             <footer class="gesture-hint">
-                <div class="hint-item"><span>←</span> Rechazar</div>
-                <div class="hint-item">Aceptar <span>→</span></div>
+                <div class="hint-item"><span>←</span> Conectar</div>
+                <div class="hint-item">Pasar <span>→</span></div>
             </footer>
         </div>
     `;
@@ -198,6 +198,8 @@ export class MobileUI extends BaseUI {
 
   // Anima la tarjeta y avanza a la siguiente — NO emite gesto al servidor.
   // Usar cuando el gesto ya fue enviado por gestures.js (flujo físico).
+  // accept → vuela a la IZQUIERDA (gesto físico: inclinar izquierda = conectar)
+  // reject → vuela a la DERECHA  (gesto físico: inclinar derecha  = pasar)
   _animateCard(direction) {
     if (this.isAnimating || !this.pendingStack[0]) return;
 
@@ -208,7 +210,7 @@ export class MobileUI extends BaseUI {
       return;
     }
 
-    card.classList.add(direction === "accept" ? "swipe-right" : "swipe-left");
+    card.classList.add(direction === "accept" ? "swipe-left" : "swipe-right");
 
     setTimeout(() => {
       card.classList.remove("swipe-right", "swipe-left");
@@ -260,8 +262,10 @@ export class MobileUI extends BaseUI {
 
       const diff = currentX - startX;
       if (Math.abs(diff) > 100) {
-        const gestureType = diff > 0 ? "accept" : "nav";
-        this._animateCard(gestureType === "accept" ? "accept" : "reject");
+        // Swipe izquierda (diff < 0) = conectar/accept  (igual que inclinar izquierda)
+        // Swipe derecha  (diff > 0) = pasar/nav         (igual que inclinar derecha)
+        const gestureType = diff > 0 ? "nav" : "accept";
+        this._animateCard(diff > 0 ? "reject" : "accept");
         this.emitGesture(gestureType);
       } else {
         card.style.transform = "";

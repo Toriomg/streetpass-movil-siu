@@ -23,7 +23,7 @@ const renderProfile = (data) => {
   const interestsHtml = data.interests
     .map(
       (interest) => `
-        <img src="assets/icons/${interest}.svg"
+        <img src="assets/icons/iconos/${interest}.svg"
              class="interest-icon"
              alt="${interest}">
       `,
@@ -60,8 +60,8 @@ const renderMatch = (data) => `
 const renderConnection = (data) => `
     <div class="connection-overlay">
         <div class="connection-photos">
+            <img src="${data.userPhoto || 'https://i.pravatar.cc/300'}" class="conn-img">
             <img src="${data.photo}" class="conn-img">
-            <img src="https://i.pravatar.cc/300" class="conn-img">
         </div>
         <h2 class="conn-title">¡Feliz conexión!</h2>
         <p class="description">Aquí tienes el teléfono de ${data.name} para seguir conectando.</p>

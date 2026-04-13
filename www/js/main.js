@@ -163,7 +163,7 @@ const initializeUI = () => {
             uiRouter.navigate("match", accepted);
             setTimeout(() => {
               setWatchState("connection");
-              uiRouter.navigate("connection", accepted);
+              uiRouter.navigate("connection", { ...accepted, userPhoto: userProfile?.photo });
               setTimeout(() => returnToIdle(), 5000);
             }, 5000);
           });
