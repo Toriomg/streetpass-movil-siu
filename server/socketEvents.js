@@ -11,7 +11,7 @@ function getState(userID) {
       currentEncounter: null,
       shownIds: new Set(),
       pendingIds: new Set(),
-      maxDistance: 50,
+      maxDistance: 20,
     };
   }
   return userState[userID];
@@ -26,12 +26,13 @@ module.exports = function (io) {
     state.shownIds = new Set();    // Permite que vuelvan a salir las mismas personas
     state.pendingIds = new Set();  // Limpia registros temporales
     state.currentEncounter = null; // Desbloquea el trigger
+    state.maxDistance = 20;        // El rango siempre empieza desde 20m en cada sesión
 
     socket.join(userID);
 
-    // Enviar el perfil propio al cliente
+    // Enviar el perfil solo al socket que acaba de conectar (no a toda la sala)
     const profile = dataManager.getProfile(userID);
-    io.to(userID).emit("profile:data", profile);
+    socket.emit("profile:data", profile);
 
     socket.on("user:nearby:trigger", () => {
       const state = getState(userID);
@@ -142,11 +143,19 @@ module.exports = function (io) {
           io.to(userID).emit("gesture:received", { type: "exit" });
           break;
 
-        case "shake":
-          state.maxDistance += 15;
-          console.log("distancia actual: ", state.maxDistance);
-          io.to(userID).emit("gesture:received", { type: "shake" });
+        case "shake": {
+          const MAX_DISTANCE = 100;
+          if (state.maxDistance < MAX_DISTANCE) {
+            state.maxDistance = Math.min(state.maxDistance + 20, MAX_DISTANCE);
+          }
+          console.log(`[Rango] Usuario ${userID} → ${state.maxDistance}m`);
+          io.to(userID).emit("gesture:received", {
+            type: "shake",
+            distance: state.maxDistance,
+            atMax: state.maxDistance >= MAX_DISTANCE,
+          });
           break;
+        }
 
         case "sleep":
           if (state.mode !== "active") break;

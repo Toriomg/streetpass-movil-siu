@@ -1,45 +1,6 @@
 {
   "1": [
     {
-      "id": 111,
-      "name": "Carmen",
-      "phone": "633999222",
-      "interests": [
-        "Dieta",
-        "Música",
-        "Derecho"
-      ],
-      "distancia": 72,
-      "photo": "https://i.pravatar.cc/150?u=111",
-      "date": "4/14/2026, 12:39:35 AM"
-    },
-    {
-      "id": 111,
-      "name": "Carmen",
-      "phone": "633999222",
-      "interests": [
-        "Dieta",
-        "Música",
-        "Derecho"
-      ],
-      "distancia": 72,
-      "photo": "https://i.pravatar.cc/150?u=111",
-      "date": "4/14/2026, 12:39:32 AM"
-    },
-    {
-      "id": 104,
-      "name": "Martina",
-      "phone": "677888999",
-      "interests": [
-        "Gimnasio",
-        "Películas",
-        "Ecologismo"
-      ],
-      "distancia": 67,
-      "photo": "https://i.pravatar.cc/150?u=104",
-      "date": "4/14/2026, 12:39:26 AM"
-    },
-    {
       "id": 110,
       "name": "Alba",
       "phone": "611777888",
@@ -50,7 +11,7 @@
       ],
       "distancia": 19,
       "photo": "https://i.pravatar.cc/150?u=110",
-      "date": "4/14/2026, 12:39:08 AM"
+      "date": "4/14/2026, 1:01:41 AM"
     }
   ]
 }

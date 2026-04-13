@@ -219,16 +219,19 @@ const renderStatus = () => `
     </div>
 `;
 
-const renderBlockMode = () => `
-    <div class="mobile-sensor-active">
-        <div class="radar-animation" style="opacity: 0.3; filter: grayscale(1);"></div>
-        <h2>Modo Bloqueo</h2>
-        <p>El reloj está guardado. Las personas cercanas se están almacenando.</p>
-        <div class="gesture-guide">
-            <p><strong>Subir brazo suave:</strong> Volver al modo activo</p>
-            <p><strong>Sacar el teléfono:</strong> Ver personas vistas</p>
-            <p><strong>Doble toque:</strong> Cerrar app</p>
+const renderSleepWaiting = () => `
+    <div class="sleep-waiting">
+        <div class="sleep-waiting-content">
+            <span class="sleep-waiting-icon">🌙</span>
+            <h2 class="sleep-waiting-title">Modo Bloqueo</h2>
+            <p class="sleep-waiting-subtitle">Las personas que pasen cerca aparecerán aquí automáticamente.</p>
+            <div class="radar-animation" style="opacity:0.25; filter:grayscale(1);"></div>
+            <div class="gesture-guide">
+                <p><strong>Subir brazo:</strong> Volver al modo activo</p>
+                <p><strong>Doble toque:</strong> Abrir lista</p>
+            </div>
         </div>
+        <button class="exit-block-btn">Salir del modo bloqueo</button>
     </div>
 `;
 
@@ -430,18 +433,18 @@ export class MobileUI extends BaseUI {
         );
         break;
       case "sleep-list":
-        // Si llega un array lo guardamos como pila, luego renderizamos la primera tarjeta
         if (Array.isArray(data)) this.pendingStack = [...data];
         if (this.pendingStack[0]) {
           content = renderSleepStack(this.pendingStack[0], this.pendingStack.length);
         } else {
-          // Pila agotada → mostrar recomendaciones
-          content = renderRecommendations(
-            this.getRecommendations(),
-            this.getLocationLabel(),
-            this.locationError,
-          );
+          // Sin personas todavía (o pila agotada) → pantalla de espera unificada
+          content = renderSleepWaiting();
         }
+        break;
+      case "block-mode":
+        // Redirigir al nuevo flujo unificado
+        this.pendingStack = [];
+        content = renderSleepWaiting();
         break;
       case "app-closed":
         content = renderAppClosed();
@@ -468,11 +471,14 @@ export class MobileUI extends BaseUI {
     this.currentViewType = viewType;
     this.renderTemplate(html);
 
-    // Botones de recomendaciones (stack vacío o sleep-list agotada)
-    const showingRecos =
-      (viewType === "stack" && !this.pendingStack[0]) ||
-      (viewType === "sleep-list" && !this.pendingStack[0]);
-    if (showingRecos) {
+    // Botón salir del modo bloqueo (sleep-list o block-mode vacíos)
+    if ((viewType === "sleep-list" || viewType === "block-mode") && !this.pendingStack[0]) {
+      this.addEvent(".exit-block-btn", "click", () => {
+        socketManager.emit("gesture:sent", { gestureType: "stack-close" });
+      });
+    }
+    // Botones de recomendaciones (solo stack normal vacío)
+    if (viewType === "stack" && !this.pendingStack[0]) {
       this.addEvent(".location-btn", "click", () => this.requestLocation());
       this.addEvent(".refresh-btn", "click", () => this.render(null, viewType));
       this.addEvent(".exit-block-btn", "click", () => {

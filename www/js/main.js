@@ -68,8 +68,10 @@ socketManager.on("profile:data", (profile) => {
   initializeUI();
 });
 
+let uiInitialized = false;
 const initializeUI = () => {
-  if (!userProfile) return;
+  if (!userProfile || uiInitialized) return;
+  uiInitialized = true;
 
   // RELOJ — pantalla principal, solo muestra
   if (isWatch) {
@@ -230,16 +232,17 @@ const initializeUI = () => {
           }
           break;
 
-        // Ampliar rango → añade 10 personas a la cola + indicador visual
+        // Ampliar rango → pedir personas nuevas + indicador visual con distancia
         case "shake": {
+          const { distance = 20, atMax = false } = data;
           for (let i = 0; i < 10; i++)
             socketManager.emit("user:nearby:trigger");
           const backView = currentUser ? "profile" : "watch";
           const backData = currentUser ? currentUser : userProfile;
           uiRouter.navigate("message", {
-            icon: "📡",
+            icon: atMax ? "🔒" : "📡",
             iconClass: "icon-pulse",
-            message: `Rango ampliado`,
+            message: atMax ? `Máx. ${distance} m` : `Rango: ${distance} m`,
           });
           setTimeout(() => uiRouter.navigate(backView, backData), 2000);
           break;
@@ -296,25 +299,21 @@ const initializeUI = () => {
 
     // Cambios de modo desde el servidor → actualizar pantalla del móvil
     socketManager.on("mode:change", ({ mode }) => {
-      if (mobileAppClosed) return; // app cerrada — ignorar cambios de modo
+      if (mobileAppClosed) return;
       if (mode === "active") {
         uiRouter.navigate("sensor");
       } else if (mode === "sleep") {
-        uiRouter.navigate("block-mode");
+        // Pantalla unificada de bloqueo: sleep-list vacía = pantalla de espera
+        uiRouter.navigate("sleep-list", []);
       }
       // "stack" lo gestiona missed_encounters_data
     });
 
-    // Persona añadida a la cola mientras el reloj está en modo bloqueo → mostrar en tiempo real
+    // Persona añadida a la cola durante modo bloqueo → añadir a la lista en tiempo real
     socketManager.on("user:queued", (user) => {
       if (mobileAppClosed) return;
-      const currentView = uiRouter.history[uiRouter.history.length - 1]?.viewType;
-      console.log(`[Mobile] user:queued → ${user.name} | vista actual: ${currentView}`);
-      if (currentView === "sleep-list") {
-        mobileUI.pushUser(user);
-      } else {
-        uiRouter.navigate("sleep-list", [user]);
-      }
+      console.log(`[Mobile] user:queued → ${user.name}`);
+      mobileUI.pushUser(user);
     });
 
     // Servidor envía la pila completa (tras wake o stack-open)
