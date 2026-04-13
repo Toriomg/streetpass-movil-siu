@@ -85,6 +85,8 @@ const renderRecommendations = (
             <button class="location-btn">Ver mi ubicación</button>
             <button class="refresh-btn">Actualizar planes</button>
         </div>
+
+        <button class="exit-block-btn">Salir del modo bloqueo</button>
     </div>
 `;
 
@@ -455,6 +457,9 @@ export class MobileUI extends BaseUI {
     if (showingRecos) {
       this.addEvent(".location-btn", "click", () => this.requestLocation());
       this.addEvent(".refresh-btn", "click", () => this.render(null, viewType));
+      this.addEvent(".exit-block-btn", "click", () => {
+        socketManager.emit("gesture:sent", { gestureType: "stack-close" });
+      });
     }
 
     // Inicializar gestos de swipe si hay usuario (stack o sleep-list)

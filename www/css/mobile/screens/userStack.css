@@ -277,3 +277,16 @@
 .swipe-left {
   animation: swipeLeft 0.5s ease forwards;
 }
+
+.exit-block-btn {
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 999px;
+  background: #1c1c1e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}

@@ -109,10 +109,13 @@ export class WatchUI extends BaseUI {
     const el = document.getElementById("swipe-indicator");
     if (!el) { callback(); return; }
 
+    let called = false;
+    const safe = () => { if (!called) { called = true; callback(); } };
+
     el.className = "swipe-indicator " + (type === "accept" ? "swipe-accept" : "swipe-reject");
     el.textContent = type === "accept" ? "LIKE" : "NOPE";
 
-    setTimeout(callback, 600);
+    setTimeout(safe, 600);
   }
 
   // Ya no necesitamos pasar el 'container' por parámetro porque lo tiene el padre

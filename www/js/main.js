@@ -162,6 +162,10 @@ const initializeUI = () => {
             }, 5000);
             acceptTimers = [t1];
           });
+          // Seguridad: si el callback no se dispara, salir de "animating" igualmente
+          setTimeout(() => {
+            if (watchState === "animating") returnToIdle();
+          }, 900);
           break;
         }
 
@@ -178,6 +182,10 @@ const initializeUI = () => {
             lockGestures(800);
             returnToIdle();
           });
+          // Seguridad: si el callback no se dispara, salir de "animating" igualmente
+          setTimeout(() => {
+            if (watchState === "animating") returnToIdle();
+          }, 900);
           break;
         }
 
