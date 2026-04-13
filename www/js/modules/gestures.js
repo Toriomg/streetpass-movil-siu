@@ -64,17 +64,19 @@ export function initGestures() {
     //   • Inclinar izquierda (gamma < -55) → accept (conectar)
     //   • Inclinar hacia arriba (beta < 45) → block (bloquear usuario)
     // ─────────────────────────────────────────────
-    let tiltActive = false; // true mientras el móvil sigue inclinado
+    let tiltActive = false; // true mientras el móvil sigue en posición de gesto
 
     window.addEventListener("deviceorientation", (event) => {
       const { gamma, beta } = event;
       console.log(`[Orientation] beta=${beta?.toFixed(1)} gamma=${gamma?.toFixed(1)} cooldown=${isCooldown} tiltActive=${tiltActive} mode=${currentMode}`);
       if (gamma === null || beta === null) return;
 
-      const isTilted = Math.abs(gamma) > 55;
+      const isGammaTilted = Math.abs(gamma) > 55;  // inclinación izq / der
+      const isBetaUp      = beta < 45;             // pantalla mirando al techo (bloquear)
+      const isAnyTilted   = isGammaTilted || isBetaUp;
 
-      // Esperar a que vuelva a posición neutral antes de aceptar otro gesto
-      if (!isTilted) {
+      // Volver a posición neutral → permitir el siguiente gesto
+      if (!isAnyTilted) {
         tiltActive = false;
         return;
       }
@@ -82,18 +84,20 @@ export function initGestures() {
       if (isCooldown || tiltActive || Date.now() < externalCooldownUntil) return;
 
       tiltActive = true;
-      if (gamma > 55) {
+
+      // BLOQUEAR tiene prioridad: pantalla al techo y sin inclinación lateral fuerte
+      if (isBetaUp && !isGammaTilted) {
+        sendGesture("ARRIBA ↑ BLOQUEAR", "block");
+        activateCooldown(1000);
+      } else if (gamma > 55) {
         sendGesture("DERECHA →", "nav");
+        activateCooldown(300);
       } else {
-        const canVibrate = "vibrate" in navigator;
-        console.log(`[Vibrate] API disponible: ${canVibrate}`);
-        if (canVibrate) {
-          const ok = navigator.vibrate([80, 60, 80]);
-          console.log(`[Vibrate] resultado: ${ok}`);
-        }
-        sendGesture("IZQUIERDA", "accept");
+        // gamma < -55 → aceptar / conectar
+        if ("vibrate" in navigator) navigator.vibrate([80, 60, 80]);
+        sendGesture("IZQUIERDA ←", "accept");
+        activateCooldown(300);
       }
-      activateCooldown(300);
     });
 
     // ─────────────────────────────────────────────
