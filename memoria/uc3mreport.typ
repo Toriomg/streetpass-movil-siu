@@ -179,6 +179,7 @@
 
   /* FIGURES */
 
+  
   // figure captions w/ blue
   show figure.caption: it => {
     [
@@ -196,13 +197,7 @@
 
     if it.placement == none {
       block(it, inset: (y: figure_spacing))
-    } else if it.placement == top {
-      place(
-        it.placement,
-        float: true,
-        block(width: 100%, inset: (bottom: figure_spacing), align(center, it))
-      )
-    } else if it.placement == bottom {
+    } else  {
       place(
         it.placement,
         float: true,
