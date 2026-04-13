@@ -111,6 +111,7 @@ module.exports = function (io) {
 
         case "shake":
           state.maxDistance += 15;
+          console.log("distancia actual: ", state.maxDistance)
           io.to(userID).emit("gesture:received", { type: "shake" });
           break;
 

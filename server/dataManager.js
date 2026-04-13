@@ -121,3 +121,5 @@ const dataManager = {
     writeJSON(paths.encounters, {});
   },
 };
+
+module.exports = dataManager;
