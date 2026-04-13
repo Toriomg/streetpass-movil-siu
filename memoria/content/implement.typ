@@ -196,7 +196,7 @@ En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos
 En nuestro caso se ha establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
 #figure(
-  align(center, image("../img/modo_ampliar.png", width: 70%)),
+  align(center, image("../img/modo_ampliar.png", width: 90%)),
   caption: "Representación esquemática de la ampliación de rango"
 )
 
