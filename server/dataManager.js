@@ -10,20 +10,14 @@ const paths = {
 
 // Función auxiliar para leer JSON
 const readJSON = (file) => {
-  // 1. Si el archivo no existe, devolvemos objeto vacío
   if (!fs.existsSync(file)) return {};
-
   try {
     const content = fs.readFileSync(file, "utf-8").trim();
-
-    // 2. Si el archivo existe pero está vacío (0 caracteres), devolvemos objeto vacío
     if (content.length === 0) return {};
-
-    // 3. Intentamos parsear
     return JSON.parse(content);
   } catch (error) {
     console.error(`Error leyendo el archivo ${file}:`, error);
-    return {}; // Devolvemos algo seguro para que el servidor no muera
+    return {};
   }
 };
 
@@ -70,7 +64,6 @@ const dataManager = {
     if (user) {
       return { ...user, photo: `https://i.pravatar.cc/150?u=${user.id}` };
     }
-    // Perfil por defecto si no existe
     return {
       id: Number(userID),
       name: `Usuario ${userID}`,
@@ -113,7 +106,6 @@ const dataManager = {
     const history = readJSON(paths.encounters);
     if (!history[userID]) history[userID] = [];
 
-    // Añadimos al principio (pila cronológica inversa)
     history[userID].unshift({
       ...personData,
       date: new Date().toLocaleString(),
@@ -131,6 +123,41 @@ const dataManager = {
   resetEncounters: () => {
     writeJSON(paths.encounters, {});
   },
+
+  // NUEVA FUNCIÓN AÑADIDA CORRECTAMENTE AL OBJETO:
+  // Obtiene una lista de usuarios dentro de un rango de distancia específico
+  getUsersInRange: (userID, excludedIds, minDistance, maxDistance) => {
+    // 1. Leemos el archivo JSON real
+    const users = JSON.parse(fs.readFileSync(paths.mockUsers, "utf-8"));
+
+    // 2. Extraemos los bloqueados para no mostrarlos tampoco
+    const blockedIds = dataManager
+      .getBlockedUsers(userID)
+      .map((item) => item.id);
+    const allExcludedIds = new Set([
+      ...excludedIds,
+      ...blockedIds,
+      Number(userID),
+    ]);
+
+    // 3. Filtramos
+    const inRange = users.filter((user) => {
+      // Excluir si ya se mostró, si es él mismo, o si está bloqueado
+      if (allExcludedIds.has(user.id)) return false;
+      // Validar rango (ej: distancia > 0 y <= 2, o distancia > 2 y <= 4)
+      if (user.distancia <= minDistance || user.distancia > maxDistance)
+        return false;
+
+      return true;
+    });
+
+    // 4. Mapeamos para añadir la URL de la foto generada como en tus otros métodos
+    return inRange.map((user) => ({
+      ...user,
+      photo: `https://i.pravatar.cc/150?u=${user.id}`,
+    }));
+  },
 };
 
+// Exportación final y limpia
 module.exports = dataManager;

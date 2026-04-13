@@ -214,16 +214,30 @@ const initializeUI = () => {
           break;
 
         // Ampliar rango → añade 10 personas a la cola + mensaje temporal
+        // REEMPLAZA EL CASE "shake" POR ESTO:
         case "shake": {
-          if (watchState !== "profile" && watchState !== "idle") break;
-          for (let i = 0; i < 10; i++)
-            socketManager.emit("user:nearby:trigger");
-          const backView = currentUser ? "profile" : "watch";
-          const backData = currentUser ? currentUser : userProfile;
-          uiRouter.navigate("message", {
-            message: "Has ampliado el rango de búsqueda de personas",
+          const oldDistance = state.maxDistance;
+          state.maxDistance = state.maxDistance === 2 ? 4 : 2;
+
+          if (state.maxDistance > oldDistance) {
+            const excludedIds = new Set([
+              ...state.shownIds,
+              ...state.sleepQueue.map((u) => u.id),
+              ...state.discoveryQueue.map((u) => u.id),
+            ]);
+            const newlyDiscovered = dataManager.getUsersInRange(
+              userID,
+              excludedIds,
+              oldDistance,
+              state.maxDistance,
+            );
+            state.discoveryQueue.push(...newlyDiscovered);
+          }
+
+          io.to(userID).emit("gesture:received", {
+            type: "shake",
+            maxDistance: state.maxDistance,
           });
-          setTimeout(() => uiRouter.navigate(backView, backData), 3000);
           break;
         }
 

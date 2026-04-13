@@ -8,9 +8,9 @@ function getState(userID) {
     userState[userID] = {
       mode: "active",
       sleepQueue: [],
+      discoveryQueue: [],
       currentEncounter: null,
       shownIds: new Set(),
-      pendingIds: new Set(),
       maxDistance: 50,
     };
   }
@@ -31,41 +31,44 @@ module.exports = function (io) {
     socket.on("user:nearby:trigger", () => {
       const state = getState(userID);
 
-      if (state.mode === "active" && state.currentEncounter) {
-        console.log(
-          `[Socket] Ignorando user:nearby:trigger, ya hay un encuentro activo para ${userID}`,
+      if (state.mode === "active" && state.currentEncounter) return;
+
+      // 1. Si la cola está vacía, buscar en el rango actual
+      if (state.discoveryQueue.length === 0) {
+        const excludedIds = new Set([
+          ...state.shownIds,
+          ...state.sleepQueue.map((u) => u.id),
+        ]);
+        const newUsers = dataManager.getUsersInRange(
+          userID,
+          excludedIds,
+          0,
+          state.maxDistance,
         );
-        return;
+        state.discoveryQueue = newUsers;
       }
 
-      const excludedIds = new Set([...state.shownIds, ...state.pendingIds]);
-      const randomUser = dataManager.getRandomMockUser(
-        userID,
-        excludedIds,
-        state.maxDistance,
-      );
-      if (!randomUser) {
-        console.log(
-          `[Socket] Sin personas nuevas para ${userID} — todas vistas o fuera de rango`,
-        );
+      // 2. Si sigue vacía, no hay nadie
+      if (state.discoveryQueue.length === 0) {
         io.to(userID).emit("user:nearby:empty");
         return;
       }
 
-      state.pendingIds.add(randomUser.id);
+      // 3. Extraer solo al PRIMERO de la cola
+      const nextUser = state.discoveryQueue.shift();
 
       if (state.mode === "sleep" || state.mode === "stack") {
         const alreadyQueued = state.sleepQueue.some(
-          (u) => u.id === randomUser.id,
+          (u) => u.id === nextUser.id,
         );
         if (!alreadyQueued && state.sleepQueue.length < 20) {
-          state.sleepQueue.push(randomUser);
+          state.sleepQueue.push(nextUser);
         }
         return;
       }
 
-      state.currentEncounter = randomUser;
-      io.to(userID).emit("user:nearby", randomUser);
+      state.currentEncounter = nextUser;
+      io.to(userID).emit("user:nearby", nextUser);
     });
 
     socket.on("user:block", (personData) => {
