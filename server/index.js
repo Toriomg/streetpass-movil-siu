@@ -3,6 +3,7 @@ const http = require("http");
 const path = require("path");
 const socketIo = require("socket.io");
 const socketEvents = require("./socketEvents"); // Importamos la lógica de sockets
+const dataManager = require("./dataManager"); // Importamos el dataManager
 
 const app = express();
 const server = http.createServer(app);
@@ -18,10 +19,13 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
 
-// 3. Inicializar los eventos de Socket.io pasándole la instancia 'io'
+// 3. Resetear encounters.json al iniciar el servidor
+dataManager.resetEncounters();
+
+// 4. Inicializar los eventos de Socket.io pasándole la instancia 'io'
 socketEvents(io);
 
-// 4. Arrancar el servidor
+// 5. Arrancar el servidor
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`==========================================`);

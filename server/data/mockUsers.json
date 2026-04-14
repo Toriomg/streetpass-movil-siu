@@ -4,7 +4,11 @@
     "name": "Noa",
     "photo": "../assets/noa.png",
     "phone": "611222333",
-    "interests": ["Música", "Películas", "Derecho"],
+    "interests": [
+      "Música",
+      "Películas",
+      "Derecho"
+    ],
     "distancia": 8
   },
   {
@@ -12,7 +16,11 @@
     "name": "Alejandra",
     "photo": "../assets/alejandra.png",
     "phone": "633444555",
-    "interests": ["Gimnasio", "Senderismo", "Dieta"],
+    "interests": [
+      "Gimnasio",
+      "Senderismo",
+      "Dieta"
+    ],
     "distancia": 45
   },
   {
@@ -20,7 +28,11 @@
     "name": "Sara",
     "photo": "../assets/sara.png",
     "phone": "655666777",
-    "interests": ["Videojuegos", "Películas", "Lectura"],
+    "interests": [
+      "Videojuegos",
+      "Películas",
+      "Lectura"
+    ],
     "distancia": 23
   },
   {
@@ -36,7 +48,11 @@
     "name": "Valeria",
     "photo": "../assets/valeria.png",
     "phone": "622333444",
-    "interests": ["Electrónica", "Películas", "Ajedrez"],
+    "interests": [
+      "Electrónica",
+      "Películas",
+      "Ajedrez"
+    ],
     "distancia": 12
   },
   {
@@ -44,7 +60,11 @@
     "name": "Carla",
     "photo": "../assets/carla.png",
     "phone": "644555666",
-    "interests": ["Películas", "Música", "Derecho"],
+    "interests": [
+      "Películas",
+      "Música",
+      "Derecho"
+    ],
     "distancia": 88
   },
   {
@@ -52,7 +72,11 @@
     "name": "Julia",
     "photo": "../assets/julia.png",
     "phone": "688999000",
-    "interests": ["Lectura", "Películas", "Religión"],
+    "interests": [
+      "Lectura",
+      "Películas",
+      "Religión"
+    ],
     "distancia": 34
   },
   {
@@ -60,7 +84,11 @@
     "name": "Elena",
     "photo": "../assets/elena.png",
     "phone": "600111222",
-    "interests": ["Senderismo", "Electrónica", "Animales"],
+    "interests": [
+      "Senderismo",
+      "Electrónica",
+      "Animales"
+    ],
     "distancia": 5
   },
   {
@@ -68,7 +96,11 @@
     "name": "Olivia",
     "photo": "../assets/olivia.png",
     "phone": "699000111",
-    "interests": ["Espacio", "Música", "Ecologismo"],
+    "interests": [
+      "Espacio",
+      "Música",
+      "Ecologismo"
+    ],
     "distancia": 56
   },
   {
@@ -76,7 +108,11 @@
     "name": "Alba",
     "photo": "../assets/alba.png",
     "phone": "611777888",
-    "interests": ["Senderismo", "Películas", "Gimnasio"],
+    "interests": [
+      "Senderismo",
+      "Películas",
+      "Gimnasio"
+    ],
     "distancia": 19
   },
   {
@@ -84,7 +120,11 @@
     "name": "Carmen",
     "photo": "../assets/carmen.png",
     "phone": "633999222",
-    "interests": ["Dieta", "Música", "Derecho"],
+    "interests": [
+      "Dieta",
+      "Música",
+      "Derecho"
+    ],
     "distancia": 72
   },
   {
@@ -92,7 +132,11 @@
     "name": "Paula",
     "photo": "../assets/paula.png",
     "phone": "655222888",
-    "interests": ["Gimnasio", "Electrónica", "Animales"],
+    "interests": [
+      "Gimnasio",
+      "Electrónica",
+      "Animales"
+    ],
     "distancia": 31
   },
   {

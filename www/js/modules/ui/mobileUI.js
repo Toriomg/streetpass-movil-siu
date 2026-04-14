@@ -153,7 +153,7 @@ const buildRecommendations = (interests) => {
   ];
 };
 
-const renderSleepStack = (user) => {
+const renderSleepStack = (user, count = 1) => {
   // Estado vacío lo gestiona render() mostrando recomendaciones
   if (!user) return "";
 
@@ -161,10 +161,18 @@ const renderSleepStack = (user) => {
     ? user.interests.map(g => `<span class="interest-tag">${g}</span>`).join(" ")
     : "";
 
+  const badge = count > 1
+    ? `<span class="sleep-badge">${count} pendientes</span>`
+    : "";
+
   return `
-    <div class="mobile-stack-container">
+    <div class="mobile-stack-container sleep-stack">
       <header class="stack-header">
-        <p>Mientras estabas bloquead@</p>
+        <div class="sleep-header-row">
+          <span class="sleep-icon">🌙</span>
+          <p>Mientras estabas bloquead@</p>
+          ${badge}
+        </div>
       </header>
 
       <div class="user-card-mobile">
@@ -175,13 +183,13 @@ const renderSleepStack = (user) => {
         <div class="user-details">
           <h2 class="user-name">${user.name}</h2>
           <div class="user-interests">${interests}</div>
-          <p class="user-hint">${user.name} ha intentado conectar contigo. Acepta para ver su teléfono.</p>
+          <p class="user-hint">${user.name} pasó cerca mientras tenías el reloj guardado.</p>
         </div>
       </div>
 
       <footer class="gesture-hint">
-        <div class="hint-item"><span>←</span> Conectar</div>
-        <div class="hint-item">Pasar <span>→</span></div>
+        <div class="hint-item hint-accept"><span>←</span> Conectar</div>
+        <div class="hint-item hint-reject">Pasar <span>→</span></div>
       </footer>
     </div>
   `;
@@ -211,16 +219,19 @@ const renderStatus = () => `
     </div>
 `;
 
-const renderBlockMode = () => `
-    <div class="mobile-sensor-active">
-        <div class="radar-animation" style="opacity: 0.3; filter: grayscale(1);"></div>
-        <h2>Modo Bloqueo</h2>
-        <p>El reloj está guardado. Las personas cercanas se están almacenando.</p>
-        <div class="gesture-guide">
-            <p><strong>Subir brazo suave:</strong> Volver al modo activo</p>
-            <p><strong>Sacar el teléfono:</strong> Ver personas vistas</p>
-            <p><strong>Doble toque:</strong> Cerrar app</p>
+const renderSleepWaiting = () => `
+    <div class="sleep-waiting">
+        <div class="sleep-waiting-content">
+            <span class="sleep-waiting-icon">🌙</span>
+            <h2 class="sleep-waiting-title">Modo Bloqueo</h2>
+            <p class="sleep-waiting-subtitle">Las personas que pasen cerca aparecerán aquí automáticamente.</p>
+            <div class="radar-animation" style="opacity:0.25; filter:grayscale(1);"></div>
+            <div class="gesture-guide">
+                <p><strong>Subir brazo:</strong> Volver al modo activo</p>
+                <p><strong>Doble toque:</strong> Abrir lista</p>
+            </div>
         </div>
+        <button class="exit-block-btn">Salir del modo bloqueo</button>
     </div>
 `;
 
@@ -241,6 +252,16 @@ export class MobileUI extends BaseUI {
     this.profile = profile;
   }
 
+  // Añade un usuario al final de la pila sin resetearla.
+  // Si la pila estaba vacía (mostrando recomendaciones), re-renderiza para mostrar la tarjeta.
+  pushUser(user) {
+    this.pendingStack.push(user);
+    if (this.pendingStack.length === 1 &&
+        (this.currentViewType === "sleep-list" || this.currentViewType === "stack")) {
+      this.render(null, this.currentViewType);
+    }
+  }
+
   // Anima la tarjeta y avanza a la siguiente — NO emite gesto al servidor.
   // Usar cuando el gesto ya fue enviado por gestures.js (flujo físico).
   // accept → vuela a la IZQUIERDA (gesto físico: inclinar izquierda = conectar)
@@ -255,10 +276,10 @@ export class MobileUI extends BaseUI {
       return;
     }
 
-    // Mostrar indicador LIKE/NOPE
+    // Mostrar indicador CONECTAR/PASAR
     const indicator = this.container.querySelector("#mobile-swipe-indicator");
     if (indicator) {
-      indicator.textContent = direction === "accept" ? "LIKE" : "NOPE";
+      indicator.textContent = direction === "accept" ? "CONECTAR" : "PASAR";
       indicator.className = "mobile-swipe-indicator " + (direction === "accept" ? "mobile-swipe-accept" : "mobile-swipe-reject");
     }
 
@@ -311,7 +332,7 @@ export class MobileUI extends BaseUI {
       if (indicator) {
         if (Math.abs(diff) > 40) {
           const isAccept = diff < 0;
-          indicator.textContent = isAccept ? "LIKE" : "NOPE";
+          indicator.textContent = isAccept ? "CONECTAR" : "PASAR";
           indicator.className = "mobile-swipe-indicator " + (isAccept ? "mobile-swipe-accept" : "mobile-swipe-reject");
           indicator.style.opacity = Math.min(1, (Math.abs(diff) - 40) / 60).toString();
         } else {
@@ -412,18 +433,18 @@ export class MobileUI extends BaseUI {
         );
         break;
       case "sleep-list":
-        // Si llega un array lo guardamos como pila, luego renderizamos la primera tarjeta
         if (Array.isArray(data)) this.pendingStack = [...data];
         if (this.pendingStack[0]) {
-          content = renderSleepStack(this.pendingStack[0]);
+          content = renderSleepStack(this.pendingStack[0], this.pendingStack.length);
         } else {
-          // Pila agotada → mostrar recomendaciones
-          content = renderRecommendations(
-            this.getRecommendations(),
-            this.getLocationLabel(),
-            this.locationError,
-          );
+          // Sin personas todavía (o pila agotada) → pantalla de espera unificada
+          content = renderSleepWaiting();
         }
+        break;
+      case "block-mode":
+        // Redirigir al nuevo flujo unificado
+        this.pendingStack = [];
+        content = renderSleepWaiting();
         break;
       case "app-closed":
         content = renderAppClosed();
@@ -450,11 +471,14 @@ export class MobileUI extends BaseUI {
     this.currentViewType = viewType;
     this.renderTemplate(html);
 
-    // Botones de recomendaciones (stack vacío o sleep-list agotada)
-    const showingRecos =
-      (viewType === "stack" && !this.pendingStack[0]) ||
-      (viewType === "sleep-list" && !this.pendingStack[0]);
-    if (showingRecos) {
+    // Botón salir del modo bloqueo (sleep-list o block-mode vacíos)
+    if ((viewType === "sleep-list" || viewType === "block-mode") && !this.pendingStack[0]) {
+      this.addEvent(".exit-block-btn", "click", () => {
+        socketManager.emit("gesture:sent", { gestureType: "stack-close" });
+      });
+    }
+    // Botones de recomendaciones (solo stack normal vacío)
+    if (viewType === "stack" && !this.pendingStack[0]) {
       this.addEvent(".location-btn", "click", () => this.requestLocation());
       this.addEvent(".refresh-btn", "click", () => this.render(null, viewType));
       this.addEvent(".exit-block-btn", "click", () => {

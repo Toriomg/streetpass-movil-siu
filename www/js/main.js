@@ -53,6 +53,14 @@ function showNearbyUser(userData) {
   currentUser = userData;
   setWatchState("profile");
   uiRouter.navigate("profile", currentUser);
+
+  // OPTIONAL: Auto-skip after 10 seconds if no gesture is made
+  setTimeout(() => {
+    if (watchState === "profile" && currentUser?.id === userData.id) {
+      console.log("Auto-skipping user due to inactivity");
+      returnToIdle();
+    }
+  }, 10000);
 }
 
 socketManager.on("profile:data", (profile) => {
@@ -60,8 +68,10 @@ socketManager.on("profile:data", (profile) => {
   initializeUI();
 });
 
+let uiInitialized = false;
 const initializeUI = () => {
-  if (!userProfile) return;
+  if (!userProfile || uiInitialized) return;
+  uiInitialized = true;
 
   // RELOJ — pantalla principal, solo muestra
   if (isWatch) {
@@ -85,7 +95,8 @@ const initializeUI = () => {
 
     // Botón auto-trigger manual (desactivado por defecto, solo para pruebas)
     let autoInterval = null;
-    const startAuto = () => setInterval(() => socketManager.emit("user:nearby:trigger"), 10000);
+    const startAuto = () =>
+      setInterval(() => socketManager.emit("user:nearby:trigger"), 10000);
     const autoBtn = document.createElement("button");
     autoBtn.textContent = "Auto OFF";
     autoBtn.style.marginLeft = "8px";
@@ -111,23 +122,36 @@ const initializeUI = () => {
 
     // Persona cercana detectada → mostrar si libre, encolar si ocupado, ignorar si cerrado
     socketManager.on("user:nearby", (userData) => {
-      console.log(`[Watch] ✅ user:nearby recibido: ${userData?.name} | estado: ${watchState}`);
+      console.log(
+        `[Watch] ✅ user:nearby recibido: ${userData?.name} | estado: ${watchState}`,
+      );
       if (watchState === "closed" || watchState === "sleeping") {
         console.log(`[Watch] user:nearby ignorado — estado: ${watchState}`);
         return;
       }
-      if (watchState === "idle") {
+      if (watchState === "idle" || !currentUser) {
         showNearbyUser(userData);
       } else {
         nearbyQueue.push(userData);
         nearbyQueue.sort((a, b) => (a.distancia ?? 999) - (b.distancia ?? 999));
-        console.log(`[Watch] user:nearby encolado (cola: ${nearbyQueue.length})`);
+        console.log(
+          `[Watch] user:nearby encolado (cola: ${nearbyQueue.length})`,
+        );
       }
     });
 
     // Precargar 3 personas al inicio — DESPUÉS de registrar el handler
     console.log("[Watch] 🚀 Precargando 3 personas iniciales...");
     for (let i = 0; i < 3; i++) socketManager.emit("user:nearby:trigger");
+
+    // Añade este nuevo intervalo justo debajo
+    console.log("[Watch] ⏱️ Iniciando generador automático (1 cada 5s)");
+    setInterval(() => {
+      // En modo cerrado no pedimos personas; en modo bloqueo sí (para el móvil)
+      if (watchState !== "closed") {
+        socketManager.emit("user:nearby:trigger");
+      }
+    }, 5000);
 
     // El reloj reacciona a todos los gestos
     let acceptTimers = []; // timers de match/connection — se pueden cancelar con gesto
@@ -141,7 +165,6 @@ const initializeUI = () => {
 
     socketManager.on("gesture:received", (data) => {
       switch (data.type) {
-
         case "accept": {
           // Durante match/connection: saltar a la siguiente persona
           if (watchState === "match" || watchState === "connection") {
@@ -156,7 +179,10 @@ const initializeUI = () => {
             uiRouter.navigate("match", accepted);
             const t1 = setTimeout(() => {
               setWatchState("connection");
-              uiRouter.navigate("connection", { ...accepted, userPhoto: userProfile?.photo });
+              uiRouter.navigate("connection", {
+                ...accepted,
+                userPhoto: userProfile?.photo,
+              });
               const t2 = setTimeout(() => skipToNext(), 5000);
               acceptTimers = [t2];
             }, 5000);
@@ -206,16 +232,19 @@ const initializeUI = () => {
           }
           break;
 
-        // Ampliar rango → añade 10 personas a la cola + mensaje temporal
+        // Ampliar rango → pedir personas nuevas + indicador visual con distancia
         case "shake": {
-          if (watchState !== "profile" && watchState !== "idle") break;
-          for (let i = 0; i < 10; i++) socketManager.emit("user:nearby:trigger");
+          const { distance = 20, atMax = false } = data;
+          for (let i = 0; i < 10; i++)
+            socketManager.emit("user:nearby:trigger");
           const backView = currentUser ? "profile" : "watch";
           const backData = currentUser ? currentUser : userProfile;
           uiRouter.navigate("message", {
-            message: "Has ampliado el rango de búsqueda de personas",
+            icon: atMax ? "🔒" : "📡",
+            iconClass: "icon-pulse",
+            message: atMax ? `Máx. ${distance} m` : `Rango: ${distance} m`,
           });
-          setTimeout(() => uiRouter.navigate(backView, backData), 3000);
+          setTimeout(() => uiRouter.navigate(backView, backData), 2000);
           break;
         }
 
@@ -270,19 +299,34 @@ const initializeUI = () => {
 
     // Cambios de modo desde el servidor → actualizar pantalla del móvil
     socketManager.on("mode:change", ({ mode }) => {
-      if (mobileAppClosed) return; // app cerrada — ignorar cambios de modo
+      if (mobileAppClosed) return;
       if (mode === "active") {
         uiRouter.navigate("sensor");
       } else if (mode === "sleep") {
-        uiRouter.navigate("block-mode");
+        // Pantalla unificada de bloqueo: sleep-list vacía = pantalla de espera
+        uiRouter.navigate("sleep-list", []);
       }
       // "stack" lo gestiona missed_encounters_data
     });
 
-    // Servidor envía la pila de personas (tras stack-open)
+    // Persona añadida a la cola durante modo bloqueo → añadir a la lista en tiempo real
+    socketManager.on("user:queued", (user) => {
+      if (mobileAppClosed) return;
+      console.log(`[Mobile] user:queued → ${user.name}`);
+      mobileUI.pushUser(user);
+    });
+
+    // Servidor envía la pila completa (tras wake o stack-open)
     socketManager.on("missed_encounters_data", (users) => {
       if (mobileAppClosed) return;
-      uiRouter.navigate("sleep-list", users);
+      const currentView = uiRouter.history[uiRouter.history.length - 1]?.viewType;
+      if (currentView === "sleep-list") {
+        // Ya estamos mostrando la lista — solo añadir los que no estén ya en la pila
+        const existingIds = new Set(mobileUI.pendingStack.map(u => u.id));
+        users.filter(u => !existingIds.has(u.id)).forEach(u => mobileUI.pushUser(u));
+      } else {
+        uiRouter.navigate("sleep-list", users);
+      }
     });
 
     // Gestos en el móvil

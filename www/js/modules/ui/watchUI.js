@@ -23,7 +23,7 @@ const renderProfile = (data) => {
   const interestsHtml = data.interests
     .map(
       (interest) => `
-        <img src="assets/icons/iconos/${interest}.svg"
+        <img src="assets/icons/${interest}.svg"
              class="interest-icon"
              alt="${interest}">
       `,
@@ -44,9 +44,6 @@ const renderProfile = (data) => {
         <div class="interests-icons">
             ${interestsHtml}
         </div>
-    </div>
-    <div class="profile-actions">
-        <button class="block-btn">Bloquear usuario</button>
     </div>
   `;
 };
@@ -75,8 +72,8 @@ const renderConnection = (data) => `
 
 const renderMessage = (data) => `
     <div class="message-overlay">
-        <div class="warning-icon">⚠️</div>
-        <p class="message-text">${data.message || "Has ampliado el rango de búsqueda de personas "}</p>
+        <div class="warning-icon ${data.iconClass || ''}">${data.icon || '⚠️'}</div>
+        <p class="message-text">${data.message || ''}</p>
     </div>
 `;
 
@@ -164,19 +161,6 @@ export class WatchUI extends BaseUI {
 
     // Usamos el método de la clase padre para inyectar el HTML
     this.renderTemplate(html);
-
-    if (viewType === "profile") {
-      this.addEvent(".block-btn", "click", () => {
-        if (!data || !data.id) return;
-        socketManager.emit("user:block", {
-          id: data.id,
-          name: data.name,
-          phone: data.phone,
-          interests: data.interests,
-        });
-        this.render(null, "watch");
-      });
-    }
 
     if (showHeader || viewType === "watch" || viewType === "closed" || viewType === "sleep") {
       startClock();

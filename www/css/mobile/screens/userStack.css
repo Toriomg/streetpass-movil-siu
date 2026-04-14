@@ -1,31 +1,35 @@
 /* --- INDICADOR LIKE/NOPE --- */
 .mobile-swipe-indicator {
   position: absolute;
-  top: 28px;
+  top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 900;
-  letter-spacing: 3px;
-  padding: 6px 20px;
-  border-radius: 10px;
-  border-width: 3px;
+  letter-spacing: 4px;
+  padding: 6px 18px;
+  border-radius: 12px;
+  border-width: 2.5px;
   border-style: solid;
   opacity: 0;
   pointer-events: none;
   z-index: 10;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.12s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .mobile-swipe-accept {
   color: #30d158;
   border-color: #30d158;
+  background: rgba(48, 209, 88, 0.08);
   opacity: 1;
 }
 
 .mobile-swipe-reject {
   color: #ff3b30;
   border-color: #ff3b30;
+  background: rgba(255, 59, 48, 0.08);
   opacity: 1;
 }
 
@@ -35,18 +39,30 @@
   margin: 0px 20px;
   background: #fff;
   border-radius: 35px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14), 0 6px 18px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  animation: slideUp 0.5s ease-out;
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.16, 0.64, 1);
 }
 
 .image-container {
   width: 100%;
   height: 60%; /* La imagen ocupa la mayor parte */
   overflow: hidden;
+  position: relative;
+}
+
+.image-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.95));
+  pointer-events: none;
 }
 
 .user-img {
@@ -56,62 +72,67 @@
 }
 
 .user-details {
-  padding: 25px;
+  padding: 20px 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .user-name {
   font-size: 28px;
   font-weight: 800;
   margin: 0;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.6px;
+  color: #1c1c1e;
 }
 
 /* --- ETIQUETAS DE INTERÉS --- */
 .user-interests {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 7px;
 }
 
 .interest-tag {
-  background-color: #f2f2f7;
-  padding: 6px 14px;
+  background: linear-gradient(135deg, #f2f2f7, #eaeaf0);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 5px 13px;
   border-radius: 100px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
-  color: #3a3a3c;
+  color: #2c2c2e;
 }
 
 .user-hint {
-  font-size: 14px;
-  color: #636366;
-  line-height: 1.4;
-  margin-top: 5px;
+  font-size: 13.5px;
+  color: #8e8e93;
+  line-height: 1.45;
+  margin-top: 2px;
 }
 
 /* --- HINTS DE GESTOS (FOOTER) --- */
 .gesture-hint {
   display: flex;
   justify-content: space-between;
-  padding: 30px 40px;
-  padding-bottom: 50px;
+  padding: 18px 28px 44px;
 }
 
 .hint-item {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
-  color: #8e8e93;
+  color: #636366;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 8px 16px;
+  border-radius: 999px;
 }
 
 .hint-item span {
-  font-size: 18px;
+  font-size: 17px;
   color: #007aff;
+  font-weight: 800;
 }
 
 /* --- ESTADO VACÍO --- */
@@ -126,74 +147,87 @@
 }
 
 .info-icon {
-  font-size: 60px;
-  margin-bottom: 20px;
+  font-size: 54px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
 }
 
 .empty-stack h2 {
   font-weight: 800;
-  margin-bottom: 10px;
+  font-size: 20px;
+  color: #1c1c1e;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
 }
 
 .empty-stack p {
   color: #8e8e93;
-  line-height: 1.5;
+  line-height: 1.55;
+  font-size: 14.5px;
+  max-width: 260px;
 }
 
 .recommendation-screen {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 0 20px 20px;
+  gap: 16px;
+  padding: 0 20px 24px;
 }
 
 .recommendation-subtitle {
-  font-size: 6px;
-  margin-top: 6px;
+  font-size: 13px;
+  margin-top: 4px;
   color: #6e6e73;
 }
 
 .recommendation-list {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .reco-card {
   background: #ffffff;
-  border-radius: 24px;
-  padding: 16px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
+  border-radius: 22px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .reco-card strong {
   display: block;
-  margin-bottom: 6px;
-  font-size: 16px;
+  margin-bottom: 5px;
+  font-size: 15.5px;
+  color: #1c1c1e;
+  letter-spacing: -0.2px;
 }
 
 .reco-card p {
   margin: 0;
   color: #6e6e73;
   line-height: 1.5;
-  font-size: 14px;
+  font-size: 13.5px;
 }
 
 .location-panel {
   background: #f7f7fc;
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 14px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .location-title {
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 700;
-  color: #636366;
-  margin-bottom: 8px;
+  color: #8e8e93;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
 }
 
 .location-value {
   font-size: 14px;
   color: #1c1c1e;
+  font-weight: 500;
 }
 
 .location-error {
@@ -215,35 +249,43 @@
   min-width: 140px;
   border: none;
   border-radius: 999px;
-  padding: 12px 16px;
+  padding: 13px 16px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
 }
 
 .location-btn {
-  background: #007aff;
+  background: linear-gradient(135deg, #007aff 0%, #0063d1 100%);
   color: #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 122, 255, 0.4);
 }
 
 .refresh-btn {
-  background: #f2f2f7;
+  background: #ebebf0;
   color: #1c1c1e;
 }
 
 .location-btn:hover,
 .refresh-btn:hover {
-  opacity: 0.95;
+  opacity: 0.92;
+}
+
+.location-btn:active,
+.refresh-btn:active {
+  transform: scale(0.97);
+  opacity: 0.88;
 }
 
 /* --- ANIMACIONES --- */
 @keyframes slideUp {
   from {
-    transform: translateY(100px);
+    transform: translateY(60px) scale(0.97);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 }
@@ -284,9 +326,81 @@
   padding: 14px;
   border: none;
   border-radius: 999px;
-  background: #1c1c1e;
+  background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
   color: #fff;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
+  letter-spacing: -0.2px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.exit-block-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* ── MODO BLOQUEO: sleep-list ── */
+
+/* Fondo ligeramente distinto para distinguir del stack normal */
+.sleep-stack {
+  background: transparent;
+}
+
+.mobile-wrapper:has(.sleep-stack) {
+  background-color: #eeeef3;
+}
+
+/* Fila del header con icono + título + badge */
+.sleep-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.sleep-icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Badge de contador de pendientes */
+.sleep-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #5e5ce6;
+  background: rgba(94, 92, 230, 0.1);
+  border: 1px solid rgba(94, 92, 230, 0.2);
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.1px;
+  flex-shrink: 0;
+}
+
+/* Hints de acción con color */
+.hint-accept {
+  color: #1d8348;
+  background: rgba(30, 215, 96, 0.1);
+}
+
+.hint-accept span {
+  color: #1db954 !important;
+}
+
+.hint-reject {
+  color: #922b21;
+  background: rgba(255, 59, 48, 0.1);
+}
+
+.hint-reject span {
+  color: #ff3b30 !important;
+}
+
+/* Indicadores más compactos para "CONECTAR"/"PASAR" */
+.mobile-swipe-accept,
+.mobile-swipe-reject {
+  font-size: 18px;
+  letter-spacing: 2px;
 }
