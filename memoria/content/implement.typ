@@ -205,9 +205,11 @@ Los videos que demuestran el correcto funcionamiento de la aplicación y los ges
 
 En ella, se presenta un video técnico, en el que se puede apreciar de cerca las funcionalidaes implementadas, cambios de pantalla y otras cuestiones con más detalle, y casos de usao variados para entender mejor el funcionamiento y utilidad de la apliación. 
 
-== Reflexiones finales
-Notesé, como nuestra implementación está enormemente basada en la utilización de gestos sencillos y discretos. Además, se ha tratado de minimizar lo máximo posible el número de gestos, para lo que se ha empleado una mecánica en la que se utiliza el mismo gesto para la entrada y la salida de los modos (tomesé como ejemplo la entrada y la salida del modo bloqueo, que utiliza el mismo gesto). De esta manera, se facilita el aprendizaje del usuario y se reduce la fricción de uso del mismo. 
+== Cuestiones finales 
+=== Simulación de experiencia real - POR COMPLETAR
+Dado que se trata de un prototipo, muchas cuestiones que dan pie a funcionalidades han sido simuladas. Un ejemplo de ello, es la aparición de personas \...
 
-Además, se ha reducido el número de botones que aparecen y se utilizan, tal y como se explicó en clase, jutilizando simplemente un botón para acceder a las instrucciones de uso de la aplicación/soporte. 
+=== Decisiones de diseño
+Notesé, como nuestra implementación está enormemente basada en la utilización de gestos sencillos y discretos. Además, se ha tratado de minimizar lo máximo posible el número de gestos, para lo que se ha empleado una mecánica en la que se utiliza el mismo gesto para la entrada y la salida de los modos (tomesé como ejemplo la entrada y la salida del modo bloqueo, que utiliza el mismo gesto). De esta manera, se facilita el aprendizaje del usuario y se reduce la fricción de uso del mismo. 
 
 En definitiva, aunque como explicaremos a continuación han quedado cosas pendientes de implementar que consideramos que enriquecerian notablemente la aplicación, estamos satisfechos con la implementación y el resultado obtenido. 
