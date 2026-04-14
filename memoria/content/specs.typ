@@ -1,20 +1,11 @@
 = Especificaciones Técnicas
 == Arquitectura del Sistema
-La arquitectura del sistema consiste en un _backend_ que conecta a dos tipos de _frontend_: el correspondiente al reloj y el correspondiente al móvil. Tal como se ve en el la @arquitectura.
+La arquitectura del sistema consiste en un _backend_ que conecta a dos tipos de _frontend_: el correspondiente al reloj y el correspondiente al móvil. Tal como se ve en el la @arquitectura. A nivel conceptual el código del proyecto se distribuye de la misma manera. 
 
 #figure(
   image("../diagramas/arquitectura.png", width: 30%),
   caption: [Diagrama de componentes de la arquitectura.]
 ) <arquitectura>
-
-#h(2.2em)A nivel conceptual el código del proyecto se distribuye como se muestra en la @conceptual. 
-
-#figure(
-  image("../diagramas/arquitectura.png", width: 30%),
-  caption: [Diagrama de componentes del código.]
-) <conceptual>
-
-#h(2.2em)A nadie le gusta trabajar, les da alergia. 
 
 == Tecnologías Utilizadas
 #h(2.2em)Las tecnologías utilizadas en esta práctica son las siguientes:

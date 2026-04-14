@@ -205,11 +205,11 @@ Comparado el estado real del código con los pendientes anteriores. Estado de ca
 
 ### CÓDIGO — Bugs críticos (bloquean funcionalidad demostrable)
 
-- [ ] **[BUG] Pila modo bloqueo vacía** (`server/socketEvents.js`)
+- [X] **[BUG] Pila modo bloqueo vacía** (`server/socketEvents.js`)
   La pila nunca acumula personas durante `sleep`. El trigger llega al servidor pero no llama a `saveEncounter` cuando `socket.mode === "sleep"`. Al abrir la pila con `stack-open` siempre aparece vacío.
   → Hay que guardar el usuario en `saveEncounter` cuando llega `user:nearby:trigger` y el modo es `sleep`.
 
-- [ ] **[BUG] Gesto "bloquear usuario" (inclinar arriba / beta) no implementado** (`www/js/modules/gestures.js`)
+- [X] **[BUG] Gesto "bloquear usuario" (inclinar arriba / beta) no implementado** (`www/js/modules/gestures.js`)
   La guía de gestos lo anuncia pero el listener de `deviceorientation` solo comprueba `gamma` (izquierda/derecha). El `beta` para inclinar hacia arriba nunca se evalúa. El bloqueo solo funciona por el botón de la UI del reloj.
 
 - [ ] **[BUG] Indicadores de la pila invertidos** (`www/js/modules/ui/mobileUI.js:47-49`)
@@ -218,10 +218,10 @@ Comparado el estado real del código con los pendientes anteriores. Estado de ca
 ### CÓDIGO — Pendientes del TODO anterior
 
 - [x] **Ampliar rango agitando** — YA IMPLEMENTADO. El gesto `shake` está en `gestures.js` y el servidor lo gestiona correctamente.
-- [ ] **Botón de ayuda `?` con tabla de gestos** — MUY IMPORTANTE (lo mencionó el profesor). Falta en ambas pantallas (reloj y móvil).
-- [ ] **Acceso/salida modo bloqueo con un toque** — Actualmente se usa movimiento de brazo (funciona). La memoria describe "un toque" como activador. Decidir si se unifica o se deja el gesto de brazo (más elegante) y se actualiza la memoria en consecuencia.
-- [ ] **Entrada a la aplicación con dos toques** — El doble toque actualmente solo hace `exit` (cierra). No hay gesto de "abrir" desde estado cerrado, hay que volver a recargar la página. Valorar si interesa arreglarlo o simplemente documentarlo así en la memoria.
-- [ ] **Reconocimiento facial** — No implementado. La memoria lo menciona en §3.1.2. DECISIÓN: eliminarlo de la memoria y documentar que se sustituye por el gesto de tirón brusco (que sí funciona).
+- [X] **Botón de ayuda `?` con tabla de gestos** — MUY IMPORTANTE (lo mencionó el profesor). Falta en ambas pantallas (reloj y móvil).
+- [X] **Acceso/salida modo bloqueo con un toque** — Actualmente se usa movimiento de brazo (funciona). La memoria describe "un toque" como activador. Decidir si se unifica o se deja el gesto de brazo (más elegante) y se actualiza la memoria en consecuencia.
+- [] **Entrada a la aplicación con dos toques** — El doble toque actualmente solo hace `exit` (cierra). No hay gesto de "abrir" desde estado cerrado, hay que volver a recargar la página. Valorar si interesa arreglarlo o simplemente documentarlo así en la memoria.
+- [] **Reconocimiento facial** — No implementado. La memoria lo menciona en §3.1.2. DECISIÓN: eliminarlo de la memoria y documentar que se sustituye por el gesto d Aceptar →"` pero el gesto real es izquierda = aceptar, derecha = pasar. Hay que invertir el texto (o el mapping del swipe táctil en línea 261-265).e tirón brusco (que sí funciona).
 
 ### CÓDIGO — Mejoras de calidad (suben nota en la rúbrica de interacción)
 
@@ -229,20 +229,3 @@ Comparado el estado real del código con los pendientes anteriores. Estado de ca
 - [ ] **Transiciones CSS entre pantallas** — `uiRouter.navigate()` sustituye el DOM sin animación. Un fade/scale en `baseUI.js` hace la demo mucho más fluida.
 - [ ] **Script `start` en `package.json`** — Añadir `"start": "node server/index.js"` para poder hacer `npm start`.
 - [ ] **Descripción en `package.json`** — Cambiar `"No sé aún no he hecho nada. :)"` por algo real antes de entregar el zip.
-
-### MEMORIA — Secciones con placeholders (penalizan directamente)
-
-- [ ] **§1.1** — Reemplazar el placeholder *"aqui incluis como se inicia y todas las historietas..."* con el flujo de uso real (está en el README.md, se puede adaptar).
-- [ ] **§2.2** — Rellenar tecnologías 3, 4 y 5 (Gestos: DeviceOrientation/Motion API; Reconocimiento facial: eliminarlo o decir que se descartó; Localización: Geolocation API).
-- [ ] **§3.3** — Insertar links de YouTube de los vídeos de demostración (pendiente de grabar).
-- [ ] **§4.1** — Insertar links de los vídeos de sesiones 1 y 2 (pendiente de grabar).
-- [ ] **§5.1** — Reemplazar *"aqui poned problemas durante el desarrollo"* con los problemas técnicos reales (ya documentados en la sección "Pendientes" de este README y en el análisis).
-- [ ] **§5.2** — Insertar el link al vídeo comparativo de gestos originales vs. finales.
-- [ ] **§6 — Reflexión sobre IA** — **VACÍA. Penalización -0.3 garantizada si se entrega así.** Hay que escribirla antes de entregar.
-
-### VÍDEOS A GRABAR (sin cambios respecto al TODO anterior)
-
-- [ ] Vídeo 1: versión inicial (gestos con brazo del reloj mirando el móvil)
-- [ ] Vídeo 2: sesión de prueba de diferentes gestos (puede ser una grabación corta del equipo probando)
-- [ ] Vídeo 3: implementación final en funcionamiento (flujo completo: modo activo → match → modo bloqueo → pila)
-

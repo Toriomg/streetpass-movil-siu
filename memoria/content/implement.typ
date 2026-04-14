@@ -7,6 +7,8 @@ Uno de lo factores claves que se ha tenido en cuenta a la hora de diseñar y pla
 
 Para conseguir dicho objetivo, se ha tenido que modificar ligeramente lo presentado en la entrega anterior en cuanto al uso de los dispositivos se refiere. De modo que la navegación y los movimientos puedan ser lo más discretos y cómodos posibles, hemos cambiado nuestra pantalla a que se presente en el _smartwatch_ y el sensor en el móvil del usuario. De este modo, los movimientos a realizar por el usuario pueden esconderse dentro de un bolsillo, bajo una chaqueta o hacerse de manera disimulada muy pegados al cuerpo. Y mientras estos movimientos se producen, la impresión es tan cómoda y cotidiana como la de mirar la hora en un reloj. 
 
+Además, muchas de las cuestiones de distancia, o usuarios cercanos se han trampeado, de modo que 
+
 == Diseño de interfaz
 Pese a que no se pide de manera explicita en las especificaciones de la práctica, se ha considerado relevante mencionar brevemente cuales han sido las decisiones a la hora de diseñar las interfaces. 
 
@@ -21,10 +23,10 @@ En general, se ha intenado mantener la interfaz lo más sencilla posible, manten
 
 grid(
   columns: 4,
-  image("../../docs/interfaces/reloj_mensajes.png", width: 100%),
-  image("../../docs/interfaces/reloj_principal.png", width: 100%),
-  image("../../docs/interfaces/reloj_gustas.png", width: 100%),
-  image("../../docs/interfaces/reloj_conexion.png", width: 100%),
+  image("../../docs/interfaces/reloj_mensajes.png", width: 75%),
+  image("../../docs/interfaces/reloj_principal.png", width: 75%),
+  image("../../docs/interfaces/reloj_gustas.png", width: 75%),
+  image("../../docs/interfaces/reloj_conexion.png", width: 75%),
 ),
 caption: "Prototipos de la interfaz del reloj."
 )
@@ -38,8 +40,8 @@ Por otro lado, se han diseñadon interfaces para el móvil. Esto se debe a que n
 #figure(
   grid(
     columns: 2,
-    align(center, image("../../docs/interfaces/movil_inicio.png", width: 45%)),
-    align(center, image("../../docs/interfaces/movil_navegacion.png", width: 45%)),
+    align(center, image("../../docs/interfaces/movil_inicio.png", width: 42%)),
+    align(center, image("../../docs/interfaces/movil_navegacion.png", width: 42%)),
   ),
   caption: "Prototipos de la interfaz del móvil."
 )
@@ -76,11 +78,11 @@ Con tal de reducir el número de gestos, cuestión que se ha propuesto de manera
 - De la misma manera, el gesto definido para *rechazar solicitudes* es el de navegación *hacia la derecha*, esencialmente, porque te devuelve a la navegación general de la aplicación, volviendo a mostrarte a las personas y a las pantallas y secciones principales de la aplicación. 
 
 === Acceso, salida y confirmación. 
-Para abrir la aplicación, se darán *dos toques* al teléfono, que actua como sensor en nuestro modelo.
+La aplicación se abre de manera automática, de modo que la pantalla espera a personas cercanas para mostrarlas en el reloj. 
 
-De la misma manera, para salir completamente de la aplicación debido a que el usuario no busca estar conectado, ni aparecer a otros usuarios se ha planeado que el gesto empleado sea *dar dos golpes al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. 
+Por otro lado, para salir completamente de la aplicación debido a que el usuario no busca estar conectado, ni aparecer a otros usuarios se ha planeado que el gesto empleado sea *dar tres toques al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. Para reconocer los toques, estos deben darse en la pantalla del teléfono con un dedo.
 
-Es un gesto completamente diferenciado de los anteriores y esto hace que se eviten posibles errores y salidas o entradas no intencionadas por parte de los usuarios. Una cosa muy útil en una aplicación como es la nuestra. Además, es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. 
+Es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. Además, es lo suficientemente largo (tres toques) como para que sea muy dificil que le usuario lo haga de manera no intencionada, lo que evita problemas de salidas y perdidas de información de manera erronea.
 
 
 El flujo de uso de las funcionalidades principales es el que se muestra en la @total:
@@ -94,19 +96,19 @@ El flujo de uso de las funcionalidades principales es el que se muestra en la @t
         "Info": "Ver mi Info"
       ),
       "Info": (
-        "Reloj": "Doble golpe\n(Cerrar)\n "
+        "Reloj": "Triple golpe\n(Cerrar)\n "
       ),
       "Perfil": (
         "Perfil": "Gesto Der.\n(Pasar)\n ", 
         "Match": "Gesto Izq.\n(Conectar)\n ",
-        "Reloj": "\nDoble golpe\n(Cerrar)"
+        "Reloj": "\nTriple golpe\n(Cerrar)"
       ),
       "Match": (
         "Conex": "\nGesto Izq.\n(Conectar)",
         "Perfil": "\nGesto Der.\n(Cancelar)"
       ),
       "Conex": (
-        "Reloj": "\nDoble golpe\n(Finalizar)",
+        "Reloj": "\nTriple golpe\n(Finalizar)",
         "Perfil": "\nGesto Der.\n(Volver)"
       ),
     ),
@@ -127,7 +129,7 @@ Además de lo indicado en el apartado anterior, se han desarrollado tres funcion
 ==== Bloqueo de usuarios 
 Como en cualquier aplicación social en la que hay usuarios, debe existir una posibilidad de poder bloquear a usuarios. A los que no se les quiere ver y no se les desea encontrarse en la aplicación. 
 
-Para ello, se ha añadido un gesto de bloqueo como funcionalidad adicional a las principales de la aplicación. Cuando, mientras se navega por las personas cercanas, aparece una persona a la que se le quiere bloquear, en vez de hacer el movimiento a derecha o a izquierda, i.e. navegación o selección, el movimiento que se realiza es hacia *arriba*. 
+Para ello, se ha añadido un gesto de bloqueo como funcionalidad adicional a las principales de la aplicación. Cuando, mientras se navega por las personas cercanas, aparece una persona a la que se le quiere bloquear, en vez de hacer el movimiento a derecha o a izquierda, i.e. navegación o selección, el movimiento que se realiza es *agitar* el teléfono. Hemos elegido este gesto porque entendemos que el bloqueo de personas no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad concreta. 
 
 ==== Modo bloqueo 
 Se entiende que los usuarios no siempre querrán estar el reloj. Sin embargo, eso no hace que no quiera seguir almacenando a gente con la que uno se ha encontrado, o que haya estado en ambientes similares. Por ello, como nuestra principal funcionalidad adicional hemos desarrollado el "Modo Bloqueo". 
@@ -137,15 +139,11 @@ El "Modo Bloqueo" permite que mientras el usuario no tenga el reloj activado, se
 Esta funcionalidad se decidió con la ayuda del Prof. Roberto Cuervo. Siendo así, un escenario de uso claro que se ha planteado: el de un usuario que vuelve a casa y al subir al ascensor coge su teléfono movil y, de esta manera, se puede ver a personas similares del sitio del que uno viene. Además, en nuestro caso, es algo muy cotidiano y natural volver de un sitio social o un plan y utilizar el móvil al llegar a casa o en el trayecto a esta. 
 
 ===== Gestos del modo bloqueo 
-Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa una vez el usuario le da *un toque* al teléfono. Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a *dar un toque al teléfono*. 
+Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa una vez el usuario le da *dps toques* al teléfono. Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a *dar dos toques al teléfono*. 
 
-La selección de este gesto es, por un lado una solución a un problema recurrente que se encontró en una de las sesiones experenciales (como se explica en secciones posteriores). Por otro lado, resulta facil de entender por el usuario ya que, es un punto intemedio entre el funcionamiento normal de la aplicación en el modo activo y el cierre, que se hace con dos toques. Por ello, el gesto resulta facil y discreto, como todos los anteriores, y a su vez, tiene un sentido lógico e integrado en el flujo de gestos y cambios de modo diseñados. 
+La selección de este gesto es, por un lado una solución a un problema recurrente que se encontró en una de las sesiones experenciales (como se explica en secciones posteriores). Por otro lado, resulta facil de entender por el usuario ya que, es un punto intemedio entre el funcionamiento normal de la aplicación en el modo activo y el cierre, que se hace con tres toques. Por ello, el gesto resulta facil y discreto, como todos los anteriores, y a su vez, tiene un sentido lógico e integrado en el flujo de gestos y cambios de modo diseñados. 
 
-Asimismo, las personas que se han almacenado se mostrarán usando reconocimiento facial si se identifica que el usuario ha levantado el telefono. 
-
-En cuanto a mostrar las personas, los movimientos que se realizan son practicamente idénticos a los que se realizan con el reloj. Para cerrar la aplicación completamente y dejar de mostrar a las personas se darán *dos toques*, tal y como se produce el cierre en todos los modos, para pasar personas y conectar con ellos se realizan exactamente los mismos gestos que hemos definido en el modo normal. 
-
-Se utilizan los mismos gestos, debido a que estos facilitan enormemente el tiempo de aprendizaje de uso de la aplicación y ahorrando al usuario el esfuerzo de memorizarlos, al ser este número de acciones limitado en el usuario.  
+Asimismo, las personas que se han almacenado se mostrarán usando si se identifica que el usuario ha levantado el telefono. Al mostrar las personas, los estos son similares pero en este caso se harán en la pantalla como si fuera un aplicación normal, deslizando sobre las imagenes a la derecha o la izquierda como corresponda. *esto hay que mejorarlo un poco* 
 
 En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo. 
 
@@ -153,12 +151,12 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
   automaton(
     final: ("Cierre",),
     (
-      "Cierre": ("Navegación": "Dos toques"),
+      "Cierre": ("Navegación": "Espera"),
       "Navegación": (
         "Navegación": "Gesto Der.",
         "Match": "Gesto Izq.", 
-        "Bloqueo": "Un toque",
-        "Cierre": "Dos toques"
+        "Bloqueo": "Dos toque",
+        "Cierre": "Tres toques"
       ),
       "Bloqueo": (
         "Cierre": "Dos toques",
@@ -169,7 +167,7 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
         "Conexión":"Gesto Izq."
         ),
       "Conexión": (
-        "Cierre": "Dos toques", 
+        "Cierre": "Tres toques", 
         "Navegación":"Gesto Der."
 
         ),
@@ -188,29 +186,30 @@ En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo.
 ==== Recomendación de actividades
 Asimismo, se utilizarán los gustos introducidos por los usuarios de modo que se pueda, además de enseñar a personas cercanas con gustos similares, mostrar lugares que puedan ser de interés para hacer planes. Sean estos: museos, restaurantes, o cualquier sitio cercano que pueda interesar al usuario en base a sus gustos. 
 
-Los sitios cercanos aparecerán del mismo modo que las personas y con ellos no puede hacerse nada más que la navegación normal. 
+Los sitos y recomendaciones cercanas se han simulado y no tienen en cuenta los gustos de los usuarios (pues no disponemos de un sistema de recomendaciones). Estos, se presentan al salir del modo bloqueo y haber visto todos los usuarios almacenados durante dicho modo con el teléfono movil. 
 
 ==== Ampliar rango de búsqueda de personas 
-En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos usuarios. Para ello, hemos añadido una funcionalidad adicional en la que se permite al usuario ampliar el rango de búsqueda de personas cercanas, para salirle a personas que están más lejos y que a el le salgan personas también más lejanas. 
+En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos usuarios. Para ello, hemos añadido una funcionalidad adicional en la que se permite al usuario ampliar el rango de búsqueda de personas cercanas, para salirle a personas que están más lejos y que a él le salgan personas también más lejanas. 
 
-En nuestro caso se ha establecido que el rango radial de búsqueda del usuario sea de 2 metros, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
+En nuestro caso se ha establecido que el rango radial de búsqueda del usuario sea de *2 metros*, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
 #figure(
-  align(center, image("../img/modo_ampliar.png", width: 90%)),
+  align(center, image("../img/modo_ampliar.png", width: 65%)),
   caption: "Representación esquemática de la ampliación de rango"
 )
 
-Para dicho cambio, el gesto seleccionado es el de *agitar*. Hemos elegido este gesto porque entendemos que la apmpliación de rango no será un movimiento muy realizado al utilizar la aplicación. Agitar el teléfono es un movimiento más grande, incomodo y cansado, por lo que era bastante adecuado para esta funcionalidad completa. Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
+Para dicho cambio, el gesto seleccionado es *dar un toque*. Los toques, se definen de la misma menera que los hemos definido en puntos anteriores. Este gesto es similar a todos los de cambio de modo (modo bloqueo o cierre de la aplicación) y consideramos que es una buena práctica estructurar los gestos en dos grupos con gestos similares entre si, los de navegación y gestión de usuarios (match, bloqueo etc) y los de cambio de modo (ampliación de rango, modo bloqueo y cierre). Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
 == Videos que Muestran el Prototipo en Funcionamiento
-Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente lista de youtube:
+Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente carpeta de Google Drive: #link("https://drive.google.com/drive/folders/1wuKr6mu8ZOwzwYkYambhlD6vbhnzihUy?usp=sharing")
 
-// nuestra solución final 
-#sym.arrow.r *aquí iría el link*
+En ella, se presenta un video técnico, en el que se puede apreciar de cerca las funcionalidaes implementadas, cambios de pantalla y otras cuestiones con más detalle, y casos de usao variados para entender mejor el funcionamiento y utilidad de la apliación. 
 
-== Reflexiones finales
+== Cuestiones finales 
+=== Simulación de experiencia real - POR COMPLETAR
+Dado que se trata de un prototipo, muchas cuestiones que dan pie a funcionalidades han sido simuladas. Un ejemplo de ello, es la aparición de personas \...
+
+=== Decisiones de diseño
 Notesé, como nuestra implementación está enormemente basada en la utilización de gestos sencillos y discretos. Además, se ha tratado de minimizar lo máximo posible el número de gestos, para lo que se ha empleado una mecánica en la que se utiliza el mismo gesto para la entrada y la salida de los modos (tomesé como ejemplo la entrada y la salida del modo bloqueo, que utiliza el mismo gesto). De esta manera, se facilita el aprendizaje del usuario y se reduce la fricción de uso del mismo. 
-
-Además, se ha reducido el número de botones que aparecen y se utilizan, tal y como se explicó en clase, jutilizando simplemente un botón para acceder a las instrucciones de uso de la aplicación/soporte. 
 
 En definitiva, aunque como explicaremos a continuación han quedado cosas pendientes de implementar que consideramos que enriquecerian notablemente la aplicación, estamos satisfechos con la implementación y el resultado obtenido. 
