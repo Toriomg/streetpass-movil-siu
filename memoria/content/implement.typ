@@ -23,10 +23,10 @@ En general, se ha intenado mantener la interfaz lo más sencilla posible, manten
 
 grid(
   columns: 4,
-  image("../../docs/interfaces/reloj_mensajes.png", width: 100%),
-  image("../../docs/interfaces/reloj_principal.png", width: 100%),
-  image("../../docs/interfaces/reloj_gustas.png", width: 100%),
-  image("../../docs/interfaces/reloj_conexion.png", width: 100%),
+  image("../../docs/interfaces/reloj_mensajes.png", width: 75%),
+  image("../../docs/interfaces/reloj_principal.png", width: 75%),
+  image("../../docs/interfaces/reloj_gustas.png", width: 75%),
+  image("../../docs/interfaces/reloj_conexion.png", width: 75%),
 ),
 caption: "Prototipos de la interfaz del reloj."
 )
@@ -40,8 +40,8 @@ Por otro lado, se han diseñadon interfaces para el móvil. Esto se debe a que n
 #figure(
   grid(
     columns: 2,
-    align(center, image("../../docs/interfaces/movil_inicio.png", width: 45%)),
-    align(center, image("../../docs/interfaces/movil_navegacion.png", width: 45%)),
+    align(center, image("../../docs/interfaces/movil_inicio.png", width: 42%)),
+    align(center, image("../../docs/interfaces/movil_navegacion.png", width: 42%)),
   ),
   caption: "Prototipos de la interfaz del móvil."
 )
@@ -82,7 +82,7 @@ La aplicación se abre de manera automática, de modo que la pantalla espera a p
 
 Por otro lado, para salir completamente de la aplicación debido a que el usuario no busca estar conectado, ni aparecer a otros usuarios se ha planeado que el gesto empleado sea *dar tres toques al teléfono*. De esta manera, aseguramos que la aplicación solo se cierra en caso de que el usuario quiera hacero y se evitan colisiones con el _modo bloqueo_ que se presentará a continuación. Para reconocer los toques, estos deben darse en la pantalla del teléfono con un dedo.
 
-Es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. Además, es lo suficientemente largo (tres toques) como para que sea muy dificil que le usuario lo haga de manera no intencionada, lo que evita problemas de salidas y perdidas de nformación de manera erronea.
+Es un gesto sencillo, comodo y que requiere de un esfuerzo muy bajo por parte del usuario. Además, es lo suficientemente largo (tres toques) como para que sea muy dificil que le usuario lo haga de manera no intencionada, lo que evita problemas de salidas y perdidas de información de manera erronea.
 
 
 El flujo de uso de las funcionalidades principales es el que se muestra en la @total:
@@ -194,7 +194,7 @@ En muchas ocasiones, el usuario puede estar en un lugar muy concreto o con pocos
 En nuestro caso se ha establecido que el rango radial de búsqueda del usuario sea de *2 metros*, al ampliar el rango, se amplia al doble, 4 metros. En la siguiente imagen se puede ver el cambio de búsqueda de personas. 
 
 #figure(
-  align(center, image("../img/modo_ampliar.png", width: 90%)),
+  align(center, image("../img/modo_ampliar.png", width: 65%)),
   caption: "Representación esquemática de la ampliación de rango"
 )
 
