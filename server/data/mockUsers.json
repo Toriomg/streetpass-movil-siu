@@ -2,7 +2,7 @@
   {
     "id": 101,
     "name": "Noa",
-    "photo": "../assets/noa.png",
+    "photo": "/assets/noa.png",
     "phone": "611222333",
     "interests": [
       "Música",
@@ -14,7 +14,7 @@
   {
     "id": 102,
     "name": "Alejandra",
-    "photo": "../assets/alejandra.png",
+    "photo": "/assets/alejandra.png",
     "phone": "633444555",
     "interests": [
       "Gimnasio",
@@ -26,7 +26,7 @@
   {
     "id": 103,
     "name": "Sara",
-    "photo": "../assets/sara.png",
+    "photo": "/assets/sara.png",
     "phone": "655666777",
     "interests": [
       "Videojuegos",
@@ -38,15 +38,19 @@
   {
     "id": 104,
     "name": "Martina",
-    "photo": "../assets/martina.png",
+    "photo": "/assets/martina.png",
     "phone": "677888999",
-    "interests": ["Gimnasio", "Cocina", "Dieta"],
+    "interests": [
+      "Gimnasio",
+      "Cocina",
+      "Dieta"
+    ],
     "distancia": 67
   },
   {
     "id": 105,
     "name": "Valeria",
-    "photo": "../assets/valeria.png",
+    "photo": "/assets/valeria.png",
     "phone": "622333444",
     "interests": [
       "Electrónica",
@@ -58,7 +62,7 @@
   {
     "id": 106,
     "name": "Carla",
-    "photo": "../assets/carla.png",
+    "photo": "/assets/carla.png",
     "phone": "644555666",
     "interests": [
       "Películas",
@@ -70,7 +74,7 @@
   {
     "id": 107,
     "name": "Julia",
-    "photo": "../assets/julia.png",
+    "photo": "/assets/julia.png",
     "phone": "688999000",
     "interests": [
       "Lectura",
@@ -82,7 +86,7 @@
   {
     "id": 108,
     "name": "Elena",
-    "photo": "../assets/elena.png",
+    "photo": "/assets/elena.png",
     "phone": "600111222",
     "interests": [
       "Senderismo",
@@ -94,7 +98,7 @@
   {
     "id": 109,
     "name": "Olivia",
-    "photo": "../assets/olivia.png",
+    "photo": "/assets/olivia.png",
     "phone": "699000111",
     "interests": [
       "Espacio",
@@ -106,7 +110,7 @@
   {
     "id": 110,
     "name": "Alba",
-    "photo": "../assets/alba.png",
+    "photo": "/assets/alba.png",
     "phone": "611777888",
     "interests": [
       "Senderismo",
@@ -118,7 +122,7 @@
   {
     "id": 111,
     "name": "Carmen",
-    "photo": "../assets/carmen.png",
+    "photo": "/assets/carmen.png",
     "phone": "633999222",
     "interests": [
       "Dieta",
@@ -130,7 +134,7 @@
   {
     "id": 112,
     "name": "Paula",
-    "photo": "../assets/paula.png",
+    "photo": "/assets/paula.png",
     "phone": "655222888",
     "interests": [
       "Gimnasio",
@@ -142,65 +146,97 @@
   {
     "id": 113,
     "name": "Daniela",
-    "photo": "../assets/daniela.png",
+    "photo": "/assets/daniela.png",
     "phone": "677444111",
-    "interests": ["Derecho", "Espacio", "Películas"],
+    "interests": [
+      "Derecho",
+      "Espacio",
+      "Películas"
+    ],
     "distancia": 90
-  }, 
+  },
   {
     "id": 114,
     "name": "Daniel",
-    "photo": "../assets/daniel.png",
+    "photo": "/assets/daniel.png",
     "phone": "677444111",
-    "interests": ["Derecho", "Mario Bros", "Videojuegos"],
+    "interests": [
+      "Derecho",
+      "Mario Bros",
+      "Videojuegos"
+    ],
     "distancia": 10
-  }, 
+  },
   {
     "id": 115,
     "name": "Alejandro",
-    "photo": "../assets/alejandro.png",
+    "photo": "/assets/alejandro.png",
     "phone": "677444111",
-    "interests": ["Gimnasio", "Futbol", "Tenis"],
+    "interests": [
+      "Gimnasio",
+      "Futbol",
+      "Tenis"
+    ],
     "distancia": 9
-  }, 
+  },
   {
     "id": 116,
     "name": "Guillermo",
-    "photo": "../assets/guillermo.png",
+    "photo": "/assets/guillermo.png",
     "phone": "677444111",
-    "interests": ["Cine", "Informatica", "Moda"],
+    "interests": [
+      "Cine",
+      "Informatica",
+      "Moda"
+    ],
     "distancia": 11
-  }, 
+  },
   {
     "id": 117,
     "name": "Hector",
-    "photo": "../assets/hector.png",
+    "photo": "/assets/hector.png",
     "phone": "677444111",
-    "interests": ["Videojuegos", "Lectura", "Musica"],
+    "interests": [
+      "Videojuegos",
+      "Lectura",
+      "Musica"
+    ],
     "distancia": 123
-  }, 
+  },
   {
     "id": 118,
     "name": "Mario",
-    "photo": "../assets/mario.png",
+    "photo": "/assets/mario.png",
     "phone": "677444111",
-    "interests": ["Cine", "Dieta", "Senderismo"],
+    "interests": [
+      "Cine",
+      "Dieta",
+      "Senderismo"
+    ],
     "distancia": 150
-  }, 
+  },
   {
     "id": 119,
     "name": "Jesus",
-    "photo":"../assets/jesus.png",
+    "photo": "/assets/jesus.png",
     "phone": "677444111",
-    "interests": ["Ecologismo", "Espacio", "Animales"],
+    "interests": [
+      "Ecologismo",
+      "Espacio",
+      "Animales"
+    ],
     "distancia": 93
-  }, 
+  },
   {
     "id": 120,
     "name": "Diego",
-    "photo": "../assets/diego.png",
+    "photo": "/assets/diego.png",
     "phone": "677444111",
-    "interests": ["Derecho", "Electrónica", "Informatica"],
+    "interests": [
+      "Derecho",
+      "Electrónica",
+      "Informatica"
+    ],
     "distancia": 2
   }
 ]

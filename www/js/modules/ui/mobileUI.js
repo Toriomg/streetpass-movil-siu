@@ -256,6 +256,7 @@ export class MobileUI extends BaseUI {
   // Si la pila estaba vacía (mostrando recomendaciones), re-renderiza para mostrar la tarjeta.
   pushUser(user) {
     this.pendingStack.push(user);
+    console.log(`[MobileUI] pushUser: ${user.name} photo=${user.photo} stack=${this.pendingStack.length} view=${this.currentViewType}`);
     if (this.pendingStack.length === 1 &&
         (this.currentViewType === "sleep-list" || this.currentViewType === "stack")) {
       this.render(null, this.currentViewType);
@@ -451,9 +452,6 @@ export class MobileUI extends BaseUI {
         break;
       case "sensor":
         content = renderStatus();
-        break;
-      case "block-mode":
-        content = renderBlockMode();
         break;
       default:
         content = renderStart();

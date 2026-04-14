@@ -62,7 +62,7 @@ export function initGestures() {
       tapTimer = setTimeout(() => {
         const count = tapCount;
         tapCount = 0;
-        if (count === 1)      sendGesture("AMPLIAR RANGO 📡", "shake");
+        if (count === 1 && currentMode !== "sleep") sendGesture("AMPLIAR RANGO 📡", "shake");
         else if (count === 2) {
           if (currentMode === "sleep") sendGesture("VER PERSONAS 📋", "stack-open");
           else sendGesture("MODO BLOQUEO 🌙", "sleep");

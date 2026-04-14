@@ -49,7 +49,7 @@
 
 .image-container {
   width: 100%;
-  height: 60%; /* La imagen ocupa la mayor parte */
+  flex: 0 0 60%; /* La imagen ocupa la mayor parte — flex es más fiable que height:% */
   overflow: hidden;
   position: relative;
 }

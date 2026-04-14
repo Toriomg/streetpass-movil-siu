@@ -144,6 +144,7 @@ module.exports = function (io) {
           break;
 
         case "shake": {
+          if (state.mode === "sleep" || state.mode === "stack") break;
           const MAX_DISTANCE = 100;
           if (state.maxDistance < MAX_DISTANCE) {
             state.maxDistance = Math.min(state.maxDistance + 20, MAX_DISTANCE);
