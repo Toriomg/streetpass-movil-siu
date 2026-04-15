@@ -203,7 +203,7 @@ Para dicho cambio, el gesto seleccionado es *dar un toque*. Los toques, se defin
 == Videos que Muestran el Prototipo en Funcionamiento
 Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente carpeta de Google Drive: #link("https://drive.google.com/drive/folders/1wuKr6mu8ZOwzwYkYambhlD6vbhnzihUy?usp=sharing")
 
-En ella, se presenta un video técnico, en el que se puede apreciar de cerca las funcionalidaes implementadas, cambios de pantalla y otras cuestiones con más detalle, y casos de usao variados para entender mejor el funcionamiento y utilidad de la apliación. 
+En ella, se presenta un video técnico, en el que se puede apreciar de cerca las funcionalidaes implementadas, cambios de pantalla y otras cuestiones con más detalle, y dos casos de uso diferentes para entender mejor el funcionamiento y utilidad de la apliación. 
 
 == Cuestiones finales 
 === Simulación de experiencia real - POR COMPLETAR
