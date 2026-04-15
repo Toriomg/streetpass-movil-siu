@@ -12,6 +12,4 @@ La arquitectura del sistema consiste en un _backend_ que conecta a dos tipos de 
 
 1. *Servidor*: Para el servidor se ha utilizado *Express* y *NodeJS*.
 2. *Conectividad*: Para conectar el _frontend_ con el _backend_ se ha utilizado *SocketIO*
-3. *Gestos*: Para el reconocimiento de gestos se ha utilizado
-4. *Reconocimiento facial*: Para el reconocimiento facial al entrar en la versión web se ha utilizado la tecnología
-5. *Localización*: 
+3. *Gestos*: Para el reconocimiento de gestos se han utilizado los detectores de movimiento nativos del navegador de móvil.

@@ -7,7 +7,7 @@ Uno de lo factores claves que se ha tenido en cuenta a la hora de diseñar y pla
 
 Para conseguir dicho objetivo, se ha tenido que modificar ligeramente lo presentado en la entrega anterior en cuanto al uso de los dispositivos se refiere. De modo que la navegación y los movimientos puedan ser lo más discretos y cómodos posibles, hemos cambiado nuestra pantalla a que se presente en el _smartwatch_ y el sensor en el móvil del usuario. De este modo, los movimientos a realizar por el usuario pueden esconderse dentro de un bolsillo, bajo una chaqueta o hacerse de manera disimulada muy pegados al cuerpo. Y mientras estos movimientos se producen, la impresión es tan cómoda y cotidiana como la de mirar la hora en un reloj. 
 
-Además, muchas de las cuestiones de distancia, o usuarios cercanos se han trampeado, de modo que 
+Además, muchas de las cuestiones de distancia, o usuarios cercanos se han trampeado, de modo que estos son estructuras de datos estáticas almacenadas en un `.json`.
 
 == Diseño de interfaz
 Pese a que no se pide de manera explicita en las especificaciones de la práctica, se ha considerado relevante mencionar brevemente cuales han sido las decisiones a la hora de diseñar las interfaces. 
@@ -139,11 +139,11 @@ El "Modo Bloqueo" permite que mientras el usuario no tenga el reloj activado, se
 Esta funcionalidad se decidió con la ayuda del Prof. Roberto Cuervo. Siendo así, un escenario de uso claro que se ha planteado: el de un usuario que vuelve a casa y al subir al ascensor coge su teléfono movil y, de esta manera, se puede ver a personas similares del sitio del que uno viene. Además, en nuestro caso, es algo muy cotidiano y natural volver de un sitio social o un plan y utilizar el móvil al llegar a casa o en el trayecto a esta. 
 
 ===== Gestos del modo bloqueo 
-Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa una vez el usuario le da *dps toques* al teléfono. Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a *dar dos toques al teléfono*. 
+Los gestos se mantienen muy similares. En cuanto a la activación del modo bloqueo, este se activa una vez el usuario le da *dos toques* al teléfono. Una vez activado el modo bloqueo, este se desactivará si y solo si el usuario vuelve a *dar dos toques al teléfono*. 
 
-La selección de este gesto es, por un lado una solución a un problema recurrente que se encontró en una de las sesiones experenciales (como se explica en secciones posteriores). Por otro lado, resulta facil de entender por el usuario ya que, es un punto intemedio entre el funcionamiento normal de la aplicación en el modo activo y el cierre, que se hace con tres toques. Por ello, el gesto resulta facil y discreto, como todos los anteriores, y a su vez, tiene un sentido lógico e integrado en el flujo de gestos y cambios de modo diseñados. 
+La selección de este gesto es, por un lado una solución a un problema recurrente que se encontró en una de las sesiones experenciales, tal como se explica en secciones posteriores. Por otro lado, resulta facil de entender por el usuario ya que, es un punto intemedio entre el funcionamiento normal de la aplicación en el modo activo y el cierre, que se hace con tres toques. Por ello, el gesto resulta facil y discreto, como todos los anteriores, y a su vez, tiene un sentido lógico e integrado en el flujo de gestos y cambios de modo diseñados. 
 
-Asimismo, las personas que se han almacenado se mostrarán usando si se identifica que el usuario ha levantado el telefono. Al mostrar las personas, los estos son similares pero en este caso se harán en la pantalla como si fuera un aplicación normal, deslizando sobre las imagenes a la derecha o la izquierda como corresponda. *esto hay que mejorarlo un poco* 
+Asimismo, las personas que se han almacenado se mostrarán usando si se identifica que el usuario ha levantado el telefono. Al mostrar las personas, los estos son similares pero en este caso se harán en la pantalla como si fuera un aplicación normal, deslizando sobre las imagenes a la derecha o la izquierda como corresponda.
 
 En la @bloquo se puede ver el funcionamiento exacto del modo bloqueo. 
 
@@ -201,13 +201,15 @@ En nuestro caso se ha establecido que el rango radial de búsqueda del usuario s
 Para dicho cambio, el gesto seleccionado es *dar un toque*. Los toques, se definen de la misma menera que los hemos definido en puntos anteriores. Este gesto es similar a todos los de cambio de modo (modo bloqueo o cierre de la aplicación) y consideramos que es una buena práctica estructurar los gestos en dos grupos con gestos similares entre si, los de navegación y gestión de usuarios (match, bloqueo etc) y los de cambio de modo (ampliación de rango, modo bloqueo y cierre). Al salir de la aplicación, el rango se reestablece, y la manera de volver a reducir el rango por parte del usuario es volver a agitar el teléfono. 
 
 == Videos que Muestran el Prototipo en Funcionamiento
-Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente carpeta de Google Drive: #link("https://drive.google.com/drive/folders/1wuKr6mu8ZOwzwYkYambhlD6vbhnzihUy?usp=sharing")
+Los videos que demuestran el correcto funcionamiento de la aplicación y los gestos implementados se pueden encontrar en la siguiente carpeta de Google Drive: 
+
+#link("https://drive.google.com/drive/folders/1wuKr6mu8ZOwzwYkYambhlD6vbhnzihUy?usp=sharing") // Funciona -hector
 
 En ella, se presenta un video técnico, en el que se puede apreciar de cerca las funcionalidaes implementadas, cambios de pantalla y otras cuestiones con más detalle, y dos casos de uso diferentes para entender mejor el funcionamiento y utilidad de la apliación. 
 
 == Cuestiones finales 
-=== Simulación de experiencia real - POR COMPLETAR
-Dado que se trata de un prototipo, muchas cuestiones que dan pie a funcionalidades han sido simuladas. Un ejemplo de ello, es la aparición de personas \...
+=== Simulación de experiencia real
+Dado que se trata de un prototipo, muchas cuestiones que dan pie a funcionalidades han sido simuladas. Un ejemplo de ello, es la aparición de personas por el sistema. De esta forma, los usuarios que se muestran son también simulados, junto a sus intereses y fotos de perfil.
 
 === Decisiones de diseño
 Notesé, como nuestra implementación está enormemente basada en la utilización de gestos sencillos y discretos. Además, se ha tratado de minimizar lo máximo posible el número de gestos, para lo que se ha empleado una mecánica en la que se utiliza el mismo gesto para la entrada y la salida de los modos (tomesé como ejemplo la entrada y la salida del modo bloqueo, que utiliza el mismo gesto). De esta manera, se facilita el aprendizaje del usuario y se reduce la fricción de uso del mismo. 

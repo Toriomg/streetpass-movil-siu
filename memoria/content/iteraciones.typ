@@ -12,7 +12,9 @@ Como ya hemos mencionado en secciones anteriores de la memoria, hemos realizado 
 La mas notable, es el cambio de mostrar la información en el teléfono y realizar gestos con el _smartwatch_ a justo lo contario. Para realizar este cambio con respecto a las ideas originales, comprobamos la comodidad y el uso, 
 generando casos en los que nosotros simulábamos los movimmientos y las interacciones. De este modo, pudimos probar la comodidad de los mismos y nos percatamos que, no nos resultaba cómodo, y efectivamente, nos daba pudor realizar gestos tan notorios en público. 
 
-Por ello, cambiamos nuestro planteamiento de modo que pudieramos realizar algo con el que el usuario se sintiera más comodo. En el siguiente video se puede ver como eran las interacciones originales de modo que se pueda apreciar la diferencia: #link("https://drive.google.com/file/d/1bYCv-_po_o4Zoo8MxDOvo8q9ehx_4nQs/view?usp=drive_link")
+Por ello, cambiamos nuestro planteamiento de modo que pudieramos realizar algo con el que el usuario se sintiera más comodo. En el siguiente video se puede ver como eran las interacciones originales de modo que se pueda apreciar la diferencia:
+
+ #link("https://drive.google.com/file/d/1bYCv-_po_o4Zoo8MxDOvo8q9ehx_4nQs/view?usp=drive_link")
 
 Por otro lado, una vez se establecieron correctamente los dispositivos, elegimos los gestos y se probaron, intercambiando para diferentes funcionalidades, seleccionando los que parecían más naturales para el uso. 
 
