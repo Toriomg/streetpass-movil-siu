@@ -137,6 +137,11 @@ const dataManager = {
   resetEncounters: () => {
     writeJSON(paths.encounters, {});
   },
+
+  // Resetear lista de bloqueados
+  resetBlocked: () => {
+    writeJSON(paths.blocked, {});
+  },
 };
 
 module.exports = dataManager;

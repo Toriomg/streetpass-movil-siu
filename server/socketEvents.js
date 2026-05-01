@@ -23,9 +23,11 @@ module.exports = function (io) {
     if (!userID) return socket.disconnect();
 
     const state = getState(userID);
+    state.mode = "active";         // Siempre empezar en activo al (re)conectar
     state.shownIds = new Set();    // Permite que vuelvan a salir las mismas personas
     state.pendingIds = new Set();  // Limpia registros temporales
     state.currentEncounter = null; // Desbloquea el trigger
+    state.sleepQueue = [];         // Vaciar la cola de bloqueo
     state.maxDistance = 20;        // El rango siempre empieza desde 20m en cada sesión
 
     socket.join(userID);
@@ -223,6 +225,10 @@ module.exports = function (io) {
     socket.on("profile:update", (profileData) => {
       dataManager.saveProfile(userID, profileData);
       console.log(`Perfil actualizado para usuario ${userID}`);
+    });
+
+    socket.on("disconnect", () => {
+      delete userState[userID];
     });
   });
 };

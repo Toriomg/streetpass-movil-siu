@@ -1,34 +1,22 @@
 {
   "1": [
     {
-      "id": 101,
-      "name": "Noa",
-      "phone": "611222333",
+      "id": 107,
+      "name": "Julia",
+      "photo": "/assets/julia.png",
+      "phone": "688999000",
       "interests": [
-        "Música",
+        "Lectura",
         "Películas",
-        "Derecho"
+        "Religión"
       ],
-      "distancia": 8,
-      "photo": "https://i.pravatar.cc/150?u=101",
-      "blockedAt": "4/13/2026, 6:20:16 PM"
-    },
-    {
-      "id": 103,
-      "name": "Sara",
-      "phone": "655666777",
-      "interests": [
-        "Videojuegos",
-        "Películas",
-        "Lectura"
-      ],
-      "distancia": 23,
-      "photo": "https://i.pravatar.cc/150?u=103",
-      "blockedAt": "4/13/2026, 6:36:19 PM"
+      "distancia": 34,
+      "blockedAt": "4/29/2026, 10:56:18 AM"
     },
     {
       "id": 112,
       "name": "Paula",
+      "photo": "/assets/paula.png",
       "phone": "655222888",
       "interests": [
         "Gimnasio",
@@ -36,12 +24,12 @@
         "Animales"
       ],
       "distancia": 31,
-      "photo": "https://i.pravatar.cc/150?u=112",
-      "blockedAt": "4/13/2026, 6:48:47 PM"
+      "blockedAt": "4/29/2026, 11:42:46 AM"
     },
     {
       "id": 111,
       "name": "Carmen",
+      "photo": "/assets/carmen.png",
       "phone": "633999222",
       "interests": [
         "Dieta",
@@ -49,125 +37,7 @@
         "Derecho"
       ],
       "distancia": 72,
-      "photo": "https://i.pravatar.cc/150?u=111",
-      "blockedAt": "4/14/2026, 12:39:42 AM"
-    },
-    {
-      "id": 110,
-      "name": "Alba",
-      "photo": "/assets/alba.png",
-      "phone": "611777888",
-      "interests": [
-        "Senderismo",
-        "Películas",
-        "Gimnasio"
-      ],
-      "distancia": 19,
-      "blockedAt": "4/14/2026, 7:38:14 PM"
-    },
-    {
-      "id": 116,
-      "name": "Guillermo",
-      "photo": "/assets/guillermo.png",
-      "phone": "677444111",
-      "interests": [
-        "Cine",
-        "Informatica",
-        "Moda"
-      ],
-      "distancia": 11,
-      "blockedAt": "4/14/2026, 8:10:16 PM"
-    },
-    {
-      "id": 104,
-      "name": "Martina",
-      "photo": "/assets/martina.png",
-      "phone": "677888999",
-      "interests": [
-        "Gimnasio",
-        "Cocina",
-        "Dieta"
-      ],
-      "distancia": 67,
-      "blockedAt": "4/14/2026, 8:13:26 PM"
-    },
-    {
-      "id": 105,
-      "name": "Valeria",
-      "photo": "/assets/valeria.png",
-      "phone": "622333444",
-      "interests": [
-        "Electrónica",
-        "Películas",
-        "Ajedrez"
-      ],
-      "distancia": 12,
-      "blockedAt": "4/14/2026, 8:13:58 PM"
-    },
-    {
-      "id": 115,
-      "name": "Alejandro",
-      "photo": "/assets/alejandro.png",
-      "phone": "677444111",
-      "interests": [
-        "Gimnasio",
-        "Futbol",
-        "Tenis"
-      ],
-      "distancia": 9,
-      "blockedAt": "4/14/2026, 8:14:03 PM"
-    },
-    {
-      "id": 114,
-      "name": "Daniel",
-      "photo": "/assets/daniel.png",
-      "phone": "677444111",
-      "interests": [
-        "Derecho",
-        "Mario Bros",
-        "Videojuegos"
-      ],
-      "distancia": 10,
-      "blockedAt": "4/14/2026, 8:14:10 PM"
-    },
-    {
-      "id": 108,
-      "name": "Elena",
-      "photo": "/assets/elena.png",
-      "phone": "600111222",
-      "interests": [
-        "Senderismo",
-        "Electrónica",
-        "Animales"
-      ],
-      "distancia": 5,
-      "blockedAt": "4/14/2026, 8:14:16 PM"
-    },
-    {
-      "id": 119,
-      "name": "Jesus",
-      "photo": "/assets/jesus.png",
-      "phone": "677444111",
-      "interests": [
-        "Ecologismo",
-        "Espacio",
-        "Animales"
-      ],
-      "distancia": 93,
-      "blockedAt": "4/14/2026, 8:30:10 PM"
-    },
-    {
-      "id": 120,
-      "name": "Diego",
-      "photo": "/assets/diego.png",
-      "phone": "677444111",
-      "interests": [
-        "Derecho",
-        "Electrónica",
-        "Informatica"
-      ],
-      "distancia": 2,
-      "blockedAt": "4/14/2026, 8:33:09 PM"
+      "blockedAt": "4/29/2026, 11:54:22 AM"
     }
   ]
 }

@@ -19,8 +19,9 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(publicPath, "index.html"));
 });
 
-// 3. Resetear encounters.json al iniciar el servidor
+// 3. Resetear datos de sesión al iniciar el servidor
 dataManager.resetEncounters();
+dataManager.resetBlocked();
 
 // 4. Inicializar los eventos de Socket.io pasándole la instancia 'io'
 socketEvents(io);
