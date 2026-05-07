@@ -211,9 +211,10 @@ const renderStatus = () => `
         <div class="gesture-guide">
             <p><strong>Inclinar derecha:</strong> Pasar persona</p>
             <p><strong>Inclinar izquierda:</strong> Conectar</p>
-            <p><strong>Inclinar arriba:</strong> Bloquear usuario</p>
-            <p><strong>Doble toque:</strong> Cerrar app</p>
-            <p><strong>Agitar:</strong> Ampliar rango</p>
+            <p><strong>Agitar:</strong> Bloquear usuario</p>
+            <p><strong>Un toque:</strong> Ampliar rango</p>
+            <p><strong>Doble toque:</strong> Modo bloqueo</p>
+            <p><strong>Triple toque:</strong> Cerrar app</p>
             <p><strong>Bajar brazo:</strong> Modo bloqueo</p>
         </div>
     </div>
